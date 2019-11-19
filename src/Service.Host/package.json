@@ -1,7 +1,7 @@
 {
-  "name": "template",
+  "name": "tax",
   "version": "1.0.0",
-  "description": "template",
+  "description": "tax",
   "main": "index.js",
   "scripts": {
     "prettier:format": "prettier --write \"{,client/src/**/}*.{md,json,js,jsx,css,scss}\"",

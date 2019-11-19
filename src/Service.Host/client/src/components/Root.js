@@ -22,22 +22,22 @@ const Root = ({ store }) => (
                             <Navigation />
                             <CssBaseline />
 
-                            <Route exact path="/" render={() => <Redirect to="/template" />} />
+                            <Route exact path="/" render={() => <Redirect to="/tax" />} />
 
                             <Route
                                 path="/"
                                 render={() => {
-                                    document.title = 'Template';
+                                    document.title = 'tax';
                                     return false;
                                 }}
                             />
 
                             <Switch>
-                                <Route exact path="/template" component={App} />
+                                <Route exact path="/tax" component={App} />
 
                                 <Route
                                     exact
-                                    path="/template/signin-oidc-client"
+                                    path="/tax/signin-oidc-client"
                                     component={Callback}
                                 />
                             </Switch>

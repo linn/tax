@@ -13,7 +13,7 @@ if [ "${TRAVIS_BRANCH}" = "master" ]; then
     # master - deploy to production
     echo deploy to production
 
-    aws s3 cp s3://$S3_BUCKET_NAME/template/production.env ./secrets.env
+    aws s3 cp s3://$S3_BUCKET_NAME/tax/production.env ./secrets.env
 
     STACK_NAME=template
     APP_ROOT=http://app.linn.co.uk
@@ -23,9 +23,9 @@ if [ "${TRAVIS_BRANCH}" = "master" ]; then
     # pull request based on master - deploy to sys
     echo deploy to sys
 
-    aws s3 cp s3://$S3_BUCKET_NAME/template/sys.env ./secrets.env
+    aws s3 cp s3://$S3_BUCKET_NAME/tax/sys.env ./secrets.env
 
-    STACK_NAME=template-sys
+    STACK_NAME=tax-sys
     APP_ROOT=http://app-sys.linn.co.uk
     PROXY_ROOT=http://app.linn.co.uk
     ENV_SUFFIX=-sys
@@ -34,9 +34,9 @@ else
   # not master - deploy to int
   echo deploy to int
 
-    aws s3 cp s3://$S3_BUCKET_NAME/template/int.env ./secrets.env
+    aws s3 cp s3://$S3_BUCKET_NAME/tax/int.env ./secrets.env
 
-    STACK_NAME=template-int
+    STACK_NAME=tax-int
     APP_ROOT=http://app-int.linn.co.uk
     PROXY_ROOT=http://app.linn.co.uk
     ENV_SUFFIX=-int
@@ -46,6 +46,6 @@ fi
 source ./secrets.env > /dev/null 2>&1
 
 # deploy the service to amazon
-aws cloudformation deploy --stack-name $STACK_NAME --template-file ./aws/application.yml --parameter-overrides dockerTag=$TRAVIS_BUILD_NUMBER databaseHost=$DATABASE_HOST databaseName=$DATABASE_NAME databaseUserId=$DATABASE_USER_ID databasePassword=$DATABASE_PASSWORD rabbitServer=$RABBIT_SERVER rabbitPort=$RABBIT_PORT rabbitUsername=$RABBIT_USERNAME rabbitPassword=$RABBIT_PASSWORD appRoot=$APP_ROOT proxyRoot=$PROXY_ROOT authorityUri=$AUTHORITY_URI loggingEnvironment=$LOG_ENVIRONMENT loggingMaxInnerExceptionDepth=$LOG_MAX_INNER_EXCEPTION_DEPTH environmentSuffix=$ENV_SUFFIX --capabilities=CAPABILITY_IAM
+aws cloudformation deploy --stack-name $STACK_NAME --tax-file ./aws/application.yml --parameter-overrides dockerTag=$TRAVIS_BUILD_NUMBER databaseHost=$DATABASE_HOST databaseName=$DATABASE_NAME databaseUserId=$DATABASE_USER_ID databasePassword=$DATABASE_PASSWORD rabbitServer=$RABBIT_SERVER rabbitPort=$RABBIT_PORT rabbitUsername=$RABBIT_USERNAME rabbitPassword=$RABBIT_PASSWORD appRoot=$APP_ROOT proxyRoot=$PROXY_ROOT authorityUri=$AUTHORITY_URI loggingEnvironment=$LOG_ENVIRONMENT loggingMaxInnerExceptionDepth=$LOG_MAX_INNER_EXCEPTION_DEPTH environmentSuffix=$ENV_SUFFIX --capabilities=CAPABILITY_IAM
 
 echo "deploy complete"

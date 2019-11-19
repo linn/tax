@@ -16,7 +16,7 @@
             //builder.RegisterModule<MessagingModule>();
             //builder.RegisterModule<PersistenceModule>();
             //builder.RegisterModule<ServiceModule>();
-            builder.RegisterReceiver("template.q", "template.dlx");
+            builder.RegisterReceiver("tax.q", "tax.dlx");
 
             builder.RegisterType<Listener>().AsSelf();
 

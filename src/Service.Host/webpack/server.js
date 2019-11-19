@@ -9,7 +9,7 @@ new WebpackDevServer(webpack(config), {
     hot: true,
     historyApiFallback: true,
     proxy: {
-        '/template/assets': {
+        '/tax/assets': {
             target: 'http://localhost:51101',
             secure: false
         }

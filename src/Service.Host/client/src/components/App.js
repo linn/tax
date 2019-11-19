@@ -5,7 +5,7 @@ import Page from '../containers/Page';
 function App() {
     return (
         <Page>
-            <Typography variant="h6">Template</Typography>
+            <Typography variant="h6">Tax</Typography>
         </Page>
     );
 }

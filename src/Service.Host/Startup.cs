@@ -31,7 +31,7 @@ namespace Linn.Tax.Service.Host
                 options =>
                     {
                         options.Authority = ConfigurationManager.Configuration["AUTHORITY_URI"];
-                        options.CallbackPath = new PathString("/template/signin-oidc");
+                        options.CallbackPath = new PathString("/tax/signin-oidc");
                     });
         }
 

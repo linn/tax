@@ -23,7 +23,7 @@
 
             this.logger.Info("Started pricing-listener");
 
-            this.consumer.For("template.some-type")
+            this.consumer.For("tax.some-type")
                 .OnConsumed(m =>
                     {
                         using (var handlerScope = scope.BeginLifetimeScope("messageHandler"))
