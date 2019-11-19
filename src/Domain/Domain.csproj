@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssemblyName>Linn.Tax.Domain</AssemblyName>
+    <RootNamespace>Linn.Tax.Domain</RootNamespace>
+  </PropertyGroup>
+
+</Project>

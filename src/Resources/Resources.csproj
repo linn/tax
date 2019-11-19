@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AssemblyName>Linn.Tax.Resources</AssemblyName>
+    <RootNamespace>Linn.Tax.Resources</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Linn.Common.Resources" Version="2.0.0" />
+  </ItemGroup>
+
+</Project>
