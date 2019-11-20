@@ -8,7 +8,6 @@
 
         string HelloUser(string token);
 
-
         string ExchangeCodeForAccessToken(string code);
     }
 }
