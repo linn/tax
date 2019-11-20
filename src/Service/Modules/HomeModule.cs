@@ -27,7 +27,6 @@
 
         private object GetApp()
         {
-            var x = this.apiService.HelloWorld();
             return this.Negotiate.WithModel(ApplicationSettings.Get()).WithView("Index");
         }
     }

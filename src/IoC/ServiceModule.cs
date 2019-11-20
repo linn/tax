@@ -1,7 +1,11 @@
 ﻿namespace Linn.Tax.IoC
 {
+    using System.Collections.Generic;
+
     using Amazon.SQS;
     using Autofac;
+    using Autofac.Core;
+    using Autofac.Core.Activators.Reflection;
 
     using Linn.Common.Configuration;
     using Linn.Common.Logging;
@@ -16,7 +20,16 @@
         {
             // rest client proxies
             builder.RegisterType<RestClient>().As<IRestClient>();
-            builder.RegisterType<HmrcApiProxy>().As<IHmrcApiService>().WithParameter("rootUri", ConfigurationManager.Configuration["HMRC_API_ROOT"]);
+            builder.RegisterType<HmrcApiProxy>()
+                .As<IHmrcApiService>()
+                .WithParameters(
+                new List<Parameter>
+                    {
+                        new NamedParameter("rootUri", ConfigurationManager.Configuration["HMRC_API_ROOT"]),
+                        new NamedParameter("serverToken", ConfigurationManager.Configuration["SERVER_TOKEN"]),
+                        new NamedParameter("clientId", ConfigurationManager.Configuration["CLIENT_ID"]),
+                        new NamedParameter("clientSecret", ConfigurationManager.Configuration["CLIENT_SECRET"])
+                    });
         }
     }
 }
