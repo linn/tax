@@ -43,7 +43,7 @@
             // test open access api call
             var helloWorld = this.apiService.HelloWorld();
 
-            test application restricted api call
+           // test application restricted api call
            var helloApp = this.apiService.HelloApplication();
 
             // test user restricted (OAuth 2.0) api call
