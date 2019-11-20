@@ -1,4 +1,4 @@
-﻿namespace Linn.Production.Service.Modules
+﻿namespace Linn.Tax.Service.Modules
 {
     using System.Collections.Generic;
     using System.Security.Claims;
@@ -55,7 +55,7 @@
 
             var helloUser = this.apiService.HelloUser(token);
 
-            return this.Negotiate.WithMediaRangeModel("text/html", ApplicationSettings.Get).WithView("Index");
+            return helloUser;
         }
     }
 }
