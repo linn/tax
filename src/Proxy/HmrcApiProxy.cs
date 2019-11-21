@@ -2,11 +2,15 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Reflection;
     using System.Threading;
 
     using Linn.Common.Proxy;
-    using Linn.Common.Serialization.Json;
-    using Linn.Tax.Domain;
+    using Linn.Tax.Resources;
+
+    using Newtonsoft.Json;
+
+    using JsonSerializer = Linn.Common.Serialization.Json.JsonSerializer;
 
     public class HmrcApiProxy : IHmrcApiService
     {
@@ -21,6 +25,7 @@
 
         private readonly string clientSecret;
 
+
         public HmrcApiProxy(IRestClient restClient, string rootUri, string serverToken, string clientId, string clientSecret)
         {
             this.rootUri = rootUri;
@@ -29,6 +34,12 @@
             this.clientId = clientId;
             this.clientSecret = clientSecret;
         }
+
+        private string Token
+        {
+            get; set;
+        }
+
 
         public string HelloWorld()
         {
@@ -72,6 +83,27 @@
             return resource["message"];
         }
 
+        public string SubmitVatReturn(string token, VatReturnRequestResource body)
+        {
+            // this won't be needed
+            var dictionary = new Dictionary<string, string>();
+            foreach (PropertyInfo prop in body.GetType().GetProperties())
+            {
+                dictionary.Add(prop.Name, prop.GetValue(body).ToString());
+            }
+
+            var uri = new Uri($"{this.rootUri}organisations/vat/465101180/returns", UriKind.RelativeOrAbsolute);
+            var response = this.restClient.Post(
+                CancellationToken.None,
+                uri,
+                new Dictionary<string, string>(),
+                RequestHeaders.JsonGetHeadersWithAppAuth(token),
+               new JsonSerializer().Serialize(body),
+                "application/json").Result;
+
+            return response.Value;
+        }
+
         public string ExchangeCodeForAccessToken(string code)
         {
             var uri = new Uri($"{this.rootUri}/oauth/token", UriKind.RelativeOrAbsolute);
@@ -85,12 +117,11 @@
                         client_id = this.clientId,
                         client_secret = this.clientSecret,
                         grant_type = "authorization_code",
-                        redirect_uri = "http://localhost:61798/success",
+                        redirect_uri = "http://localhost:61798/tax/redirect",
                         code
                     }).Result;
 
-            var resource = response.Value;
-            return resource.access_token;
+            return response.Value.access_token;
         }
 
         internal class TokenResource

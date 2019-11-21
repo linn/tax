@@ -1,10 +1,9 @@
-﻿namespace Linn.Production.Service.Modules
+﻿namespace Linn.Tax.Service.Modules
 {
-    using Linn.Tax.Domain;
+    using Linn.Tax.Proxy;
     using Linn.Tax.Service.Models;
 
     using Nancy;
-    using Nancy.Responses;
 
     public sealed class HomeModule : NancyModule
     {
@@ -14,10 +13,7 @@
         {
             this.apiService = apiService;
 
-            this.Get("/", args => new RedirectResponse("/tax"));
-            this.Get("/tax", _ => this.GetApp());
-
-            this.Get(@"^(.*)$", _ => this.GetApp());
+            this.Get("/", args => this.GetApp());
         }
 
         private object SilentRenew()
@@ -27,6 +23,7 @@
 
         private object GetApp()
         {
+
             return this.Negotiate.WithModel(ApplicationSettings.Get()).WithView("Index");
         }
     }

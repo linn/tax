@@ -107,7 +107,7 @@ module.exports = {
         }
         //modules: [path.resolve('node_modules'), 'node_modules'].concat(/* ... */)
     },
-    devtool: 'none',
+    devtool: 'cheap-module-eval-source-map',
     // From https://github.com/gaearon/react-hot-boilerplate/blob/next/webpack.config.js
     plugins: [
         new webpack.HotModuleReplacementPlugin(), // enable HMR globally

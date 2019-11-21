@@ -25,5 +25,15 @@
                            { "Authorization", new[] { $"Bearer {token}" } }
                        };
         }
+
+        public static IDictionary<string, string[]> JsonPostHeadersWithAppAuth(string token)
+        {
+            return new Dictionary<string, string[]>
+                       {
+                           { "Accept", new[] { "application/vnd.hmrc.1.0+json" } },
+                           { "Authorization", new[] { $"Bearer {token}" } },
+                           { "Content-Type", new[] { "application/json" } }
+                       };
+        }
     }
 }

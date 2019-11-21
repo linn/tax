@@ -11,7 +11,6 @@
     using Linn.Common.Logging;
     using Linn.Common.Logging.AmazonSqs;
     using Linn.Common.Proxy;
-    using Linn.Tax.Domain;
     using Linn.Tax.Proxy;
 
     public class ServiceModule : Module
