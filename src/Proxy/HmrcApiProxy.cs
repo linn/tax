@@ -85,13 +85,6 @@
 
         public string SubmitVatReturn(string token, VatReturnRequestResource body)
         {
-            // this won't be needed
-            var dictionary = new Dictionary<string, string>();
-            foreach (PropertyInfo prop in body.GetType().GetProperties())
-            {
-                dictionary.Add(prop.Name, prop.GetValue(body).ToString());
-            }
-
             var uri = new Uri($"{this.rootUri}organisations/vat/465101180/returns", UriKind.RelativeOrAbsolute);
             var response = this.restClient.Post(
                 CancellationToken.None,
