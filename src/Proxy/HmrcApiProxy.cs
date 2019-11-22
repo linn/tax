@@ -2,104 +2,66 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Reflection;
     using System.Threading;
 
+    using Linn.Common.Configuration;
     using Linn.Common.Proxy;
     using Linn.Tax.Resources;
-
-    using Newtonsoft.Json;
-
-    using JsonSerializer = Linn.Common.Serialization.Json.JsonSerializer;
+    using JsonSerializer = Common.Serialization.Json.JsonSerializer;
 
     public class HmrcApiProxy : IHmrcApiService
     {
-
         private readonly IRestClient restClient;
 
         private readonly string rootUri;
-
-        private readonly string serverToken;
 
         private readonly string clientId;
 
         private readonly string clientSecret;
 
 
-        public HmrcApiProxy(IRestClient restClient, string rootUri, string serverToken, string clientId, string clientSecret)
+        public HmrcApiProxy(IRestClient restClient, string rootUri, string clientId, string clientSecret)
         {
             this.rootUri = rootUri;
-            this.serverToken = serverToken;
             this.restClient = restClient;
             this.clientId = clientId;
             this.clientSecret = clientSecret;
         }
 
-        private string Token
+        public VatReturnResponseResource SubmitVatReturn(string token, VatReturnRequestResource resource)
         {
-            get; set;
-        }
-
-
-        public string HelloWorld()
-        {
-            var uri = new Uri($"{this.rootUri}/hello/world", UriKind.RelativeOrAbsolute);
-            var response = this.restClient.Get(
-                CancellationToken.None,
-                uri,
-                new Dictionary<string, string>(),
-                RequestHeaders.JsonGetHeaders()).Result;
-
             var json = new JsonSerializer();
-            var resource = json.Deserialize<Dictionary<string, string>>(response.Value);
-            return resource["message"];
-        }
-
-        public string HelloApplication()
-        {
-            var uri = new Uri($"{this.rootUri}/hello/application", UriKind.RelativeOrAbsolute);
-            var response = this.restClient.Get(
-                CancellationToken.None,
-                uri,
-                new Dictionary<string, string>(),
-                RequestHeaders.JsonGetHeadersWithAppAuth(this.serverToken)).Result;
-
-            var json = new JsonSerializer();
-            var resource = json.Deserialize<Dictionary<string, string>>(response.Value);
-            return resource["message"];
-        }
-
-        public string HelloUser(string token)
-        {
-            var uri = new Uri($"{this.rootUri}/hello/user", UriKind.RelativeOrAbsolute);
-            var response = this.restClient.Get(
-                CancellationToken.None,
-                uri,
-                new Dictionary<string, string>(),
-                RequestHeaders.JsonGetHeadersWithAppAuth(token)).Result;
-
-            var json = new JsonSerializer();
-            var resource = json.Deserialize<Dictionary<string, string>>(response.Value);
-            return resource["message"];
-        }
-
-        public string SubmitVatReturn(string token, VatReturnRequestResource body)
-        {
-            var uri = new Uri($"{this.rootUri}organisations/vat/465101180/returns", UriKind.RelativeOrAbsolute);
+            var uri = new Uri($"{this.rootUri}organisations/vat/{resource.Vrn}/returns", UriKind.RelativeOrAbsolute);
             var response = this.restClient.Post(
                 CancellationToken.None,
                 uri,
                 new Dictionary<string, string>(),
                 RequestHeaders.JsonGetHeadersWithAppAuth(token),
-               new JsonSerializer().Serialize(body),
+                json.Serialize(new
+                                   {
+                                        periodKey = resource.PeriodKey,
+                                        vatDueSales = resource.VatDueSales,
+                                        vatDueAcquisitions = resource.VatDueAcquisitions,
+                                        totalVatDue = resource.TotalVatDue,
+                                        vatReclaimedCurrPeriod = resource.VatReclaimedCurrPeriod,
+                                        netVatDue = resource.NetVatDue,
+                                        totalValueSalesExVAT = resource.TotalValueSalesExVat,
+                                        totalValuePurchasesExVAT = resource.TotalValuePurchasesExVat,
+                                        totalValueGoodsSuppliedExVAT = resource.TotalValueGoodsSuppliedExVat,
+                                        totalAcquisitionsExVAT = resource.TotalAcquisitionsExVat,
+                                        finalised = resource.Finalised
+                                   }),
                 "application/json").Result;
 
-            return response.Value;
+            // todo - check for status code here and formulate the correct response
+            var result = json.Deserialize<VatReturnResponseResource>(response.Value);
+            return result;
         }
 
         public string ExchangeCodeForAccessToken(string code)
         {
             var uri = new Uri($"{this.rootUri}/oauth/token", UriKind.RelativeOrAbsolute);
+            var redirect = ConfigurationManager.Configuration["AUTH_CALLBACK_URI"];
             var response = this.restClient.Post<TokenResource>(
                 CancellationToken.None,
                 uri,
@@ -110,7 +72,7 @@
                         client_id = this.clientId,
                         client_secret = this.clientSecret,
                         grant_type = "authorization_code",
-                        redirect_uri = "http://localhost:61798/tax/redirect",
+                        redirect_uri = redirect,
                         code
                     }).Result;
 

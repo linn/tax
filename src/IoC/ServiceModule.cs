@@ -25,7 +25,6 @@
                 new List<Parameter>
                     {
                         new NamedParameter("rootUri", ConfigurationManager.Configuration["HMRC_API_ROOT"]),
-                        new NamedParameter("serverToken", ConfigurationManager.Configuration["SERVER_TOKEN"]),
                         new NamedParameter("clientId", ConfigurationManager.Configuration["CLIENT_ID"]),
                         new NamedParameter("clientSecret", ConfigurationManager.Configuration["CLIENT_SECRET"])
                     });

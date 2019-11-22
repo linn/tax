@@ -2,26 +2,28 @@
 {
     public class VatReturnRequestResource
     {
-        public string periodKey { get; set; }
+        public int Vrn { get; set; }
 
-        public decimal vatDueSales { get; set; }
+        public string PeriodKey { get; set; }
 
-        public decimal vatDueAcquisitions { get; set; }
+        public decimal VatDueSales { get; set; }
 
-        public decimal totalVatDue { get; set; }
+        public decimal VatDueAcquisitions { get; set; }
 
-        public decimal vatReclaimedCurrPeriod { get; set; }
+        public decimal TotalVatDue { get; set; }
 
-        public decimal netVatDue { get; set; }
+        public decimal VatReclaimedCurrPeriod { get; set; }
 
-        public decimal totalValueSalesExVAT { get; set; }
+        public decimal NetVatDue { get; set; }
 
-        public decimal totalValuePurchasesExVAT { get; set; }
+        public decimal TotalValueSalesExVat { get; set; }
 
-        public decimal totalValueGoodsSuppliedExVAT { get; set; }
+        public decimal TotalValuePurchasesExVat { get; set; }
 
-        public decimal totalAcquisitionsExVAT { get; set; }
+        public decimal TotalValueGoodsSuppliedExVat { get; set; }
 
-        public bool finalised { get; set; }
+        public decimal TotalAcquisitionsExVat { get; set; }
+
+        public bool Finalised { get; set; }
     }
 }

@@ -2,12 +2,12 @@
 {
     public class VatReturnResponseResource
     {
-        public string processingDate { get; set; }
+        public string ProcessingDate { get; set; }
 
-        public string paymentIndicator { get; set; }
+        public string PaymentIndicator { get; set; }
 
-        public string formBundleNumber { get; set; }
+        public string FormBundleNumber { get; set; }
 
-        public string chargeRefNumber { get; set; }
+        public string ChargeRefNumber { get; set; }
     }
 }
