@@ -1,6 +1,5 @@
 ﻿namespace Linn.Tax.Service.Modules
 {
-    using Linn.Common.Configuration;
     using Linn.Tax.Proxy;
     using Linn.Tax.Resources;
     using Linn.Tax.Service.Models;
@@ -22,7 +21,7 @@
         {
             var resource = this.Bind<VatReturnRequestResource>();
 
-            var result = this.apiService.SubmitVatReturn(ConfigurationManager.Configuration["access_token"], resource);
+            var result = this.apiService.SubmitVatReturn(resource);
 
             return this.Negotiate
                 .WithModel(result)
