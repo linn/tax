@@ -21,7 +21,7 @@
         {
             var resource = this.Bind<VatReturnRequestResource>();
 
-            var result = this.apiService.SubmitVatReturn(resource);
+            var result = this.apiService.SubmitVatReturn(resource, (string)this.Session["access_token"]);
 
             return this.Negotiate
                 .WithModel(result)

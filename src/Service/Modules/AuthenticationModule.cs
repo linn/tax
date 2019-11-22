@@ -34,9 +34,11 @@
 
             var code = resource.Code;
 
-            ConfigurationManager.Configuration["access_token"] = this.apiService.ExchangeCodeForAccessToken(code);
+            this.Session["access_token"] = this.apiService.ExchangeCodeForAccessToken(code);
 
-            return "success";
+            var token = this.Request.Session["access_token"];
+
+            return new RedirectResponse("http://localhost:61798/tax/submit-return");
         }
     }
 }

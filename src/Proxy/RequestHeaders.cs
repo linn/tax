@@ -19,12 +19,13 @@
                        };
         }
 
-        public static IDictionary<string, string[]> JsonGetHeadersWithAppAuth()
+        public static IDictionary<string, string[]> JsonGetHeadersWithAppAuth(string token)
         {
             return new Dictionary<string, string[]>
                        {
                            { "Accept", new[] { "application/vnd.hmrc.1.0+json" } },
-                           { "Authorization", new[] { $"Bearer {ConfigurationManager.Configuration["access_token"]}" } }
+                           // todo - is this session specific
+                           { "Authorization", new[] { $"Bearer {token}" } } 
                        };
         }
 

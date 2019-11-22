@@ -4,7 +4,7 @@
 
     public interface IHmrcApiService
     {
-        VatReturnResponseResource SubmitVatReturn(VatReturnRequestResource vatReturn);
+        VatReturnResponseResource SubmitVatReturn(VatReturnRequestResource vatReturn, string token);
 
         string ExchangeCodeForAccessToken(string code);
     }
