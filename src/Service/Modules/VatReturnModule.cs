@@ -3,39 +3,31 @@
     using Linn.Common.Configuration;
     using Linn.Tax.Proxy;
     using Linn.Tax.Resources;
+    using Linn.Tax.Service.Models;
 
     using Nancy;
+    using Nancy.ModelBinding;
 
     public sealed class VatReturnModule : NancyModule
     {
-        private IHmrcApiService apiService;
+        private readonly IHmrcApiService apiService;
 
         public VatReturnModule(IHmrcApiService apiService)
         {
             this.apiService = apiService;
-            this.Get("/tax/return", _ => this.SubmitTaxReturn());
+            this.Post("/tax/return", _ => this.SubmitTaxReturn());
         }
 
         private object SubmitTaxReturn()
         {
-            var formData = new VatReturnRequestResource
-            {
-                periodKey = "A001",
-                vatDueSales = new decimal(105.50),
-                vatDueAcquisitions = new decimal(-100.45),
-                totalVatDue = new decimal(5.05),
-                vatReclaimedCurrPeriod = new decimal(105.15),
-                netVatDue = new decimal(100.10),
-                totalValueSalesExVAT = 300,
-                totalValuePurchasesExVAT = 300,
-                totalValueGoodsSuppliedExVAT = 3000,
-                totalAcquisitionsExVAT = 3000,
-                finalised = true
-            };
+            var resource = this.Bind<VatReturnRequestResource>();
 
-            var helloUser = this.apiService.SubmitVatReturn(ConfigurationManager.Configuration["access_token"], formData);
+            var result = this.apiService.SubmitVatReturn(ConfigurationManager.Configuration["access_token"], resource);
 
-            return helloUser;
+            return this.Negotiate
+                .WithModel(result)
+                .WithMediaRangeModel("text/html", ApplicationSettings.Get)
+                .WithView("Index");
         }
     }
 }
