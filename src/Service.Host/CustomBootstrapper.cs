@@ -12,6 +12,7 @@
     using Nancy.Bootstrappers.Autofac;
     using Nancy.Configuration;
     using Nancy.Conventions;
+    using Nancy.Session;
 
     public class CustomBootstrapper : AutofacNancyBootstrapper
     {
@@ -25,6 +26,8 @@
         protected override void ApplicationStartup(ILifetimeScope lifetimeScope, IPipelines pipelines)
         {
             base.ApplicationStartup(lifetimeScope, pipelines);
+
+            CookieBasedSessions.Enable(pipelines);
 
             pipelines.OnError += (ctx, ex) =>
             {

@@ -4,9 +4,9 @@ import TaxReturn from '../components/TaxReturn';
 import add from '../actions/vatReturnActions';
 
 const mapStateToProps = () => ({
-    //loading: ateFaultCodeSelectors.getLoading(state),
-    //snackbarVisible: ateFaultCodeSelectors.getSnackbarVisible(state),
-    //itemError: getItemError(state, itemTypes.ateFaultCode.item)
+    //loading:
+    //snackbarVisible: 
+    //itemError: 
 });
 
 const mapDispatchToProps = {
