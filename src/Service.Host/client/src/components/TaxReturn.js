@@ -11,24 +11,24 @@ import Page from '../containers/Page';
 
 function TaxReturn({ submitVatReturn }) {
     const [vatReturn, setVatReturn] = useState({
-        vrn: 187045351,
-        periodKey: 'A001',
-        vatDueSales: 105.5,
-        vatDueAcquisitions: -100.45,
-        totalVatDue: 5.05,
-        vatReclaimedCurrPeriod: 105.15,
-        netVatDue: 100.1,
-        totalValueSalesExVAT: 300,
-        totalValuePurchasesExVAT: 300,
-        totalValueGoodsSuppliedExVAT: 3000,
-        totalAcquisitionsExVAT: 3000,
-        finalised: true
+        periodKey: null,
+        vatDueSales: null,
+        vatDueAcquisitions: null,
+        totalVatDue: null,
+        vatReclaimedCurrPeriod: null,
+        netVatDue: null,
+        totalValueSalesExVAT: null,
+        totalValuePurchasesExVAT: null,
+        totalValueGoodsSuppliedExVAT: null,
+        totalAcquisitionsExVAT: null,
+        finalised: null
     });
 
     const handleFieldChange = (propertyName, newValue) => {
         setVatReturn({ ...vatReturn, [propertyName]: newValue });
     };
 
+    const inputInvalid = () => Object.keys(vatReturn).some(k => !vatReturn[k]);
     return (
         <Page width="m">
             {/* <SnackbarMessage
@@ -43,8 +43,21 @@ function TaxReturn({ submitVatReturn }) {
                 <Grid item xs={12}>
                     <InputField
                         fullWidth
+                        value={vatReturn.vrn}
+                        label=" 9 Digit VAT Registration Number"
+                        type="number"
+                        maxLength={9}
+                        required
+                        onChange={handleFieldChange}
+                        propertyName="vrn"
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <InputField
+                        fullWidth
                         value={vatReturn.periodKey}
                         label="Period Key"
+                        maxLength={4}
                         required
                         onChange={handleFieldChange}
                         propertyName="periodKey"
@@ -54,7 +67,8 @@ function TaxReturn({ submitVatReturn }) {
                     <InputField
                         fullWidth
                         value={vatReturn.vatDueSales}
-                        label="VAT Due Sales"
+                        label="VAT Due On Sales"
+                        type="number"
                         required
                         onChange={handleFieldChange}
                         propertyName="vatDueSales"
@@ -63,8 +77,9 @@ function TaxReturn({ submitVatReturn }) {
                 <Grid item xs={12}>
                     <InputField
                         fullWidth
+                        type="number"
                         value={vatReturn.vatDueAcquisitions}
-                        label="VAT Due Acquisitions"
+                        label="VAT Due On Acquisitions"
                         required
                         onChange={handleFieldChange}
                         propertyName="vatDueAcquisitions"
@@ -73,6 +88,7 @@ function TaxReturn({ submitVatReturn }) {
                 <Grid item xs={12}>
                     <InputField
                         fullWidth
+                        type="number"
                         value={vatReturn.totalVatDue}
                         label="Total VAT Due"
                         required
@@ -83,8 +99,9 @@ function TaxReturn({ submitVatReturn }) {
                 <Grid item xs={12}>
                     <InputField
                         fullWidth
+                        type="number"
                         value={vatReturn.vatReclaimedCurrPeriod}
-                        label="VAT Reclaimed Current Period"
+                        label="VAT Reclaimed in Current Period"
                         required
                         onChange={handleFieldChange}
                         propertyName="vatReclaimedCurrPeriod"
@@ -93,6 +110,7 @@ function TaxReturn({ submitVatReturn }) {
                 <Grid item xs={12}>
                     <InputField
                         fullWidth
+                        type="number"
                         value={vatReturn.netVatDue}
                         label="Net VAT due"
                         required
@@ -103,8 +121,9 @@ function TaxReturn({ submitVatReturn }) {
                 <Grid item xs={12}>
                     <InputField
                         fullWidth
+                        type="number"
                         value={vatReturn.totalValueSalesExVAT}
-                        label="Total Value Sales Ex VAT"
+                        label="Total Value of Sales Excluding VAT"
                         required
                         onChange={handleFieldChange}
                         propertyName="totalValueSalesExVAT"
@@ -113,8 +132,9 @@ function TaxReturn({ submitVatReturn }) {
                 <Grid item xs={12}>
                     <InputField
                         fullWidth
+                        type="number"
                         value={vatReturn.totalValuePurchasesExVAT}
-                        label="Total value Purchases Ex VAT"
+                        label="Total nullalue of Purchases Excluding VAT"
                         required
                         onChange={handleFieldChange}
                         propertyName="totalValuePurchasesExVAT"
@@ -123,8 +143,9 @@ function TaxReturn({ submitVatReturn }) {
                 <Grid item xs={12}>
                     <InputField
                         fullWidth
+                        type="number"
                         value={vatReturn.totalValueGoodsSuppliedExVAT}
-                        label="Total Value Goods Suppled Ex VAT"
+                        label="Total Value of Goods Suppled Excluding VAT"
                         required
                         onChange={handleFieldChange}
                         propertyName="totalValueGoodsSuppliedExVAT"
@@ -133,14 +154,16 @@ function TaxReturn({ submitVatReturn }) {
                 <Grid item xs={12}>
                     <InputField
                         fullWidth
+                        type="number"
                         value={vatReturn.totalAcquisitionsExVAT}
-                        label="Total Acquisitions Ex VAT"
+                        label="Total Acquisitions Excluding VAT"
                         required
                         onChange={handleFieldChange}
                         propertyName="totalAcquisitionsExVAT"
                     />
                 </Grid>
                 <Grid item xs={12}>
+                    {/* todo - true false */}
                     <InputField
                         fullWidth
                         value={vatReturn.finalised}
@@ -155,6 +178,7 @@ function TaxReturn({ submitVatReturn }) {
                     <Button
                         className={{ float: 'right' }}
                         variant="outlined"
+                        disabled={inputInvalid()}
                         color="primary"
                         onClick={() => submitVatReturn(vatReturn)}
                     >
