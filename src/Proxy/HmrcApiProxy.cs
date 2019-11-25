@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Net;
     using System.Threading;
 
     using Linn.Common.Configuration;
@@ -90,6 +91,11 @@
                         grant_type = "refresh_token",
                         refresh_token = refreshToken
                 }).Result;
+
+            if (response.StatusCode == HttpStatusCode.BadRequest)
+            {
+                throw new AccessTokenExpiredException("Access token expired.");
+            }
 
             return response.Value;
         }

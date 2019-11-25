@@ -1,5 +1,7 @@
 ﻿namespace Linn.Tax.Service.Modules
 {
+    using System;
+
     using Linn.Common.Configuration;
     using Linn.Tax.Proxy;
     using Linn.Tax.Resources;
@@ -26,9 +28,16 @@
             {
                 var token = (TokenResource)this.Session["access_token"];
 
-                this.Session["access_token"] = this.apiService.RefreshToken(token.refresh_token);
+                try
+                {
+                    this.Session["access_token"] = this.apiService.RefreshToken(token.refresh_token);
+                }
+                catch (AccessTokenExpiredException e)
+                {
+                    this.Session["access_token"] = null;
+                    return new RedirectResponse($"{ConfigurationManager.Configuration["APP_ROOT"]}/auth");
+                }
 
-                var url = $"{ConfigurationManager.Configuration["APP_ROOT"]}tax/submit-return";
                 return new RedirectResponse($"{ConfigurationManager.Configuration["APP_ROOT"]}/tax/submit-return");
             }
 
