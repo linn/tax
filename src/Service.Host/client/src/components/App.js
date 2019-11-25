@@ -10,12 +10,11 @@ function App() {
         <Page>
             <Typography variant="h6">Tax</Typography>
             <List>
-                <ListItem component={Link} to="/auth" button>
-                    <Typography color="primary">Authenticate with hmrc</Typography>
-                </ListItem>
-                <ListItem component={Link} to="/tax/submit-return" button>
-                    <Typography color="primary">Submit a tax return</Typography>
-                </ListItem>
+                <a href="http://localhost:61798/auth">
+                    <ListItem button>
+                        <Typography color="primary">Submit a tax return</Typography>
+                    </ListItem>
+                </a>
             </List>
         </Page>
     );

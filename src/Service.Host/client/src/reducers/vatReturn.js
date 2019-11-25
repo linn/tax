@@ -1,6 +1,9 @@
 import * as actionTypes from '../actions';
 
-const vatReturn = (state = { loading: false, receipt: null, snackbarVisible: false }, action) => {
+const vatReturn = (
+    state = { loading: false, receipt: null, error: null, snackbarVisible: false },
+    action
+) => {
     switch (action.type) {
         case actionTypes.POST_VAT_RETURN:
             return {
@@ -13,6 +16,19 @@ const vatReturn = (state = { loading: false, receipt: null, snackbarVisible: fal
                 loading: false,
                 receipt: action.payload.data,
                 snackbarVisible: true
+            };
+        case actionTypes.HIDE_SNACKBAR:
+            return {
+                ...state,
+                snackbarVisible: false
+            };
+
+        case actionTypes.FETCH_ERROR:
+            return {
+                ...state,
+                loading: false,
+                error: action.payload.error,
+                snackbarVisible: false
             };
 
         default:

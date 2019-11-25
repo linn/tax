@@ -1,5 +1,6 @@
 ﻿namespace Linn.Tax.Facade
 {
+    using System.Linq;
     using System.Net;
 
     using Linn.Common.Facade;
@@ -27,7 +28,18 @@
             }
 
             var error = json.Deserialize<ErrorResponseResource>(apiResponse.Value);
-            return new BadRequestResult<VatReturnResponseResource>(error.Message);
+
+            var message = $"{error.Message}.";
+
+            if (error.Errors != null)
+            {
+                foreach (var e in error.Errors)
+                {
+                    message += $" {e.Message}.";
+                }
+            }
+            
+            return new BadRequestResult<VatReturnResponseResource>(message);
         }
     }
 }

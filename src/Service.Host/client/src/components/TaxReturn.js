@@ -1,15 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/styles';
 
 import PropTypes from 'prop-types';
-import { SnackbarMessage, InputField, Title } from '@linn-it/linn-form-components-library';
+import {
+    SnackbarMessage,
+    InputField,
+    Title,
+    ErrorCard,
+    Loading,
+    OnOffSwitch
+} from '@linn-it/linn-form-components-library';
 import Grid from '@material-ui/core/Grid';
 
 import Page from '../containers/Page';
 
-function TaxReturn({ submitVatReturn }) {
+function TaxReturn({
+    submitVatReturn,
+    errorMessage,
+    snackbarVisible,
+    loading,
+    hideSnackbar,
+    receipt
+}) {
     const [vatReturn, setVatReturn] = useState({
         periodKey: null,
         vatDueSales: null,
@@ -21,25 +35,86 @@ function TaxReturn({ submitVatReturn }) {
         totalValuePurchasesExVAT: null,
         totalValueGoodsSuppliedExVAT: null,
         totalAcquisitionsExVAT: null,
-        finalised: null
+        finalised: false
     });
 
     const handleFieldChange = (propertyName, newValue) => {
         setVatReturn({ ...vatReturn, [propertyName]: newValue });
     };
 
-    const inputInvalid = () => Object.keys(vatReturn).some(k => !vatReturn[k]);
+    if (loading) {
+        return (
+            <Page width="m">
+                <Loading />
+            </Page>
+        );
+    }
+
+    if (receipt) {
+        return (
+            <Page width="m">
+                <SnackbarMessage
+                    visible={snackbarVisible}
+                    onClose={hideSnackbar}
+                    message="Save Successful"
+                />
+                <Grid item xs={12}>
+                    <Title text="VAT Return Confirmation" />
+                </Grid>
+                <Grid item xs={12}>
+                    <InputField
+                        fullWidth
+                        value={receipt.processingDate}
+                        label="Processing Date"
+                        disabled
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <InputField
+                        fullWidth
+                        value={receipt.formBundleNumber}
+                        label="Form Bundle Number"
+                        disabled
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <InputField
+                        fullWidth
+                        value={receipt.paymentIndicator}
+                        label="Payment Indicator"
+                        disabled
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <InputField
+                        fullWidth
+                        value={receipt.chargeRefNumber}
+                        label="Charge Reference Number"
+                        disabled
+                    />
+                </Grid>
+            </Page>
+        );
+    }
+
+    const inputInvalid = () =>
+        Object.keys(vatReturn)
+            .filter(k => k !== 'finalised')
+            .some(k => !vatReturn[k]);
     return (
         <Page width="m">
-            {/* <SnackbarMessage
-                visible={snackbarVisible}
-                onClose={() => setSnackbarVisible(false)}
-                message="Save Successful"
-            /> */}
             <Grid container spacing={3}>
                 <Grid item xs={12}>
                     <Title text="VAT Return Form" />
                 </Grid>
+                {errorMessage ? (
+                    <Grid item xs={12}>
+                        <ErrorCard errorMessage={errorMessage} />
+                    </Grid>
+                ) : (
+                    // eslint-disable-next-line
+                    <Fragment />
+                )}
                 <Grid item xs={12}>
                     <InputField
                         fullWidth
@@ -162,18 +237,15 @@ function TaxReturn({ submitVatReturn }) {
                         propertyName="totalAcquisitionsExVAT"
                     />
                 </Grid>
-                <Grid item xs={12}>
-                    {/* todo - true false */}
-                    <InputField
-                        fullWidth
+                <Grid item xs={4}>
+                    <OnOffSwitch
+                        label="Finalised?"
                         value={vatReturn.finalised}
-                        label="Finalised"
-                        required
-                        onChange={handleFieldChange}
-                        propertyName="finalised"
+                        onChange={() => setVatReturn(r => ({ ...r, finalised: !r.finalised }))}
+                        propertyName="monthly"
                     />
                 </Grid>
-                <Grid item xs={10} />
+                <Grid item xs={6} />
                 <Grid item xs={2}>
                     <Button
                         className={{ float: 'right' }}

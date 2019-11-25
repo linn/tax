@@ -1,16 +1,17 @@
 import { connect } from 'react-redux';
-import { getItemError } from '@linn-it/linn-form-components-library';
 import TaxReturn from '../components/TaxReturn';
-import add from '../actions/vatReturnActions';
+import { add, hideSnackbar } from '../actions/vatReturnActions';
 
-const mapStateToProps = () => ({
-    //loading:
-    //snackbarVisible: 
-    //itemError: 
+const mapStateToProps = state => ({
+    loading: state.vatReturn?.loading,
+    snackbarVisible: state.vatReturn.snackbarVisible,
+    errorMessage: state.vatReturn?.error?.details?.message,
+    receipt: state.vatReturn.receipt
 });
 
 const mapDispatchToProps = {
-    submitVatReturn: add
+    submitVatReturn: add,
+    hideSnackbar
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TaxReturn);

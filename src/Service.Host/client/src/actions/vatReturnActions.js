@@ -1,7 +1,7 @@
 import { RSAA } from 'redux-api-middleware';
 import * as actionTypes from './index';
 
-const add = item => ({
+export const add = item => ({
     [RSAA]: {
         endpoint: `http://localhost:61798/tax/return`, // todo - approots
         method: 'POST',
@@ -21,11 +21,20 @@ const add = item => ({
                 payload: async (action, state, res) => ({ data: await res.json() })
             },
             {
-                type: 'FETCH_ERROR',
-                payload: (action, state, res) => 'Network request failed'
+                type: actionTypes.FETCH_ERROR,
+                payload: async (action, state, res) =>
+                    res
+                        ? {
+                              error: {
+                                  details: await res.json()
+                              }
+                          }
+                        : `Network request failed`
             }
         ]
     }
 });
 
-export default add;
+export const hideSnackbar = () => ({
+    type: 'HIDE_SNACKBAR'
+});
