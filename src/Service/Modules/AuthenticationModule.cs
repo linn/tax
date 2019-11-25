@@ -36,9 +36,7 @@
 
             this.Session["access_token"] = this.apiService.ExchangeCodeForAccessToken(code);
 
-            var token = this.Request.Session["access_token"];
-
-            return new RedirectResponse("http://localhost:61798/tax/submit-return");
+            return new RedirectResponse($"{ConfigurationManager.Configuration["HMRC_API_ROOT"]}/tax/submit-return");
         }
     }
 }

@@ -17,7 +17,7 @@
             this.apiService = apiService;
         }
 
-        public IResult<VatReturnResponseResource> SubmitVatReturn(VatReturnRequestResource resource, string token)
+        public IResult<VatReturnResponseResource> SubmitVatReturn(VatReturnRequestResource resource, TokenResource token)
         {
             var apiResponse = this.apiService.SubmitVatReturn(resource, token);
             var json = new JsonSerializer();

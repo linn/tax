@@ -5,8 +5,8 @@
 
     public interface IHmrcApiService
     {
-        IRestResponse<string> SubmitVatReturn(VatReturnRequestResource vatReturn, string token);
+        IRestResponse<string> SubmitVatReturn(VatReturnRequestResource vatReturn, TokenResource token);
 
-        string ExchangeCodeForAccessToken(string code);
+        TokenResource ExchangeCodeForAccessToken(string code);
     }
 }

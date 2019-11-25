@@ -23,7 +23,7 @@
         {
             var resource = this.Bind<VatReturnRequestResource>();
 
-            var result = this.vatReturnService.SubmitVatReturn(resource, (string)this.Session["access_token"]);
+            var result = this.vatReturnService.SubmitVatReturn(resource, (TokenResource)this.Session["access_token"]);
 
             if (result is CreatedResult<VatReturnResponseResource> createdResult)
             {

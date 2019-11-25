@@ -28,7 +28,7 @@
             this.clientSecret = clientSecret;
         }
 
-        public IRestResponse<string> SubmitVatReturn(VatReturnRequestResource resource, string token)
+        public IRestResponse<string> SubmitVatReturn(VatReturnRequestResource resource, TokenResource token)
         {
             var json = new JsonSerializer();
             var uri = new Uri($"{this.rootUri}organisations/vat/{resource.Vrn}/returns", UriKind.RelativeOrAbsolute);
@@ -36,7 +36,7 @@
                 CancellationToken.None,
                 uri,
                 new Dictionary<string, string>(),
-                RequestHeaders.JsonGetHeadersWithAppAuth(token),
+                RequestHeaders.JsonGetHeadersWithAppAuth(token.access_token),
                 json.Serialize(new
                                    {
                                         periodKey = resource.PeriodKey,
@@ -54,7 +54,7 @@
                 "application/json").Result;
         }
 
-        public string ExchangeCodeForAccessToken(string code)
+        public TokenResource ExchangeCodeForAccessToken(string code)
         {
             var uri = new Uri($"{this.rootUri}/oauth/token", UriKind.RelativeOrAbsolute);
             var redirect = ConfigurationManager.Configuration["AUTH_CALLBACK_URI"];
@@ -72,18 +72,7 @@
                         code
                     }).Result;
 
-            return response.Value.access_token;
-        }
-
-        internal class TokenResource
-        {
-            public string access_token { get; set; }
-
-            public string token_type { get; set; }
-
-            public int expires_in { get; set; }
-
-            public string refresh_token { get; set; }
+            return response.Value;
         }
     }
 }
