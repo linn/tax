@@ -47,7 +47,7 @@
 
             this.Session["access_token"] = this.apiService.ExchangeCodeForAccessToken(code);
 
-            return new RedirectResponse($"http://localhost:61798/tax/submit-return");
+            return new RedirectResponse($"{ConfigurationManager.Configuration["APP_ROOT"]}/tax/submit-return");
         }
     }
 }
