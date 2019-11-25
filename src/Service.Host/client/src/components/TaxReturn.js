@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/styles';
 
 import PropTypes from 'prop-types';
-import { SnackbarMessage, InputField } from '@linn-it/linn-form-components-library';
+import { SnackbarMessage, InputField, Title } from '@linn-it/linn-form-components-library';
 import Grid from '@material-ui/core/Grid';
 
 import Page from '../containers/Page';
@@ -38,7 +38,7 @@ function TaxReturn({ submitVatReturn }) {
             /> */}
             <Grid container spacing={3}>
                 <Grid item xs={12}>
-                    <Typography variant="h6">VAT Return Form </Typography>
+                    <Title text="VAT Return Form" />
                 </Grid>
                 <Grid item xs={12}>
                     <InputField

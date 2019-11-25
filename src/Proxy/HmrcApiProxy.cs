@@ -28,11 +28,11 @@
             this.clientSecret = clientSecret;
         }
 
-        public VatReturnResponseResource SubmitVatReturn(VatReturnRequestResource resource, string token)
+        public IRestResponse<string> SubmitVatReturn(VatReturnRequestResource resource, string token)
         {
             var json = new JsonSerializer();
             var uri = new Uri($"{this.rootUri}organisations/vat/{resource.Vrn}/returns", UriKind.RelativeOrAbsolute);
-            var response = this.restClient.Post(
+            return this.restClient.Post(
                 CancellationToken.None,
                 uri,
                 new Dictionary<string, string>(),
@@ -52,10 +52,6 @@
                                         finalised = resource.Finalised
                                    }),
                 "application/json").Result;
-
-            // todo - check for status code here and formulate the correct response
-            var result = json.Deserialize<VatReturnResponseResource>(response.Value);
-            return result;
         }
 
         public string ExchangeCodeForAccessToken(string code)
