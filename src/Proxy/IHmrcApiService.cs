@@ -8,5 +8,7 @@
         IRestResponse<string> SubmitVatReturn(VatReturnRequestResource vatReturn, TokenResource token);
 
         TokenResource ExchangeCodeForAccessToken(string code);
+
+        TokenResource RefreshToken(string refreshToken);
     }
 }

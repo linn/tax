@@ -74,5 +74,24 @@
 
             return response.Value;
         }
+
+        public TokenResource RefreshToken(string refreshToken)
+        {
+            var uri = new Uri($"{this.rootUri}/oauth/token", UriKind.RelativeOrAbsolute);
+            var response = this.restClient.Post<TokenResource>(
+                CancellationToken.None,
+                uri,
+                new Dictionary<string, string>(),
+                RequestHeaders.JsonGetHeaders(),
+                new
+                    {
+                        client_id = this.clientId,
+                        client_secret = this.clientSecret,
+                        grant_type = "refresh_token",
+                        refresh_token = refreshToken
+                }).Result;
+
+            return response.Value;
+        }
     }
 }

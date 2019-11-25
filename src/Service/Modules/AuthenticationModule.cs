@@ -21,6 +21,17 @@
 
         private object AuthRedirect()
         {
+            // is this session already auth'd?
+            if (this.Session["access_token"] != null && ((TokenResource)this.Session["access_token"]).access_token != null)
+            {
+                var token = (TokenResource)this.Session["access_token"];
+
+                this.Session["access_token"] = this.apiService.RefreshToken(token.refresh_token);
+
+                var url = $"{ConfigurationManager.Configuration["APP_ROOT"]}tax/submit-return";
+                return new RedirectResponse($"{ConfigurationManager.Configuration["APP_ROOT"]}/tax/submit-return");
+            }
+
             var root = ConfigurationManager.Configuration["HMRC_API_ROOT"];
             var clientId = ConfigurationManager.Configuration["CLIENT_ID"];
             var redirect = ConfigurationManager.Configuration["AUTH_CALLBACK_URI"];
@@ -36,7 +47,7 @@
 
             this.Session["access_token"] = this.apiService.ExchangeCodeForAccessToken(code);
 
-            return new RedirectResponse($"{ConfigurationManager.Configuration["HMRC_API_ROOT"]}/tax/submit-return");
+            return new RedirectResponse($"http://localhost:61798/tax/submit-return");
         }
     }
 }
