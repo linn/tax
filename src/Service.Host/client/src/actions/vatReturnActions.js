@@ -1,9 +1,10 @@
 import { RSAA } from 'redux-api-middleware';
+import config from '../config';
 import * as actionTypes from './index';
 
 export const add = item => ({
     [RSAA]: {
-        endpoint: `http://localhost:61798/tax/return`, // todo - approots
+        endpoint: `${config.appRoot}/tax/return`,
         method: 'POST',
         options: { requiresAuth: true },
         headers: {

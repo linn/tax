@@ -5,5 +5,5 @@ import App from '../App';
 
 test('App renders without crashing...', () => {
     const { getByText } = render(<App />);
-    expect(getByText('Template')).toBeInTheDocument();
+    expect(getByText('Tax')).toBeInTheDocument();
 });
