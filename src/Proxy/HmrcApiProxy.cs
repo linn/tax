@@ -37,7 +37,7 @@
                 CancellationToken.None,
                 uri,
                 new Dictionary<string, string>(),
-                RequestHeaders.JsonGetHeadersWithAppAuth(token.access_token),
+                RequestHeaders.JsonGetHeadersWithAuth(token.access_token),
                 json.Serialize(new
                                    {
                                         periodKey = resource.PeriodKey,

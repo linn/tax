@@ -12,7 +12,7 @@
                        };
         }
 
-        public static IDictionary<string, string[]> JsonGetHeadersWithAppAuth(string token)
+        public static IDictionary<string, string[]> JsonGetHeadersWithAuth(string token)
         {
             return new Dictionary<string, string[]>
                        {
