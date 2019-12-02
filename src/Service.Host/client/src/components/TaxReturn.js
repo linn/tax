@@ -209,7 +209,7 @@ function TaxReturn({
                         fullWidth
                         type="number"
                         value={vatReturn.totalValuePurchasesExVAT}
-                        label="Total nullalue of Purchases Excluding VAT"
+                        label="Total Value of Purchases Excluding VAT"
                         required
                         onChange={handleFieldChange}
                         propertyName="totalValuePurchasesExVAT"

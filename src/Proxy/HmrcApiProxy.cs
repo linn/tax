@@ -20,7 +20,6 @@
 
         private readonly string clientSecret;
 
-
         public HmrcApiProxy(IRestClient restClient, string rootUri, string clientId, string clientSecret)
         {
             this.rootUri = rootUri;

@@ -1,6 +1,5 @@
 ﻿namespace Linn.Tax.Facade
 {
-    using System.Linq;
     using System.Net;
 
     using Linn.Common.Facade;
