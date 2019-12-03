@@ -2,7 +2,6 @@
 {
     using Linn.Common.Facade;
     using Linn.Tax.Facade;
-    using Linn.Tax.Proxy;
     using Linn.Tax.Resources;
     using Linn.Tax.Service.Models;
 
@@ -21,10 +20,14 @@
 
         private object SubmitTaxReturn()
         {
+            if (!this.Request.Cookies.ContainsKey("device_id") || this.Request.Cookies["device_id"] == null)
+            {
+                this.Request.Cookies["device_id"] = System.Guid.NewGuid().ToString();
+            }
+
             var resource = this.Bind<VatReturnRequestResource>();
             
             var result = this.vatReturnService.SubmitVatReturn(resource, (TokenResource)this.Session["access_token"]);
-            //var result = this.vatReturnService.SubmitVatReturn(resource, new TokenResource { access_token = "f2ea44dfee897d43dc9a57aa07ad126" )};
             if (result is CreatedResult<VatReturnResponseResource> createdResult)
             {
                 return this.Negotiate

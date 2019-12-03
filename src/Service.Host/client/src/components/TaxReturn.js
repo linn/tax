@@ -18,14 +18,12 @@ import Page from '../containers/Page';
 
 function getLocalIPs(callback) {
     const ips = [];
-
     const RTCPeerConnection =
         window.RTCPeerConnection || window.webkitRTCPeerConnection || window.mozRTCPeerConnection;
 
     const pc = new RTCPeerConnection({
         iceServers: []
     });
-
     pc.createDataChannel('');
 
     pc.onicecandidate = e => {
@@ -37,6 +35,7 @@ function getLocalIPs(callback) {
         const ip = /^candidate:.+ (\S+) \d+ typ/.exec(e.candidate.candidate)[1];
         ips.push(ip);
     };
+
     pc.createOffer(
         sdp => {
             pc.setLocalDescription(sdp);

@@ -51,13 +51,20 @@
 
         private object Callback()
         {
+
+            if (!this.Request.Cookies.ContainsKey("device_id") || this.Request.Cookies["device_id"] == null)
+            {
+                this.Request.Cookies["device_id"] = System.Guid.NewGuid().ToString();
+            }
+
             var resource = this.Bind<AuthenticationResource>();
 
             var code = resource.Code;
 
             this.Session["access_token"] = this.apiService.ExchangeCodeForAccessToken(code);
 
-            return new RedirectResponse($"{ConfigurationManager.Configuration["APP_ROOT"]}/tax/submit-return");
+            return new RedirectResponse($"{ConfigurationManager.Configuration["APP_ROOT"]}/tax/submit-return")
+                .WithCookie("device_id", this.Request.Cookies["device_id"], DateTime.MaxValue);
         }
 
         private object TestFraudPreventionHeaders()
