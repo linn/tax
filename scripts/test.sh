@@ -30,6 +30,6 @@ result=$?
 cd ../..
 
 # report to codecov
-bash <(curl -s https://codecov.io/bash)
+#bash <(curl -s https://codecov.io/bash)
 
 exit $result
