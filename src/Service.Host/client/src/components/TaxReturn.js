@@ -16,6 +16,35 @@ import Grid from '@material-ui/core/Grid';
 
 import Page from '../containers/Page';
 
+function getLocalIPs(callback) {
+    const ips = [];
+
+    const RTCPeerConnection =
+        window.RTCPeerConnection || window.webkitRTCPeerConnection || window.mozRTCPeerConnection;
+
+    const pc = new RTCPeerConnection({
+        iceServers: []
+    });
+
+    pc.createDataChannel('');
+
+    pc.onicecandidate = e => {
+        if (!e.candidate) {
+            pc.close();
+            callback(ips);
+            return;
+        }
+        const ip = /^candidate:.+ (\S+) \d+ typ/.exec(e.candidate.candidate)[1];
+        ips.push(ip);
+    };
+    pc.createOffer(
+        sdp => {
+            pc.setLocalDescription(sdp);
+        },
+        function onerror() {}
+    );
+}
+
 function TaxReturn({
     submitVatReturn,
     errorMessage,
@@ -37,6 +66,24 @@ function TaxReturn({
         totalAcquisitionsExVAT: null,
         finalised: false
     });
+
+    const [metadata, setMetadata] = useState({
+        doNotTrack: !!navigator?.doNotTrack,
+        windowWidth: null,
+        windowHeight: null,
+        browserPlugins: null,
+        userAgent: navigator.userAgent,
+        localIps: null
+    });
+
+    getLocalIPs(ips => setMetadata(r => ({ ...r, localIps: ips })));
+    useEffect(() => {
+        const plugins = [];
+        for (let i = 0; i < navigator.plugins.length; i += 1) {
+            plugins.push(navigator.plugins[i]);
+        }
+        setMetadata(r => ({ ...r, browserPlugins: plugins.map(p => p.name) }));
+    }, [setMetadata]);
 
     const handleFieldChange = (propertyName, newValue) => {
         setVatReturn({ ...vatReturn, [propertyName]: newValue });
@@ -252,7 +299,14 @@ function TaxReturn({
                         variant="outlined"
                         disabled={inputInvalid()}
                         color="primary"
-                        onClick={() => submitVatReturn(vatReturn)}
+                        onClick={() => {
+                            setVatReturn(r => ({
+                                ...r,
+                                windowHeight: window.innerHeight,
+                                windowWidth: window.innerWidth
+                            }));
+                            submitVatReturn({ ...vatReturn, ...metadata });
+                        }}
                     >
                         Submit
                     </Button>

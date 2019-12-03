@@ -19,6 +19,7 @@
             this.apiService = apiService;
             this.Get("/auth", _ => this.AuthRedirect());
             this.Get("/tax/redirect", _ => this.Callback());
+            this.Get("/test/fraud-prevention-headers", _ => this.TestFraudPreventionHeaders());
         }
 
         private object AuthRedirect()
@@ -57,6 +58,13 @@
             this.Session["access_token"] = this.apiService.ExchangeCodeForAccessToken(code);
 
             return new RedirectResponse($"{ConfigurationManager.Configuration["APP_ROOT"]}/tax/submit-return");
+        }
+
+        private object TestFraudPreventionHeaders()
+        {
+            var result = this.apiService.TestFraudPreventionHeaders();
+
+            return result.Value;
         }
     }
 }

@@ -22,9 +22,9 @@
         private object SubmitTaxReturn()
         {
             var resource = this.Bind<VatReturnRequestResource>();
-
+            
             var result = this.vatReturnService.SubmitVatReturn(resource, (TokenResource)this.Session["access_token"]);
-
+            //var result = this.vatReturnService.SubmitVatReturn(resource, new TokenResource { access_token = "f2ea44dfee897d43dc9a57aa07ad126" )};
             if (result is CreatedResult<VatReturnResponseResource> createdResult)
             {
                 return this.Negotiate

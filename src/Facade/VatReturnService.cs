@@ -1,5 +1,6 @@
 ﻿namespace Linn.Tax.Facade
 {
+    using System.Linq;
     using System.Net;
 
     using Linn.Common.Facade;
@@ -32,10 +33,7 @@
 
             if (error.Errors != null)
             {
-                foreach (var e in error.Errors)
-                {
-                    message += $" {e.Message}.";
-                }
+                message = error.Errors.Aggregate(message, (current, e) => current + $" {e.Message}.");
             }
             
             return new BadRequestResult<VatReturnResponseResource>(message);

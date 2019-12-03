@@ -10,5 +10,7 @@
         TokenResource ExchangeCodeForAccessToken(string code);
 
         TokenResource RefreshToken(string refreshToken);
+
+        IRestResponse<string> TestFraudPreventionHeaders();
     }
 }

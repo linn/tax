@@ -54,6 +54,15 @@
                 "application/json").Result;
         }
 
+        public IRestResponse<string> TestFraudPreventionHeaders()
+        {
+            return this.restClient.Get(
+                CancellationToken.None, 
+                new Uri($"{this.rootUri}test/fraud-prevention-headers/validate", UriKind.RelativeOrAbsolute),
+                new Dictionary<string, string>(),
+                RequestHeaders.JsonGetHeadersWithAuth(ConfigurationManager.Configuration["SERVER_TOKEN"])).Result;
+        }
+
         public TokenResource ExchangeCodeForAccessToken(string code)
         {
             var uri = new Uri($"{this.rootUri}/oauth/token", UriKind.RelativeOrAbsolute);
