@@ -1,7 +1,5 @@
 ﻿namespace Linn.Tax.Proxy
 {
-    using System.Globalization;
-
     using Linn.Common.Proxy;
     using Linn.Tax.Resources;
 
