@@ -1,5 +1,7 @@
 ﻿namespace Linn.Tax.Proxy
 {
+    using System.Globalization;
+
     using Linn.Common.Proxy;
     using Linn.Tax.Resources;
 
@@ -11,6 +13,6 @@
 
         TokenResource RefreshToken(string refreshToken);
 
-        IRestResponse<string> TestFraudPreventionHeaders();
+        IRestResponse<string> TestFraudPreventionHeaders(VatReturnRequestResource resource, string deviceId);
     }
 }

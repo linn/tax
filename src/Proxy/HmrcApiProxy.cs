@@ -54,13 +54,13 @@
                 "application/json").Result;
         }
 
-        public IRestResponse<string> TestFraudPreventionHeaders()
+        public IRestResponse<string> TestFraudPreventionHeaders(VatReturnRequestResource resource, string deviceId)
         {
             return this.restClient.Get(
                 CancellationToken.None, 
                 new Uri($"{this.rootUri}test/fraud-prevention-headers/validate", UriKind.RelativeOrAbsolute),
                 new Dictionary<string, string>(),
-                RequestHeaders.JsonGetHeadersWithAuth(ConfigurationManager.Configuration["SERVER_TOKEN"])).Result;
+                RequestHeaders.JsonGetHeadersWithAuth(ConfigurationManager.Configuration["SERVER_TOKEN"], resource, deviceId)).Result;
         }
 
         public TokenResource ExchangeCodeForAccessToken(string code)

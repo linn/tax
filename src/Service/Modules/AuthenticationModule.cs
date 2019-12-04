@@ -69,7 +69,14 @@
 
         private object TestFraudPreventionHeaders()
         {
-            var result = this.apiService.TestFraudPreventionHeaders();
+            var resource = this.Bind<VatReturnRequestResource>();
+
+            if (!this.Request.Cookies.ContainsKey("device_id") || this.Request.Cookies["device_id"] == null)
+            {
+                this.Request.Cookies["device_id"] = System.Guid.NewGuid().ToString();
+            }
+
+            var result = this.apiService.TestFraudPreventionHeaders(resource, this.Request.Cookies["device_id"]);
 
             return result.Value;
         }
