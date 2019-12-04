@@ -17,28 +17,28 @@ import Grid from '@material-ui/core/Grid';
 import Page from '../containers/Page';
 
 function getLocalIPs(callback) {
-    const ips = [];
+    const ipList = [];
     const RTCPeerConnection =
         window.RTCPeerConnection || window.webkitRTCPeerConnection || window.mozRTCPeerConnection;
 
-    const pc = new RTCPeerConnection({
+    const connection = new RTCPeerConnection({
         iceServers: []
     });
-    pc.createDataChannel('');
+    connection.createDataChannel('');
 
-    pc.onicecandidate = e => {
+    connection.onicecandidate = e => {
         if (!e.candidate) {
-            pc.close();
-            callback(ips);
+            connection.close();
+            callback(ipList);
             return;
         }
         const ip = /^candidate:.+ (\S+) \d+ typ/.exec(e.candidate.candidate)[1];
-        ips.push(ip);
+        ipList.push(ip);
     };
 
-    pc.createOffer(
+    connection.createOffer(
         sdp => {
-            pc.setLocalDescription(sdp);
+            connection.setLocalDescription(sdp);
         },
         function onerror() {}
     );
@@ -50,7 +50,8 @@ function TaxReturn({
     snackbarVisible,
     loading,
     hideSnackbar,
-    receipt
+    receipt,
+    profile
 }) {
     const [vatReturn, setVatReturn] = useState({
         periodKey: null,
@@ -68,20 +69,25 @@ function TaxReturn({
 
     const [metadata, setMetadata] = useState({
         doNotTrack: !!navigator?.doNotTrack,
-        windowWidth: null,
-        windowHeight: null,
+        windowWidth: window.innerWidth,
+        windowHeight: window.innerHeight,
         browserPlugins: null,
-        userAgent: navigator.userAgent,
-        localIps: null
+        userAgentString: navigator.userAgent,
+        localIps: null,
+        screenWidth: window.screen.width,
+        screenHeight: window.screen.height,
+        scalingFactor: window.devicePixelRatio,
+        timezoneOffset: new Date().getTimezoneOffset(),
+        username: profile?.preferred_username
     });
 
-    getLocalIPs(ips => setMetadata(r => ({ ...r, localIps: ips })));
     useEffect(() => {
         const plugins = [];
         for (let i = 0; i < navigator.plugins.length; i += 1) {
             plugins.push(navigator.plugins[i]);
         }
         setMetadata(r => ({ ...r, browserPlugins: plugins.map(p => p.name) }));
+        getLocalIPs(ipList => setMetadata(r => ({ ...r, localIps: ipList })));
     }, [setMetadata]);
 
     const handleFieldChange = (propertyName, newValue) => {
@@ -299,11 +305,6 @@ function TaxReturn({
                         disabled={inputInvalid()}
                         color="primary"
                         onClick={() => {
-                            setVatReturn(r => ({
-                                ...r,
-                                windowHeight: window.innerHeight,
-                                windowWidth: window.innerWidth
-                            }));
                             submitVatReturn({ ...vatReturn, ...metadata });
                         }}
                     >
@@ -316,7 +317,12 @@ function TaxReturn({
 }
 
 TaxReturn.propTypes = {
-    submitVatReturn: PropTypes.func.isRequired
+    submitVatReturn: PropTypes.func.isRequired,
+    profile: PropTypes.shape({})
+};
+
+TaxReturn.defaultProps = {
+    profile: null
 };
 
 export default TaxReturn;

@@ -28,7 +28,7 @@
             this.clientSecret = clientSecret;
         }
 
-        public IRestResponse<string> SubmitVatReturn(VatReturnRequestResource resource, TokenResource token)
+        public IRestResponse<string> SubmitVatReturn(VatReturnRequestResource resource, TokenResource token, string deviceId)
         {
             var json = new JsonSerializer();
             var uri = new Uri($"{this.rootUri}organisations/vat/{resource.Vrn}/returns", UriKind.RelativeOrAbsolute);
@@ -36,7 +36,7 @@
                 CancellationToken.None,
                 uri,
                 new Dictionary<string, string>(),
-                RequestHeaders.JsonGetHeadersWithAuth(token.access_token),
+                RequestHeaders.JsonGetHeadersWithAuth(token.access_token, resource, deviceId),
                 json.Serialize(new
                                    {
                                         periodKey = resource.PeriodKey,

@@ -17,9 +17,9 @@
             this.apiService = apiService;
         }
 
-        public IResult<VatReturnResponseResource> SubmitVatReturn(VatReturnRequestResource resource, TokenResource token)
+        public IResult<VatReturnResponseResource> SubmitVatReturn(VatReturnRequestResource resource, TokenResource token, string deviceId)
         {
-            var apiResponse = this.apiService.SubmitVatReturn(resource, token);
+            var apiResponse = this.apiService.SubmitVatReturn(resource, token, deviceId);
             var json = new JsonSerializer();
 
             if (apiResponse.StatusCode == HttpStatusCode.Created)
