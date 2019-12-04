@@ -11,6 +11,6 @@
 
         TokenResource RefreshToken(string refreshToken);
 
-        IRestResponse<string> TestFraudPreventionHeaders(VatReturnRequestResource resource, string deviceId);
+        IRestResponse<string> TestFraudPreventionHeaders(FraudPreventionMetadataResource resource, string deviceId);
     }
 }

@@ -7,8 +7,13 @@
     using Linn.Tax.Resources;
 
     using Nancy;
+    using Nancy.Configuration;
     using Nancy.ModelBinding;
+    using Nancy.ModelBinding.DefaultBodyDeserializers;
     using Nancy.Responses;
+    using Nancy.Responses.Negotiation;
+
+    using Newtonsoft.Json;
 
     public sealed class AuthenticationModule : NancyModule
     {
@@ -19,7 +24,7 @@
             this.apiService = apiService;
             this.Get("/auth", _ => this.AuthRedirect());
             this.Get("/tax/redirect", _ => this.Callback());
-            this.Get("/test/fraud-prevention-headers", _ => this.TestFraudPreventionHeaders());
+            this.Post("/test/fraud-prevention-headers", _ => this.TestFraudPreventionHeaders());
         }
 
         private object AuthRedirect()
@@ -51,7 +56,6 @@
 
         private object Callback()
         {
-
             if (!this.Request.Cookies.ContainsKey("device_id") || this.Request.Cookies["device_id"] == null)
             {
                 this.Request.Cookies["device_id"] = System.Guid.NewGuid().ToString();
@@ -69,7 +73,7 @@
 
         private object TestFraudPreventionHeaders()
         {
-            var resource = this.Bind<VatReturnRequestResource>();
+            var resource = this.Bind<FraudPreventionMetadataResource>();
 
             if (!this.Request.Cookies.ContainsKey("device_id") || this.Request.Cookies["device_id"] == null)
             {

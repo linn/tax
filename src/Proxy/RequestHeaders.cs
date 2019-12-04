@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Linn.Tax.Resources;
 
@@ -15,24 +16,24 @@
                        };
         }
 
-        public static IDictionary<string, string[]> JsonGetHeadersWithAuth(string token, VatReturnRequestResource resource, string deviceId)
+        public static IDictionary<string, string[]> JsonGetHeadersWithAuth(string token, FraudPreventionMetadataResource resource, string deviceId)
         {
             return new Dictionary<string, string[]>
                        {
                            { "Accept", new[] { "application/vnd.hmrc.1.0+json" } },
                            { "Authorization", new[] { $"Bearer {token}" } },
                            { "Gov-Client-Connection-Method", new[] { "WEB_APP_VIA_SERVER" } },
-                           { "Gov-Client-Browser-Do-Not-Track", new[] { $"{resource.DoNotTrack}" } }, 
+                           { "Gov-Client-Browser-Do-Not-Track", new[] { $"{resource.DoNotTrack}".ToLower() } }, 
                            { "Gov-Client-Browser-JS-User-Agent", new[] { resource.UserAgentString } },
                            { "Gov-Client-Local-IPs", new[] { ToCommaSeparatedList(resource.LocalIps) } }, 
                            { "Gov-Client-Browser-Plugins", new[] { ToCommaSeparatedList(resource.BrowserPlugins) } }, 
                            { "Gov-Client-Device-ID", new[] { deviceId } }, 
                            //// { "Gov-Client-Public-IP", new[] { string.Empty } }, omitted
                            //// { "Gov-Client-Public-Port", new[] { "" } },  omitted
-                           { "Gov-Client-Screens", new[] { $"width={resource.ScreenWidth}&height={resource.ScreenHeight}&scaling-factor={resource.ScalingFactor}&colour-depth=16" } },
+                           { "Gov-Client-Screens", new[] { $"width={resource.ScreenWidth}&height={resource.ScreenHeight}&scaling-factor={resource.ScalingFactor}&colour-depth={resource.ColourDepth}" } },
                            { "Gov-Client-Timezone", new[] { $"UTC+00:00" } }, // hardcoded for now, but resource does provide offset as a number of minutes
                            { "Gov-Client-User-IDs", new[] { $"Linn={resource.Username}" } },
-                           { "Gov-Client-Window-Size", new[] { $"width={resource.WindowWidth}&height=${resource.WindowHeight}" } },
+                           { "Gov-Client-Window-Size", new[] { $"width={resource.WindowWidth}&height={resource.WindowHeight}" } },
                            //// { "Gov-Vendor-Forwarded", new[] { string.Empty } },  omitted
                            //// { "Gov-Vendor-Public-IP", new[] { Uri.EscapeDataString("195.59.102.251") } }, omitted
                            { "Gov-Vendor-Version", new[] { "Linn.Tax.Service.Host=v1.0.0&Linn.Tax=v1.0" } },
@@ -45,9 +46,14 @@
         {
             var str = string.Empty;
 
-            foreach (var s in list)
+            var enumerable = list as string[] ?? list.ToArray();
+            foreach (var s in enumerable)
             {
-                str += $"{Uri.EscapeDataString(s)},";
+                str += $"{Uri.EscapeDataString(s)}";
+                if (enumerable.Last() != s)
+                {
+                    str += ",";
+                }
             }
 
             return str;
