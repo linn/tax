@@ -2,12 +2,12 @@
 {
     using System.Threading.Tasks;
 
+    using FluentAssertions;
+
     using Linn.Tax.Proxy;
-    using Linn.Tax.Resources;
     using Nancy.Testing;
 
     using NSubstitute;
-    using NSubstitute.ExceptionExtensions;
 
     using NUnit.Framework;
 
@@ -28,6 +28,12 @@
                     {
                         with.Header("Accept", "application/json");
                     }).Result;
+        }
+
+        [Test]
+        public void ShouldClearOutExpiredToken()
+        {
+            this.Response.Context.Request.Session["access_token"].Should().Be(null);
         }
 
         [Test]
