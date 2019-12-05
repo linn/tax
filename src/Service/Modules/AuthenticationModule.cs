@@ -17,7 +17,7 @@
         public AuthenticationModule(IHmrcApiService apiService)
         {
             this.apiService = apiService;
-            this.Get("/auth", _ => this.AuthRedirect());
+            this.Get("/auth", _ => this.AuthRedirect()); // todo - /tax/auth
             this.Get("/tax/redirect", _ => this.Callback());
         }
 
