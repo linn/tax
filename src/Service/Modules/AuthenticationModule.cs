@@ -7,13 +7,8 @@
     using Linn.Tax.Resources;
 
     using Nancy;
-    using Nancy.Configuration;
     using Nancy.ModelBinding;
-    using Nancy.ModelBinding.DefaultBodyDeserializers;
     using Nancy.Responses;
-    using Nancy.Responses.Negotiation;
-
-    using Newtonsoft.Json;
 
     public sealed class AuthenticationModule : NancyModule
     {
@@ -29,14 +24,14 @@
 
         private object AuthRedirect()
         {
-            // is this session already auth'd?
             if (this.Session["access_token"] != null && ((TokenResource)this.Session["access_token"]).access_token != null)
             {
                 var token = (TokenResource)this.Session["access_token"];
 
                 try
                 {
-                    this.Session["access_token"] = this.apiService.RefreshToken(token.refresh_token);
+                    var newToken = this.apiService.RefreshToken(token.refresh_token);
+                    this.Session["access_token"] = newToken;
                 }
                 catch (AccessTokenExpiredException e)
                 {
@@ -77,7 +72,7 @@
 
             if (!this.Request.Cookies.ContainsKey("device_id") || this.Request.Cookies["device_id"] == null)
             {
-                this.Request.Cookies["device_id"] = System.Guid.NewGuid().ToString();
+                this.Request.Cookies["device_id"] = Guid.NewGuid().ToString();
             }
 
             var result = this.apiService.TestFraudPreventionHeaders(resource, this.Request.Cookies["device_id"]);

@@ -8,5 +8,9 @@
             : base(message)
         {
         }
+
+        public AccessTokenExpiredException()
+        {
+        }
     }
 }

@@ -8,7 +8,7 @@
     {
         public HomeModule()
         {
-            this.Get("/", args => this.GetApp());
+            this.Get("/", args => this.GetApp()); // todo - /tax redirect
             this.Get("/tax/signin-oidc-silent", _ => this.SilentRenew());
             this.Get("/tax/signin-oidc-client", _ => this.GetApp());
             this.Get(@"^(.*)$", _ => this.GetApp());
