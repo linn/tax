@@ -31,7 +31,7 @@
                            //// { "Gov-Client-Public-IP", new[] { string.Empty } }, omitted
                            //// { "Gov-Client-Public-Port", new[] { "" } },  omitted
                            { "Gov-Client-Screens", new[] { $"width={resource.ScreenWidth}&height={resource.ScreenHeight}&scaling-factor={resource.ScalingFactor}&colour-depth={resource.ColourDepth}" } },
-                           { "Gov-Client-Timezone", new[] { $"UTC+00:00" } }, // hardcoded for now, but resource does provide offset as a number of minutes
+                           { "Gov-Client-Timezone", new[] { $"UTC+00:00" } }, // hardcoded for now, but resource does provide offset as a number of minutes // todo- summer time ?
                            { "Gov-Client-User-IDs", new[] { $"Linn={resource.Username}" } },
                            { "Gov-Client-Window-Size", new[] { $"width={resource.WindowWidth}&height={resource.WindowHeight}" } },
                            //// { "Gov-Vendor-Forwarded", new[] { string.Empty } },  omitted

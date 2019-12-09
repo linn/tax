@@ -10,12 +10,11 @@
 
     public class ContextBase : NancyContextBase
     {
-       
-        protected string RedirectLocation;
-
         protected IHmrcApiService ApiService;
 
         protected Action<ConfigurableBootstrapper.ConfigurableBootstrapperConfigurator> cfg;
+
+        protected string RedirectLocation { get; set; }
 
         [SetUp]
         public void EstablishContext()

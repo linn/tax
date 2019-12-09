@@ -33,7 +33,6 @@
                                         });
                                 pipelines.BeforeRequest = b;
                             });
-                    with.ApplicationStartup((container, pipelines) => { });
                 };
             base.EstablishContext();
         }
