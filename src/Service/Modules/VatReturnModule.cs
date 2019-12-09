@@ -2,7 +2,6 @@
 {
     using Linn.Common.Facade;
     using Linn.Tax.Facade;
-    using Linn.Tax.Proxy;
     using Linn.Tax.Resources;
     using Linn.Tax.Service.Models;
 
