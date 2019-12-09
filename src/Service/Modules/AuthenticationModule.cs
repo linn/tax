@@ -1,7 +1,5 @@
 ﻿namespace Linn.Tax.Service.Modules
 {
-    using System;
-
     using Linn.Common.Configuration;
     using Linn.Tax.Proxy;
     using Linn.Tax.Resources;
@@ -17,7 +15,7 @@
         public AuthenticationModule(IHmrcApiService apiService)
         {
             this.apiService = apiService;
-            this.Get("/auth", _ => this.AuthRedirect());
+            this.Get("tax/auth", _ => this.AuthRedirect());
             this.Get("/tax/redirect", _ => this.Callback());
             this.Post("/test/fraud-prevention-headers", _ => this.TestFraudPreventionHeaders());
         }
@@ -36,7 +34,7 @@
                 catch (AccessTokenExpiredException e)
                 {
                     this.Session["access_token"] = null;
-                    return new RedirectResponse($"{ConfigurationManager.Configuration["APP_ROOT"]}/auth");
+                    return new RedirectResponse($"{ConfigurationManager.Configuration["APP_ROOT"]}/tax/auth");
                 }
 
                 return new RedirectResponse($"{ConfigurationManager.Configuration["APP_ROOT"]}/tax/submit-return");

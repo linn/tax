@@ -10,7 +10,7 @@ function App() {
         <Page>
             <Typography variant="h6">Tax</Typography>
             <List>
-                <a href="http://localhost:61798/auth">
+                <a href="http://localhost:61798/tax/auth">
                     <ListItem button>
                         <Typography color="primary">Submit a tax return</Typography>
                     </ListItem>
