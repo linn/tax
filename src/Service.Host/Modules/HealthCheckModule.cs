@@ -1,7 +1,12 @@
 ﻿namespace Linn.Tax.Service.Host.Modules
 {
-    public class HealthCheckModule
+    using Nancy;
+
+    public sealed class HealthCheckModule : NancyModule
     {
-        // todo
+        public HealthCheckModule()
+        {
+            this.Get("/healthcheck", _ => 200);
+        }
     }
 }
