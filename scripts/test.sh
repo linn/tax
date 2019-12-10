@@ -5,8 +5,8 @@ set -ev
 if [ "$CI" ] && [ "$TRAVIS" ]
 then 
 	source ~/.nvm/nvm.sh; 
-	nvm install 6;
-	nvm use 6;
+	nvm install 10;
+	nvm use 10;
 fi
 
 # c# tests
@@ -30,6 +30,6 @@ result=$?
 cd ../..
 
 # report to codecov
-bash <(curl -s https://codecov.io/bash)
+#bash <(curl -s https://codecov.io/bash)
 
 exit $result

@@ -11,6 +11,7 @@ import App from './App';
 import Callback from '../containers/Callback';
 import userManager from '../helpers/userManager';
 import 'typeface-roboto';
+import TaxReturn from '../containers/TaxReturn';
 
 const Root = ({ store }) => (
     <div>
@@ -35,11 +36,9 @@ const Root = ({ store }) => (
                             <Switch>
                                 <Route exact path="/tax" component={App} />
 
-                                <Route
-                                    exact
-                                    path="/tax/signin-oidc-client"
-                                    component={Callback}
-                                />
+                                <Route exact path="/tax/signin-oidc-client" component={Callback} />
+
+                                <Route exact path="/tax/submit-return" component={TaxReturn} />
                             </Switch>
                         </div>
                     </Router>

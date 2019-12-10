@@ -14,9 +14,9 @@ fi
 
 # create a docker
 docker build --no-cache -t linn/tax:$TRAVIS_BUILD_NUMBER --build-arg gitBranch=$GIT_BRANCH ./src/Service.Host/
-docker build --no-cache -t linn/tax-messaging:$TRAVIS_BUILD_NUMBER --build-arg gitBranch=$GIT_BRANCH ./src/Messaging.Host/
+#docker build --no-cache -t linn/tax-messaging:$TRAVIS_BUILD_NUMBER --build-arg gitBranch=$GIT_BRANCH ./src/Messaging.Host/
 
 # push to dockerhub
 docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD 
 docker push linn/tax:$TRAVIS_BUILD_NUMBER
-docker push linn/tax-messaging:$TRAVIS_BUILD_NUMBER
+#docker push linn/tax-messaging:$TRAVIS_BUILD_NUMBER
