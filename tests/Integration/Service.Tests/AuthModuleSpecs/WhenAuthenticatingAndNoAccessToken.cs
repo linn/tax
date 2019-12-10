@@ -22,7 +22,7 @@
 
                 this.ApiService.RefreshToken(Arg.Any<string>()).Returns(new TokenResource());
                 this.Response = this.Browser.Get(
-                    "/auth",
+                    "/tax/auth",
                     with =>
                         {
                             with.Header("Accept", "application/json");

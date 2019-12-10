@@ -18,12 +18,9 @@
         {
 
             this.ApiService.RefreshToken(Arg.Any<string>()).Returns(x => throw new AccessTokenExpiredException("e"));
-            this.Browser.Get(
-                "/auth",
-                with => { with.Header("Accept", "application/json"); });
 
             this.Response = this.Browser.Get(
-                "/auth",
+                "/tax/auth",
                 with =>
                     {
                         with.Header("Accept", "application/json");
@@ -45,7 +42,7 @@
         [Test]
         public void ShouldRedirect()
         {
-            this.Response.ShouldHaveRedirectedTo("/auth");
+            this.Response.ShouldHaveRedirectedTo("/tax/auth");
         }
     }
 }

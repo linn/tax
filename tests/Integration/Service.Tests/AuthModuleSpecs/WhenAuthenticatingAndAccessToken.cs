@@ -1,7 +1,5 @@
 ﻿namespace Linn.Tax.Service.Tests.AuthModuleSpecs
 {
-    using System.Threading.Tasks;
-
     using FluentAssertions;
 
     using Linn.Tax.Resources;
@@ -10,6 +8,7 @@
     using NSubstitute;
 
     using NUnit.Framework;
+
 
     public class WhenAuthenticatingAndAccessToken : AccessTokenContext
     {
@@ -20,12 +19,9 @@
             
             // the user should have their access token refreshed automatically and then be redirected
             this.RedirectLocation = "/tax/submit-return";
-            this.Browser.Get(
-                               "/auth",
-                               with => { with.Header("Accept", "application/json"); });
 
             this.Response = this.Browser.Get(
-                "/auth",
+                "/tax/auth",
                 with =>
                     {
                         with.Header("Accept", "application/json");

@@ -1,5 +1,7 @@
 ﻿namespace Linn.Tax.Service.Modules
 {
+    using System;
+
     using Linn.Common.Configuration;
     using Linn.Tax.Proxy;
     using Linn.Tax.Resources;
