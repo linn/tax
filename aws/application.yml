@@ -99,10 +99,6 @@ Resources:
           Value: !Ref authorityUri
         - Name: LOG_AMAZON_SQSQUEUEURI
           Value: !ImportValue logging-queue-url
-        - Name: LOG_ENVIRONMENT
-          Value: !Ref loggingEnvironment
-        - Name: LOG_MAX_INNER_EXCEPTION_DEPTH
-          Value: !Ref loggingMaxInnerExceptionDepth
         - Name: awsRegion
           Value: !Ref AWS::Region
         - Name: KEYS_BUCKET_NAME
@@ -123,7 +119,7 @@ Resources:
         - !Sub ${ProductionClusterName}
       DesiredCount: !If [ isTesting, 1, 2]
       PlacementStrategies:
-        - Field: attribute:ecs.availability-zone
+        - Field: attribute:ecs.availability-zonelogging
           Type: spread
         - Field: instanceId
           Type: spread
