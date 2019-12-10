@@ -24,7 +24,7 @@
 
         private object AuthRedirect()
         {
-            if (this.Session["access_token"] != null && ((TokenResource)this.Session["access_token"]).access_token != null)
+            if (((TokenResource)this.Session["access_token"])?.access_token != null)
             {
                 var token = (TokenResource)this.Session["access_token"];
 

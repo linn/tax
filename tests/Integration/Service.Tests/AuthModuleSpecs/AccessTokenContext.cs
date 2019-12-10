@@ -15,7 +15,7 @@
         [SetUp]
         public new void EstablishContext()
         {
-            this.cfg = with =>
+            this.Cfg = with =>
                 {
                     with.Dependency(this.ApiService);
                     with.Module<AuthenticationModule>();

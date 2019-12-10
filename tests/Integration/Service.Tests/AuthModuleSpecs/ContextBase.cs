@@ -10,9 +10,9 @@
 
     public class ContextBase : NancyContextBase
     {
-        protected IHmrcApiService ApiService;
+        protected IHmrcApiService ApiService { get; set; }
 
-        protected Action<ConfigurableBootstrapper.ConfigurableBootstrapperConfigurator> cfg;
+        protected Action<ConfigurableBootstrapper.ConfigurableBootstrapperConfigurator> Cfg { get; set; }
 
         protected string RedirectLocation { get; set; }
 
@@ -20,7 +20,7 @@
         public void EstablishContext()
         {
             this.ApiService = Substitute.For<IHmrcApiService>();
-            var bootstrapper = new ConfigurableBootstrapper(this.cfg);
+            var bootstrapper = new ConfigurableBootstrapper(this.Cfg);
             this.Browser = new Browser(bootstrapper);
         }
     }

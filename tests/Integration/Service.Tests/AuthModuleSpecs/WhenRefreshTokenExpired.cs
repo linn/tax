@@ -16,7 +16,6 @@
         [SetUp]
         public void SetUp()
         {
-
             this.ApiService.RefreshToken(Arg.Any<string>()).Returns(x => throw new AccessTokenExpiredException("e"));
 
             this.Response = this.Browser.Get(

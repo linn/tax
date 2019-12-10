@@ -18,7 +18,7 @@
         public new void EstablishContext()
         {
             this.ApiService.ExchangeCodeForAccessToken(Arg.Any<string>()).Returns(new TokenResource { access_token = "blah" });
-            this.cfg = with =>
+            this.Cfg = with =>
                 {
                     with.Dependency(this.ApiService);
                     with.Module<AuthenticationModule>();

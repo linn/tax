@@ -20,11 +20,6 @@
 
         private object SubmitTaxReturn()
         {
-            if (!this.Request.Cookies.ContainsKey("device_id") || this.Request.Cookies["device_id"] == null)
-            {
-                this.Request.Cookies["device_id"] = System.Guid.NewGuid().ToString();
-            }
-
             var resource = this.Bind<VatReturnRequestResource>();
             
             var result = this.vatReturnService.SubmitVatReturn(resource, (TokenResource)this.Session["access_token"], this.Request.Cookies["device_id"]);

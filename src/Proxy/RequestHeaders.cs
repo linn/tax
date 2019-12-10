@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Data;
     using System.Linq;
 
     using Linn.Tax.Resources;
@@ -33,10 +32,11 @@
                            { "Gov-Client-Timezone", new[] { $"UTC{ToUtcString(resource.TimezoneOffset)}" } },
                            { "Gov-Client-User-IDs", new[] { $"Linn={resource.Username}" } },
                            { "Gov-Client-Window-Size", new[] { $"width={resource.WindowWidth}&height={resource.WindowHeight}" } },
-                           { "Gov-Vendor-Version", new[] { "Linn.Tax.Service.Host=v1.0.0&Linn.Tax=v1.0" } },
+                           { "Gov-Vendor-Version", new[] { "Linn.Tax.Service.Host=v1.0.0&Linn.Tax=v1.0" } }, // todo - don't hardcode?
                        };
         }
 
+        // todo - is this sensible?
         private static string ToCommaSeparatedList(IEnumerable<string> list)
         {
             var str = string.Empty;
@@ -54,6 +54,8 @@
             return str;
         }
 
+
+        // todo - test
         private static string ToUtcString(int offsetInMinutes)
         {
             var str = offsetInMinutes < 0 ? "-" : "+";
