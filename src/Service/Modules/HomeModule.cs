@@ -3,12 +3,13 @@
     using Linn.Tax.Service.Models;
 
     using Nancy;
+    using Nancy.Responses;
 
     public sealed class HomeModule : NancyModule
     {
         public HomeModule()
         {
-            this.Get("/", args => this.GetApp()); // todo - /tax redirect
+            this.Get("/", args => new RedirectResponse("/tax"));
             this.Get("/tax/signin-oidc-silent", _ => this.SilentRenew());
             this.Get("/tax/signin-oidc-client", _ => this.GetApp());
             this.Get(@"^(.*)$", _ => this.GetApp());

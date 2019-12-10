@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Data;
     using System.Linq;
 
     using Linn.Tax.Resources;
@@ -27,18 +28,12 @@
                            { "Gov-Client-Browser-JS-User-Agent", new[] { resource.UserAgentString } },
                            { "Gov-Client-Local-IPs", new[] { ToCommaSeparatedList(resource.LocalIps) } }, 
                            { "Gov-Client-Browser-Plugins", new[] { ToCommaSeparatedList(resource.BrowserPlugins) } }, 
-                           { "Gov-Client-Device-ID", new[] { deviceId } }, 
-                           //// { "Gov-Client-Public-IP", new[] { string.Empty } }, omitted
-                           //// { "Gov-Client-Public-Port", new[] { "" } },  omitted
+                           { "Gov-Client-Device-ID", new[] { deviceId } },
                            { "Gov-Client-Screens", new[] { $"width={resource.ScreenWidth}&height={resource.ScreenHeight}&scaling-factor={resource.ScalingFactor}&colour-depth={resource.ColourDepth}" } },
-                           { "Gov-Client-Timezone", new[] { $"UTC+00:00" } }, // hardcoded for now, but resource does provide offset as a number of minutes // todo- summer time ?
+                           { "Gov-Client-Timezone", new[] { $"UTC{ToUtcString(resource.TimezoneOffset)}" } },
                            { "Gov-Client-User-IDs", new[] { $"Linn={resource.Username}" } },
                            { "Gov-Client-Window-Size", new[] { $"width={resource.WindowWidth}&height={resource.WindowHeight}" } },
-                           //// { "Gov-Vendor-Forwarded", new[] { string.Empty } },  omitted
-                           //// { "Gov-Vendor-Public-IP", new[] { Uri.EscapeDataString("195.59.102.251") } }, omitted
                            { "Gov-Vendor-Version", new[] { "Linn.Tax.Service.Host=v1.0.0&Linn.Tax=v1.0" } },
-                           ///// { "Gov-Client-Multi-Factor", new[] { "type=TOTP&timestamp=2017-04-21T13%3A23%3A42Z&unique-reference=c672b8d1ef56ed28" } }, omitted
-                           //// { "Gov-Vendor-License-IDs", new[] { string.Empty,  } } omitted
                        };
         }
 
@@ -57,6 +52,17 @@
             }
 
             return str;
-        } 
+        }
+
+        private static string ToUtcString(int offsetInMinutes)
+        {
+            var str = offsetInMinutes < 0 ? "-" : "+";
+
+            var utc = new DateTimeOffset();
+
+            utc = utc.AddMinutes(Math.Abs(offsetInMinutes)).ToOffset(new TimeSpan(0, 0, offsetInMinutes, 0));
+
+            return str + utc.Offset.ToString().Substring(offsetInMinutes < 0 ? 1 : 0, 5);
+        }
     }
 }
