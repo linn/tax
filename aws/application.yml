@@ -19,6 +19,9 @@ Parameters:
   clientId:
     Type: String
     Description: HMRC api client id
+  authCallbackUri:
+    Type: String
+    Description: HMRC auth callback uri
   clientSecret:
     Type: String
     Description: HMRC api client secret
@@ -112,6 +115,8 @@ Resources:
           Value: !Ref clientId
         - Name: CLIENT_SECRET
           Value: !Ref clientSecret
+        - Name: AUTH_CALLBACK_URI
+          Value: !Ref authCallbackUri
         - Name: LOG_AMAZON_SQSQUEUEURI
           Value: !ImportValue logging-queue-url
         - Name: awsRegion
