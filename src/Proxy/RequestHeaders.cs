@@ -37,7 +37,7 @@
         }
 
         // todo - is this sensible?
-        private static string ToCommaSeparatedList(IEnumerable<string> list)
+        public static string ToCommaSeparatedList(IEnumerable<string> list)
         {
             var str = string.Empty;
 
@@ -56,7 +56,7 @@
 
 
         // todo - test
-        private static string ToUtcString(int offsetInMinutes)
+        public static string ToUtcString(int offsetInMinutes)
         {
             var str = offsetInMinutes < 0 ? "-" : "+";
 
