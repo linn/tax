@@ -13,6 +13,15 @@ Parameters:
   authorityUri:
     Type: String
     Description: OIDC authority uri
+  hmrcApiRoot:
+    Type: String
+    Description: HMRC api root
+  clientId:
+    Type: String
+    Description: HMRC api client id
+  clientSecret:
+    Type: String
+    Description: HMRC api client secret
   environmentSuffix:
     Type: String
     AllowedValues:
@@ -97,6 +106,12 @@ Resources:
           Value: !Ref proxyRoot
         - Name: AUTHORITY_URI
           Value: !Ref authorityUri
+        - Name: HMRC_API_ROOT
+          Value: !Ref hmrcApiRoot
+        - Name: CLIENT_ID
+          Value: !Ref clientId
+        - Name: CLIENT_SECRET
+          Value: !Ref clientSecret
         - Name: LOG_AMAZON_SQSQUEUEURI
           Value: !ImportValue logging-queue-url
         - Name: awsRegion
