@@ -41,7 +41,7 @@ const Root = ({ store }) => (
 
                                 <Route exact path="/tax/submit-return" component={TaxReturn} />
 
-                                <Route exact path="/test/fph" component={TestFPH}/>
+                                <Route exact path="/tax/test/fraud-prevention-headers" component={TestFPH}/>
                             </Switch>
                         </div>
                     </Router>

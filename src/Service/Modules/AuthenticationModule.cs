@@ -19,7 +19,7 @@
             this.apiService = apiService;
             this.Get("tax/auth", _ => this.AuthRedirect());
             this.Get("/tax/redirect", _ => this.Callback());
-            this.Post("/test/fraud-prevention-headers", _ => this.TestFraudPreventionHeaders());
+            this.Post("/tax/test/fraud-prevention-headers", _ => this.TestFraudPreventionHeaders());
         }
 
         private object AuthRedirect()
