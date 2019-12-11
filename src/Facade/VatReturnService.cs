@@ -1,5 +1,6 @@
 ﻿namespace Linn.Tax.Facade
 {
+    using System.Linq;
     using System.Net;
 
     using Linn.Common.Facade;
@@ -16,9 +17,9 @@
             this.apiService = apiService;
         }
 
-        public IResult<VatReturnResponseResource> SubmitVatReturn(VatReturnRequestResource resource, TokenResource token)
+        public IResult<VatReturnResponseResource> SubmitVatReturn(VatReturnRequestResource resource, TokenResource token, string deviceId)
         {
-            var apiResponse = this.apiService.SubmitVatReturn(resource, token);
+            var apiResponse = this.apiService.SubmitVatReturn(resource, token, deviceId);
             var json = new JsonSerializer();
 
             if (apiResponse.StatusCode == HttpStatusCode.Created)
@@ -32,10 +33,7 @@
 
             if (error.Errors != null)
             {
-                foreach (var e in error.Errors)
-                {
-                    message += $" {e.Message}.";
-                }
+                message = error.Errors.Aggregate(message, (current, e) => current + $" {e.Message}.");
             }
             
             return new BadRequestResult<VatReturnResponseResource>(message);

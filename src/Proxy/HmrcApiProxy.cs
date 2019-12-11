@@ -28,7 +28,7 @@
             this.clientSecret = clientSecret;
         }
 
-        public IRestResponse<string> SubmitVatReturn(VatReturnRequestResource resource, TokenResource token)
+        public IRestResponse<string> SubmitVatReturn(VatReturnRequestResource resource, TokenResource token, string deviceId)
         {
             var json = new JsonSerializer();
             var uri = new Uri($"{this.rootUri}organisations/vat/{resource.Vrn}/returns", UriKind.RelativeOrAbsolute);
@@ -36,7 +36,7 @@
                 CancellationToken.None,
                 uri,
                 new Dictionary<string, string>(),
-                RequestHeaders.JsonGetHeadersWithAuth(token.access_token),
+                RequestHeaders.JsonGetHeadersWithAuth(token.access_token, resource, deviceId),
                 json.Serialize(new
                                    {
                                         periodKey = resource.PeriodKey,
@@ -52,6 +52,17 @@
                                         finalised = resource.Finalised
                                    }),
                 "application/json").Result;
+        }
+
+        public IRestResponse<string> TestFraudPreventionHeaders(FraudPreventionMetadataResource resource, string deviceId)
+        {
+            var request = this.restClient.Get(
+                CancellationToken.None, 
+                new Uri($"{this.rootUri}test/fraud-prevention-headers/validate", UriKind.RelativeOrAbsolute),
+                new Dictionary<string, string>(),
+                RequestHeaders.JsonGetHeadersWithAuth(ConfigurationManager.Configuration["SERVER_TOKEN"], resource, deviceId));
+
+            return request.Result;
         }
 
         public TokenResource ExchangeCodeForAccessToken(string code)

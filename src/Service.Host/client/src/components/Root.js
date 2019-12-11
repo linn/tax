@@ -12,6 +12,7 @@ import Callback from '../containers/Callback';
 import userManager from '../helpers/userManager';
 import 'typeface-roboto';
 import TaxReturn from '../containers/TaxReturn';
+import TestFPH from './TestFPH';
 
 const Root = ({ store }) => (
     <div>
@@ -39,6 +40,8 @@ const Root = ({ store }) => (
                                 <Route exact path="/tax/signin-oidc-client" component={Callback} />
 
                                 <Route exact path="/tax/submit-return" component={TaxReturn} />
+
+                                <Route exact path="/test/fph" component={TestFPH}/>
                             </Switch>
                         </div>
                     </Router>

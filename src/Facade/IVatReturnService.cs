@@ -5,6 +5,6 @@
 
     public interface IVatReturnService
     {
-        IResult<VatReturnResponseResource> SubmitVatReturn(VatReturnRequestResource resource, TokenResource token);
+        IResult<VatReturnResponseResource> SubmitVatReturn(VatReturnRequestResource resource, TokenResource token, string deviceId);
     }
 }

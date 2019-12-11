@@ -22,6 +22,8 @@
     <None Remove="node_modules\**" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AspNetCore.DataProtection.Aws.Kms" Version="2.2.0" />
+    <PackageReference Include="AspNetCore.DataProtection.Aws.S3" Version="2.2.0" />
     <PackageReference Include="Linn.Common.Authentication.Host" Version="1.0.2" />
     <PackageReference Include="Linn.Common.Configuration" Version="2.0.0" />
     <PackageReference Include="Linn.Common.Logging" Version="2.0.0" />
@@ -41,6 +43,5 @@
     <Folder Include="client\src\reducers\__tests__\" />
     <Folder Include="client\src\selectors\__tests__\" />
     <Folder Include="coverage\" />
-    <Folder Include="Modules\" />
   </ItemGroup>
 </Project>

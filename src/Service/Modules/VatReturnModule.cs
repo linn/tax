@@ -21,9 +21,8 @@
         private object SubmitTaxReturn()
         {
             var resource = this.Bind<VatReturnRequestResource>();
-
-            var result = this.vatReturnService.SubmitVatReturn(resource, (TokenResource)this.Session["access_token"]);
-
+            
+            var result = this.vatReturnService.SubmitVatReturn(resource, (TokenResource)this.Session["access_token"], this.Request.Cookies["device_id"]);
             if (result is CreatedResult<VatReturnResponseResource> createdResult)
             {
                 return this.Negotiate
