@@ -30,6 +30,7 @@ if [ "${TRAVIS_BRANCH}" = "master" ]; then
     PROXY_ROOT=http://app.linn.co.uk
     ENV_SUFFIX=-sys
   fi
+fi
 
 # load the secret variables but hide the output from the travis log
 source ./secrets.env > /dev/null 2>&1
