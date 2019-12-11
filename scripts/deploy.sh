@@ -25,8 +25,6 @@ if [ "${TRAVIS_BRANCH}" = "master" ]; then
 
     aws s3 cp s3://$S3_BUCKET_NAME/tax/sys.env ./secrets.env
 
-	ls
-
     STACK_NAME=tax-sys
     APP_ROOT=http://app-sys.linn.co.uk
     PROXY_ROOT=http://app.linn.co.uk
@@ -38,6 +36,6 @@ fi
 source ./secrets.env > /dev/null 2>&1
 
 # deploy the service to amazon
-aws cloudformation deploy --stack-name $STACK_NAME --template-file ./aws/application.yml --parameter-overrides dockerTag=$TRAVIS_BUILD_NUMBER appRoot=$APP_ROOT proxyRoot=$PROXY_ROOT authorityUri=$AUTHORITY_URI environmentSuffix=$ENV_SUFFIX --capabilities=CAPABILITY_IAM
+aws cloudformation deploy --stack-name $STACK_NAME --template-file ./aws/application.yml --parameter-overrides dockerTag=$TRAVIS_BUILD_NUMBER appRoot=$APP_ROOT proxyRoot=$PROXY_ROOT authorityUri=$AUTHORITY_URI hmrcApiRoot=$HMRC_API_ROOT clientId=$CLIENT_ID clientSecret=$CLIENT_SECRET environmentSuffix=$ENV_SUFFIX --capabilities=CAPABILITY_IAM
 
 echo "deploy complete"
