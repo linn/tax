@@ -109,7 +109,7 @@ Resources:
           Value:
             Fn::ImportValue:
               !Sub "kms-key-alias${environmentSuffix}"
-  productionService:
+  taxService:
     Type: AWS::ECS::Service
     Properties:
       # Have to use long form conditional
