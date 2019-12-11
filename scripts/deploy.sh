@@ -25,6 +25,8 @@ if [ "${TRAVIS_BRANCH}" = "master" ]; then
 
     aws s3 cp s3://$S3_BUCKET_NAME/tax/sys.env ./secrets.env
 
+	ls
+
     STACK_NAME=tax-sys
     APP_ROOT=http://app-sys.linn.co.uk
     PROXY_ROOT=http://app.linn.co.uk
