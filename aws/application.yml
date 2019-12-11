@@ -95,7 +95,7 @@ Resources:
           Value: !Ref appRoot
         - Name: PROXY_ROOT
           Value: !Ref proxyRoot
-        - Name: AUTHORITY_URI
+        - Name: AUTHORITY_URIpr
           Value: !Ref authorityUri
         - Name: LOG_AMAZON_SQSQUEUEURI
           Value: !ImportValue logging-queue-url
