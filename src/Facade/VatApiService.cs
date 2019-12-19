@@ -5,6 +5,7 @@
     using System.Net;
 
     using Linn.Common.Facade;
+    using Linn.Common.Proxy;
     using Linn.Common.Serialization.Json;
     using Linn.Tax.Proxy;
     using Linn.Tax.Resources;
@@ -40,9 +41,31 @@
             return new BadRequestResult<VatReturnResponseResource>(message);
         }
 
-        public IResult<IEnumerable<ObligationResource>> GetObligations(int vrn, TokenResource token, string deviceId)
+        public IResult<IEnumerable<ObligationResource>> GetObligations(ObligationsRequestResource resource, TokenResource token, string deviceId)
         {
-            throw new System.NotImplementedException();
+            var apiResponse = this.apiService.GetVatObligations(resource, token, deviceId);
+            var json = new JsonSerializer();
+            if (apiResponse.StatusCode == HttpStatusCode.OK)
+            {
+                return new SuccessResult<IEnumerable<ObligationResource>>(json.Deserialize<IEnumerable<ObligationResource>>(apiResponse.Value));
+            }
+
+            return BuildErrorResponse(apiResponse);
+        }
+
+        private static dynamic BuildErrorResponse(IRestResponse<string> response)
+        {
+            var json = new JsonSerializer();
+            var error = json.Deserialize<ErrorResponseResource>(response.Value);
+
+            var message = $"{error.Message}.";
+
+            if (error.Errors != null)
+            {
+                message = error.Errors.Aggregate(message, (current, e) => current + $" {e.Message}.");
+            }
+
+            return new BadRequestResult<IEnumerable<ObligationResource>>(message);
         }
     }
 }

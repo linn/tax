@@ -24,7 +24,7 @@
         {
             var resource = this.Bind<ObligationsRequestResource>();
 
-            var result = this.vatApiService.GetObligations(resource.Vrn, (TokenResource)this.Session["access_token"], this.Request.Cookies["device_id"]);
+            var result = this.vatApiService.GetObligations(resource, (TokenResource)this.Session["access_token"], this.Request.Cookies["device_id"]);
             if (result is SuccessResult<IEnumerable<ObligationResource>> successResult)
             {
                 return this.Negotiate
