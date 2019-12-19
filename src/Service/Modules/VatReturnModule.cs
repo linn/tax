@@ -10,11 +10,11 @@
 
     public sealed class VatReturnModule : NancyModule
     {
-        private readonly IVatReturnService vatReturnService;
+        private readonly IVatApiService vatApiService;
 
-        public VatReturnModule(IVatReturnService vatReturnService)
+        public VatReturnModule(IVatApiService vatApiService)
         {
-            this.vatReturnService = vatReturnService;
+            this.vatApiService = vatApiService;
             this.Post("/tax/return", _ => this.SubmitTaxReturn());
         }
 
@@ -22,7 +22,7 @@
         {
             var resource = this.Bind<VatReturnRequestResource>();
             
-            var result = this.vatReturnService.SubmitVatReturn(resource, (TokenResource)this.Session["access_token"], this.Request.Cookies["device_id"]);
+            var result = this.vatApiService.SubmitVatReturn(resource, (TokenResource)this.Session["access_token"], this.Request.Cookies["device_id"]);
             if (result is CreatedResult<VatReturnResponseResource> createdResult)
             {
                 return this.Negotiate

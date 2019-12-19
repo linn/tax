@@ -1,5 +1,6 @@
 ﻿namespace Linn.Tax.Facade
 {
+    using System.Collections.Generic;
     using System.Linq;
     using System.Net;
 
@@ -8,11 +9,11 @@
     using Linn.Tax.Proxy;
     using Linn.Tax.Resources;
 
-    public class VatReturnService : IVatReturnService
+    public class VatApiService : IVatApiService
     {
         private readonly IHmrcApiService apiService;
 
-        public VatReturnService(IHmrcApiService apiService)
+        public VatApiService(IHmrcApiService apiService)
         {
             this.apiService = apiService;
         }
@@ -37,6 +38,11 @@
             }
             
             return new BadRequestResult<VatReturnResponseResource>(message);
+        }
+
+        public IResult<IEnumerable<ObligationResource>> GetObligations(int vrn, TokenResource token, string deviceId)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

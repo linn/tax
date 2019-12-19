@@ -18,7 +18,7 @@
             var root = ConfigurationManager.Configuration["HMRC_API_ROOT"];
             var clientId = ConfigurationManager.Configuration["CLIENT_ID"];
             var redirect = ConfigurationManager.Configuration["AUTH_CALLBACK_URI"];
-            this.RedirectLocation = $"{root}/oauth/authorize?response_type=code&client_id={clientId}&redirect_uri={redirect}&scope=write:vat";
+            this.RedirectLocation = $"{root}/oauth/authorize?response_type=code&client_id={clientId}&redirect_uri={redirect}&scope=write:vat+read:vat";
 
                 this.ApiService.RefreshToken(Arg.Any<string>()).Returns(new TokenResource());
                 this.Response = this.Browser.Get(

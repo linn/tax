@@ -19,7 +19,7 @@
         protected override void Load(ContainerBuilder builder)
         {
             // facade services
-            builder.RegisterType<VatReturnService>().As<IVatReturnService>();
+            builder.RegisterType<VatApiService>().As<IVatApiService>();
 
             // rest client proxies
             builder.RegisterType<RestClient>().As<IRestClient>();
