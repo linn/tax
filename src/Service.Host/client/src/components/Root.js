@@ -13,6 +13,7 @@ import userManager from '../helpers/userManager';
 import 'typeface-roboto';
 import TaxReturn from '../containers/TaxReturn';
 import TestFPH from './TestFPH';
+import Obligations from '../containers/Obligations';
 
 const Root = ({ store }) => (
     <div>
@@ -42,6 +43,7 @@ const Root = ({ store }) => (
                                 <Route exact path="/tax/submit-return" component={TaxReturn} />
 
                                 <Route exact path="/tax/test/fraud-prevention-headers" component={TestFPH}/>
+                                <Route exact path="/tax/view-obligations" component={Obligations} />
                             </Switch>
                         </div>
                     </Router>
