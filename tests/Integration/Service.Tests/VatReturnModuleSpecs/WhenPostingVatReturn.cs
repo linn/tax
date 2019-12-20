@@ -22,7 +22,7 @@
         {
             this.resource = new VatReturnRequestResource();
 
-            this.VatReturnService
+            this.VatApiService
                 .SubmitVatReturn(Arg.Any<VatReturnRequestResource>(), Arg.Any<TokenResource>(), Arg.Any<string>())
                 .Returns(new CreatedResult<VatReturnResponseResource>(new VatReturnResponseResource
                                                                           {
@@ -49,7 +49,7 @@
         [Test]
         public void ShouldCallService()
         {
-            this.VatReturnService.Received().SubmitVatReturn(
+            this.VatApiService.Received().SubmitVatReturn(
                 Arg.Any<VatReturnRequestResource>(), 
                 Arg.Any<TokenResource>(), 
                 Arg.Any<string>());

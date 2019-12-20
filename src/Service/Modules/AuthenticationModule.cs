@@ -45,7 +45,7 @@
             var root = ConfigurationManager.Configuration["HMRC_API_ROOT"];
             var clientId = ConfigurationManager.Configuration["CLIENT_ID"];
             var redirect = ConfigurationManager.Configuration["AUTH_CALLBACK_URI"];
-            var location = $"{root}/oauth/authorize?response_type=code&client_id={clientId}&redirect_uri={redirect}&scope=write:vat";
+            var location = $"{root}/oauth/authorize?response_type=code&client_id={clientId}&redirect_uri={redirect}&scope=write:vat+read:vat";
             return new RedirectResponse(location);
         }
 
