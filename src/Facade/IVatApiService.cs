@@ -9,6 +9,6 @@
     {
         IResult<VatReturnResponseResource> SubmitVatReturn(VatReturnRequestResource resource, TokenResource token, string deviceId);
 
-        IResult<IEnumerable<ObligationResource>> GetObligations(ObligationsRequestResource resource, TokenResource token, string deviceId);
+        IResult<ObligationsResource> GetObligations(ObligationsRequestResource resource, TokenResource token, string deviceId);
     }
 }

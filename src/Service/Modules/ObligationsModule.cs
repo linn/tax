@@ -25,7 +25,7 @@
             var resource = this.Bind<ObligationsRequestResource>();
 
             var result = this.vatApiService.GetObligations(resource, (TokenResource)this.Session["access_token"], this.Request.Cookies["device_id"]);
-            if (result is SuccessResult<IEnumerable<ObligationResource>> successResult)
+            if (result is SuccessResult<ObligationsResource> successResult)
             {
                 return this.Negotiate
                     .WithModel(successResult.Data)
@@ -34,7 +34,7 @@
             }
 
             return this.Negotiate
-                .WithModel((BadRequestResult<IEnumerable<ObligationResource>>)result)
+                .WithModel((BadRequestResult<IEnumerable<ObligationsResource>>)result)
                 .WithStatusCode(400)
                 .WithMediaRangeModel("text/html", ApplicationSettings.Get)
                 .WithView("Index");

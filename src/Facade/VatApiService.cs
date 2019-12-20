@@ -41,13 +41,13 @@
             return new BadRequestResult<VatReturnResponseResource>(message);
         }
 
-        public IResult<IEnumerable<ObligationResource>> GetObligations(ObligationsRequestResource resource, TokenResource token, string deviceId)
+        public IResult<ObligationsResource> GetObligations(ObligationsRequestResource resource, TokenResource token, string deviceId)
         {
             var apiResponse = this.apiService.GetVatObligations(resource, token, deviceId);
             var json = new JsonSerializer();
             if (apiResponse.StatusCode == HttpStatusCode.OK)
             {
-                return new SuccessResult<IEnumerable<ObligationResource>>(json.Deserialize<IEnumerable<ObligationResource>>(apiResponse.Value));
+                return new SuccessResult<ObligationsResource>(json.Deserialize<ObligationsResource>(apiResponse.Value));
             }
 
             return BuildErrorResponse(apiResponse);
@@ -65,7 +65,7 @@
                 message = error.Errors.Aggregate(message, (current, e) => current + $" {e.Message}.");
             }
 
-            return new BadRequestResult<IEnumerable<ObligationResource>>(message);
+            return new BadRequestResult<IEnumerable<ObligationsResource>>(message);
         }
     }
 }

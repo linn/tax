@@ -1,17 +1,8 @@
 import React, { useState, Fragment, useEffect } from 'react';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/styles';
 
 import PropTypes from 'prop-types';
-import {
-    SnackbarMessage,
-    InputField,
-    Title,
-    ErrorCard,
-    Loading,
-    OnOffSwitch
-} from '@linn-it/linn-form-components-library';
+import { InputField, Title, ErrorCard, Loading } from '@linn-it/linn-form-components-library';
 import Grid from '@material-ui/core/Grid';
 
 import Page from '../containers/Page';
@@ -154,7 +145,7 @@ function TaxReturn({ requestObligations, obligations, errorMessage, loading, pro
 }
 
 TaxReturn.propTypes = {
-    submitVatReturn: PropTypes.func.isRequired,
+    requestObligations: PropTypes.func.isRequired,
     profile: PropTypes.shape({})
 };
 
