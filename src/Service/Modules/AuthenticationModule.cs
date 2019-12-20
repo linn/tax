@@ -39,7 +39,7 @@
                     return new RedirectResponse($"{ConfigurationManager.Configuration["APP_ROOT"]}/tax/auth");
                 }
 
-                return new RedirectResponse($"{ConfigurationManager.Configuration["APP_ROOT"]}/tax/submit-return");
+                return new RedirectResponse($"{ConfigurationManager.Configuration["APP_ROOT"]}/tax/view-obligations");
             }
 
             var root = ConfigurationManager.Configuration["HMRC_API_ROOT"];
@@ -53,7 +53,7 @@
         {
             if (!this.Request.Cookies.ContainsKey("device_id") || this.Request.Cookies["device_id"] == null)
             {
-                this.Request.Cookies["device_id"] = System.Guid.NewGuid().ToString();
+                this.Request.Cookies["device_id"] = Guid.NewGuid().ToString();
             }
 
             var resource = this.Bind<AuthenticationResource>();
@@ -62,7 +62,7 @@
 
             this.Session["access_token"] = this.apiService.ExchangeCodeForAccessToken(code);
 
-            return new RedirectResponse($"{ConfigurationManager.Configuration["APP_ROOT"]}/tax/submit-return")
+            return new RedirectResponse($"{ConfigurationManager.Configuration["APP_ROOT"]}/tax/view-obligations")
                 .WithCookie("device_id", this.Request.Cookies["device_id"], DateTime.MaxValue);
         }
 

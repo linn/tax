@@ -34,7 +34,7 @@
             }
 
             return this.Negotiate
-                .WithModel((BadRequestResult<IEnumerable<ObligationsResource>>)result)
+                .WithModel((BadRequestResult<ObligationsResource>)result)
                 .WithStatusCode(400)
                 .WithMediaRangeModel("text/html", ApplicationSettings.Get)
                 .WithView("Index");

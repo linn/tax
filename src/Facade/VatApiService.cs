@@ -65,7 +65,7 @@
                 message = error.Errors.Aggregate(message, (current, e) => current + $" {e.Message}.");
             }
 
-            return new BadRequestResult<IEnumerable<ObligationsResource>>(message);
+            return new BadRequestResult<ObligationsResource>(message);
         }
     }
 }

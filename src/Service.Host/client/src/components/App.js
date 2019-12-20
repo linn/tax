@@ -12,7 +12,7 @@ function App() {
             <List>
                 <a href={`${config.appRoot}/tax/auth`}>
                     <ListItem button>
-                        <Typography color="primary">Submit a tax return</Typography>
+                        <Typography color="primary">VAT Returns</Typography>
                     </ListItem>
                 </a>
             </List>

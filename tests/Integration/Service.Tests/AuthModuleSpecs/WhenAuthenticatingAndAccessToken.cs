@@ -44,7 +44,7 @@
         [Test]
         public void ShouldRedirect()
         {
-            this.Response.ShouldHaveRedirectedTo("/tax/submit-return");
+            this.Response.ShouldHaveRedirectedTo("/tax/view-obligations");
         }
     }
 }
