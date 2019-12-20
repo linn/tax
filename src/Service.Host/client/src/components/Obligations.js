@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import { InputField, Title, ErrorCard, Loading } from '@linn-it/linn-form-components-library';
 import Grid from '@material-ui/core/Grid';
-
+import { Link } from 'react-router-dom';
 import Page from '../containers/Page';
 
 function getLocalIPs(callback) {
@@ -69,7 +69,7 @@ function TaxReturn({ requestObligations, obligations, errorMessage, loading, pro
         return (
             <Page width="m">
                 <Grid item xs={12}>
-                    <Title text="VAT Return Obligations" />
+                    <Title text="Outstanding VAT Returns" />
                 </Grid>
                 {obligations?.map?.(o => (
                     <div>
@@ -85,6 +85,7 @@ function TaxReturn({ requestObligations, obligations, errorMessage, loading, pro
                         <Grid item xs={12}>
                             <InputField fullWidth value={o.periodKey} label="Period Key" disabled />
                         </Grid>
+                        <Link to="/tax/submit-return">Resolve</Link>
                     </div>
                 ))}
             </Page>
