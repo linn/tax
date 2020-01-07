@@ -25,6 +25,12 @@ Parameters:
   clientSecret:
     Type: String
     Description: HMRC api client secret
+  loggingEnvironment:
+    Type: String
+    Description: Logging Environment
+  loggingMaxInnerExceptionDepth:
+    Type: Number
+    Description: Logging Max Inner Exception Depth
   environmentSuffix:
     Type: String
     AllowedValues:
@@ -119,6 +125,8 @@ Resources:
           Value: !Ref authCallbackUri
         - Name: LOG_AMAZON_SQSQUEUEURI
           Value: !ImportValue logging-queue-url
+        - Name: LOG_ENVIRONMENT
+          Value: !Ref loggingEnvironment
         - Name: awsRegion
           Value: !Ref AWS::Region
         - Name: KEYS_BUCKET_NAME
