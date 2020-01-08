@@ -102,7 +102,7 @@ Resources:
         Image: !Sub docker.io/linn/tax:${dockerTag}
         PortMappings:
         - ContainerPort: 5050
-        Memory: '150'
+        Memory: '250'
         LogConfiguration:
           LogDriver: gelf
           Options:
@@ -147,7 +147,7 @@ Resources:
         - !Sub ${ProductionClusterName}
       DesiredCount: !If [ isTesting, 1, 2]
       PlacementStrategies:
-        - Field: attribute:ecs.availability-zonelogging
+        - Field: attribute:ecs.availability-zone
           Type: spread
         - Field: instanceId
           Type: spread
