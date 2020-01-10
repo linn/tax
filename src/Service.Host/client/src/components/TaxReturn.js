@@ -114,11 +114,6 @@ function TaxReturn({
                     <Title text="VAT Return Confirmation" />
                 </Grid>
                 <Grid item xs={12}>
-                    <Typography variant="subtitle" gutterBottom>
-                        Take a note of this data for your records.
-                    </Typography>
-                </Grid>
-                <Grid item xs={12}>
                     <InputField
                         fullWidth
                         value={receipt.processingDate}
@@ -149,6 +144,11 @@ function TaxReturn({
                         label="Charge Reference Number"
                         disabled
                     />
+                </Grid>
+                <Grid item xs={12}>
+                    <Typography variant="subtitle" gutterBottom>
+                        Take a note of this data for your records.
+                    </Typography>
                 </Grid>
             </Page>
         );
