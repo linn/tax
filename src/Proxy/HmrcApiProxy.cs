@@ -56,7 +56,6 @@
 
         public IRestResponse<string> GetVatObligations(ObligationsRequestResource resource, TokenResource token, string deviceId)
         {
-            var json = new JsonSerializer();
             var uri = new Uri($"{this.rootUri}organisations/vat/{resource.Vrn}/obligations?status=O", UriKind.RelativeOrAbsolute);
             return this.restClient.Get(
                 CancellationToken.None,
