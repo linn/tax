@@ -40,9 +40,17 @@ const Root = ({ store }) => (
 
                                 <Route exact path="/tax/signin-oidc-client" component={Callback} />
 
-                                <Route exact path="/tax/submit-return" component={TaxReturn} />
+                                <Route
+                                    exact
+                                    path="/tax/submit-return/:periodKey"
+                                    component={TaxReturn}
+                                />
 
-                                <Route exact path="/tax/test/fraud-prevention-headers" component={TestFPH}/>
+                                <Route
+                                    exact
+                                    path="/tax/test/fraud-prevention-headers"
+                                    component={TestFPH}
+                                />
                                 <Route exact path="/tax/view-obligations" component={Obligations} />
                             </Switch>
                         </div>

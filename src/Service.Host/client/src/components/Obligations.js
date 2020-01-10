@@ -85,7 +85,7 @@ function TaxReturn({ requestObligations, obligations, errorMessage, loading, pro
                         <Grid item xs={12}>
                             <InputField fullWidth value={o.periodKey} label="Period Key" disabled />
                         </Grid>
-                        <Link to="/tax/submit-return">Resolve</Link>
+                        <Link to={`/tax/submit-return/${o.periodKey}`}>Resolve</Link>
                     </div>
                 ))}
             </Page>
