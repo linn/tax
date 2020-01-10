@@ -1,7 +1,6 @@
 import React, { useState, Fragment, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/styles';
 
 import PropTypes from 'prop-types';
 import {
@@ -51,10 +50,11 @@ function TaxReturn({
     loading,
     hideSnackbar,
     receipt,
+    match,
     profile
 }) {
     const [vatReturn, setVatReturn] = useState({
-        periodKey: null,
+        periodKey: match?.params?.periodKey,
         vatDueSales: null,
         vatDueAcquisitions: null,
         totalVatDue: null,
@@ -114,6 +114,11 @@ function TaxReturn({
                     <Title text="VAT Return Confirmation" />
                 </Grid>
                 <Grid item xs={12}>
+                    <Typography variant="subtitle" gutterBottom>
+                        Take a note of this data for your records.
+                    </Typography>
+                </Grid>
+                <Grid item xs={12}>
                     <InputField
                         fullWidth
                         value={receipt.processingDate}
@@ -150,9 +155,9 @@ function TaxReturn({
     }
 
     const inputInvalid = () =>
-        Object.keys(vatReturn)
-            .filter(k => k !== 'finalised')
-            .some(k => !vatReturn[k]);
+        Object.keys(vatReturn).some(
+            k => vatReturn[k] === null || vatReturn[k] === '' || vatReturn[k] === false
+        );
     return (
         <Page width="m">
             <Grid container spacing={3}>
@@ -168,6 +173,13 @@ function TaxReturn({
                     <Fragment />
                 )}
                 <Grid item xs={12}>
+                    <Typography variant="subtitle" gutterBottom>
+                        When you submit this VAT information you are making a legal declaration that
+                        the information is true and complete. A false declaration can result in
+                        prosecution.
+                    </Typography>
+                </Grid>
+                <Grid item xs={12}>
                     <InputField
                         fullWidth
                         value={vatReturn.vrn}
@@ -177,17 +189,7 @@ function TaxReturn({
                         required
                         onChange={handleFieldChange}
                         propertyName="vrn"
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <InputField
-                        fullWidth
-                        value={vatReturn.periodKey}
-                        label="Period Key"
-                        maxLength={4}
-                        required
-                        onChange={handleFieldChange}
-                        propertyName="periodKey"
+                        disabled={vatReturn.finalised}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -199,6 +201,7 @@ function TaxReturn({
                         required
                         onChange={handleFieldChange}
                         propertyName="vatDueSales"
+                        disabled={vatReturn.finalised}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -210,6 +213,7 @@ function TaxReturn({
                         required
                         onChange={handleFieldChange}
                         propertyName="vatDueAcquisitions"
+                        disabled={vatReturn.finalised}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -221,6 +225,7 @@ function TaxReturn({
                         required
                         onChange={handleFieldChange}
                         propertyName="totalVatDue"
+                        disabled={vatReturn.finalised}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -232,6 +237,7 @@ function TaxReturn({
                         required
                         onChange={handleFieldChange}
                         propertyName="vatReclaimedCurrPeriod"
+                        disabled={vatReturn.finalised}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -243,6 +249,7 @@ function TaxReturn({
                         required
                         onChange={handleFieldChange}
                         propertyName="netVatDue"
+                        disabled={vatReturn.finalised}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -254,6 +261,7 @@ function TaxReturn({
                         required
                         onChange={handleFieldChange}
                         propertyName="totalValueSalesExVAT"
+                        disabled={vatReturn.finalised}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -265,6 +273,7 @@ function TaxReturn({
                         required
                         onChange={handleFieldChange}
                         propertyName="totalValuePurchasesExVAT"
+                        disabled={vatReturn.finalised}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -276,6 +285,7 @@ function TaxReturn({
                         required
                         onChange={handleFieldChange}
                         propertyName="totalValueGoodsSuppliedExVAT"
+                        disabled={vatReturn.finalised}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -287,17 +297,17 @@ function TaxReturn({
                         required
                         onChange={handleFieldChange}
                         propertyName="totalAcquisitionsExVAT"
+                        disabled={vatReturn.finalised}
                     />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={10}>
                     <OnOffSwitch
-                        label="Finalised?"
+                        label="Finalised? (Double check the figures before marking as finalised.)"
                         value={vatReturn.finalised}
                         onChange={() => setVatReturn(r => ({ ...r, finalised: !r.finalised }))}
                         propertyName="monthly"
                     />
                 </Grid>
-                <Grid item xs={6} />
                 <Grid item xs={2}>
                     <Button
                         className={{ float: 'right' }}
