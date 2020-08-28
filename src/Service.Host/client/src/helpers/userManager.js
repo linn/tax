@@ -13,7 +13,8 @@ const oidcConfig = {
     silent_redirect_uri: `${host}/tax/signin-oidc-silent`,
     automaticSilentRenew: true,
     filterProtocolClaims: true,
-    loadUserInfo: true
+    loadUserInfo: true,
+    monitorSessions: false
 };
 
 const userManager = createUserManager(oidcConfig);
