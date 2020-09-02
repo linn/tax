@@ -13,6 +13,8 @@
 
         TokenResource RefreshToken(string refreshToken);
 
+        TokenResource GenerateToken();
+
         IRestResponse<string> TestFraudPreventionHeaders(FraudPreventionMetadataResource resource, string deviceId);
     }
 }

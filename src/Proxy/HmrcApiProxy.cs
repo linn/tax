@@ -64,13 +64,33 @@
                 RequestHeaders.JsonGetHeadersWithAuth(token.access_token, resource, deviceId)).Result;
         }
 
+        public TokenResource GenerateToken()
+        {
+            var uri = new Uri($"{this.rootUri}/oauth/token", UriKind.RelativeOrAbsolute);
+            var response = this.restClient.Post<TokenResource>(
+                CancellationToken.None,
+                uri,
+                new Dictionary<string, string>(),
+                RequestHeaders.JsonGetHeaders(),
+                new
+                    {
+                        client_id = this.clientId,
+                        client_secret = this.clientSecret,
+                        grant_type = "client_credentials",
+                        scope = "hello",
+                    }).Result;
+
+            return response.Value;
+        }
+
         public IRestResponse<string> TestFraudPreventionHeaders(FraudPreventionMetadataResource resource, string deviceId)
         {
+            var token = this.GenerateToken();
             var request = this.restClient.Get(
                 CancellationToken.None, 
                 new Uri($"{this.rootUri}test/fraud-prevention-headers/validate", UriKind.RelativeOrAbsolute),
                 new Dictionary<string, string>(),
-                RequestHeaders.JsonGetHeadersWithAuth(ConfigurationManager.Configuration["SERVER_TOKEN"], resource, deviceId));
+                RequestHeaders.JsonGetHeadersWithAuth(token.access_token, resource, deviceId));
 
             return request.Result;
         }
