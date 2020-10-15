@@ -11,6 +11,7 @@
     using Linn.Common.Logging;
     using Linn.Common.Logging.AmazonSqs;
     using Linn.Common.Proxy;
+    using Linn.Tax.Domain;
     using Linn.Tax.Facade;
     using Linn.Tax.Proxy;
 
@@ -18,6 +19,9 @@
     {
         protected override void Load(ContainerBuilder builder)
         {
+            // domain services
+            builder.RegisterType<VatReturnCalculationService>().As<IVatReturnCalculationService>();
+
             // facade services
             builder.RegisterType<VatReturnService>().As<IVatReturnService>();
 

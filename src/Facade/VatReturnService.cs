@@ -6,6 +6,7 @@
     using Linn.Common.Facade;
     using Linn.Common.Proxy;
     using Linn.Common.Serialization.Json;
+    using Linn.Tax.Domain;
     using Linn.Tax.Proxy;
     using Linn.Tax.Resources;
 
@@ -13,9 +14,17 @@
     {
         private readonly IHmrcApiService apiService;
 
-        public VatReturnService(IHmrcApiService apiService)
+        private readonly IVatReturnCalculationService calculationService;
+
+        public VatReturnService(IHmrcApiService apiService, IVatReturnCalculationService calculationService)
         {
             this.apiService = apiService;
+            this.calculationService = calculationService;
+        }
+
+        public IResult<VatReturn> CalculateVatReturn()
+        {
+            return new SuccessResult<VatReturn>(this.calculationService.CalculateVatReturn());
         }
 
         public IResult<VatReturnResponseResource> SubmitVatReturn(VatReturnRequestResource resource, TokenResource token, string deviceId)

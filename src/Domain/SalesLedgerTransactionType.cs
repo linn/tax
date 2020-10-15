@@ -1,6 +1,6 @@
 ﻿namespace Linn.Tax.Domain
 {
-    public class TransactionType
+    public class SalesLedgerTransactionType
     {
         public string TransactionName { get; set; }
     }

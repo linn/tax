@@ -6,4 +6,8 @@
     <RootNamespace>Linn.Tax.Domain</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Linn.Common.Persistence" Version="2.1.1" />
+  </ItemGroup>
+
 </Project>

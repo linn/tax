@@ -16,6 +16,16 @@
         {
             this.vatReturnService = vatReturnService;
             this.Post("/tax/return", _ => this.SubmitTaxReturn());
+            this.Get("/tax/return", _ => this.GetFigures());
+        }
+
+        private object GetFigures()
+        {
+            var result = this.vatReturnService.CalculateVatReturn();
+            return this.Negotiate
+                .WithModel(result)
+                .WithMediaRangeModel("text/html", ApplicationSettings.Get)
+                .WithView("Index");
         }
 
         private object SubmitTaxReturn()

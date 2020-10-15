@@ -18,7 +18,7 @@
 
         public DbQuery<LedgerEntry> LedgerEntries { get; set; }
 
-        public DbQuery<TransactionType> TrasnsactionTypes { get; set; }
+        public DbQuery<SalesLedgerTransactionType> TrasnsactionTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -57,12 +57,13 @@
             builder.Query<LedgerEntry>().Property(e => e.LedgerId).HasColumnName("LEDGER_ID");
             builder.Query<LedgerEntry>().Property(e => e.BaseNetAmount).HasColumnName("BASE_NET_AMOUNT");
             builder.Query<LedgerEntry>().Property(e => e.BaseVatAmount).HasColumnName("BASE_VAT_AMOUNT");
+            builder.Query<LedgerEntry>().Property(e => e.TransactionType).HasColumnName("TRANS_TYPE");
         }
 
         private void QueryTransactionTypes(ModelBuilder builder)
         {
-            builder.Query<TransactionType>().ToView("SL_TRANS_TYPES");
-            builder.Query<TransactionType>().Property(t => t.TransactionName).HasColumnName("TRANSACTION_NAME");
+            builder.Query<SalesLedgerTransactionType>().ToView("SL_TRANS_TYPES");
+            builder.Query<SalesLedgerTransactionType>().Property(t => t.TransactionName).HasColumnName("TRANSACTION_NAME");
         }
     }
 }
