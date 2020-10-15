@@ -5,7 +5,7 @@
     using Linn.Common.Facade;
     using Linn.Tax.Resources;
 
-    public interface IVatApiService
+    public interface IVatReturnService
     {
         IResult<VatReturnResponseResource> SubmitVatReturn(VatReturnRequestResource resource, TokenResource token, string deviceId);
 

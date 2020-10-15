@@ -1,6 +1,5 @@
 ﻿namespace Linn.Tax.Facade
 {
-    using System.Collections.Generic;
     using System.Linq;
     using System.Net;
 
@@ -10,11 +9,11 @@
     using Linn.Tax.Proxy;
     using Linn.Tax.Resources;
 
-    public class VatApiService : IVatApiService
+    public class VatReturnService : IVatReturnService
     {
         private readonly IHmrcApiService apiService;
 
-        public VatApiService(IHmrcApiService apiService)
+        public VatReturnService(IHmrcApiService apiService)
         {
             this.apiService = apiService;
         }

@@ -17,18 +17,18 @@
     {
         protected IHmrcApiService ApiService { get; set; }
 
-        protected IVatApiService VatApiService { get; set; }
+        protected IVatReturnService VatReturnService { get; set; }
 
         [SetUp]
         public void EstablishContext()
         {
             this.ApiService = Substitute.For<IHmrcApiService>();
-            this.VatApiService = Substitute.For<IVatApiService>();
+            this.VatReturnService = Substitute.For<IVatReturnService>();
             var bootstrapper = new ConfigurableBootstrapper(
                 with =>
                     {
                         with.Dependency(this.ApiService);
-                        with.Dependency(this.VatApiService);
+                        with.Dependency(this.VatReturnService);
                         with.Module<VatReturnModule>();
                         with.ApplicationStartup((container, pipelines) => { CookieBasedSessions.Enable(pipelines); });
                     });

@@ -12,11 +12,11 @@
 
     public sealed class ObligationsModule : NancyModule
     {
-        private readonly IVatApiService vatApiService;
+        private readonly IVatReturnService vatReturnService;
 
-        public ObligationsModule(IVatApiService vatApiService)
+        public ObligationsModule(IVatReturnService vatReturnService)
         {
-            this.vatApiService = vatApiService;
+            this.vatReturnService = vatReturnService;
             this.Post("/tax/obligations", _ => this.GetObligations());
         }
 
@@ -24,7 +24,7 @@
         {
             var resource = this.Bind<ObligationsRequestResource>();
 
-            var result = this.vatApiService.GetObligations(resource, (TokenResource)this.Session["access_token"], this.Request.Cookies["device_id"]);
+            var result = this.vatReturnService.GetObligations(resource, (TokenResource)this.Session["access_token"], this.Request.Cookies["device_id"]);
             if (result is SuccessResult<ObligationsResource> successResult)
             {
                 return this.Negotiate
