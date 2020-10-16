@@ -1,10 +1,6 @@
 ﻿namespace Linn.Tax.IoC
 {
-    using Amazon.SQS;
     using Autofac;
-
-    using Linn.Common.Logging;
-    using Linn.Common.Logging.AmazonSqs;
     using Linn.Common.Persistence;
     using Linn.Common.Persistence.EntityFramework;
     using Linn.Tax.Domain;
@@ -22,7 +18,12 @@
 
             builder.RegisterType<LedgerEntryRepository>().As<IQueryRepository<LedgerEntry>>();
             builder.RegisterType<LedgerMasterRepository>().As<IQueryRepository<LedgerMaster>>();
-            builder.RegisterType<TransactionTypeRepository>().As<IQueryRepository<SalesLedgerTransactionType>>();
+            builder.RegisterType<TransactionTypeRepository>()
+                .As<IQueryRepository<SalesLedgerTransactionType>>();
+            builder.RegisterType<PurchaseLedgerRepository>().As<IQueryRepository<Purchase>>();
+            builder.RegisterType<SupplierRepository>().As<IQueryRepository<Supplier>>();
+            builder.RegisterType<PurchaseLedgerTransactionTypeRepository>()
+                .As<IQueryRepository<PurchaseLedgerTransactionType>>();
         }
     }
 }

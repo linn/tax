@@ -13,14 +13,26 @@
 
         private readonly IQueryRepository<SalesLedgerTransactionType> transactionTypeRepository;
 
+        private readonly IQueryRepository<Purchase> purchaseLedger;
+
+        private readonly IQueryRepository<PurchaseLedgerTransactionType> purchaseLedgerTransactionTypeRepository;
+
+        private readonly IQueryRepository<Supplier> supplierRepository;
+
         public VatReturnCalculationService(
             IQueryRepository<LedgerEntry> ledgerEntryRepository,
             IQueryRepository<LedgerMaster> ledgerMasterRepository,
-            IQueryRepository<SalesLedgerTransactionType> transactionTypeRepository)
+            IQueryRepository<SalesLedgerTransactionType> transactionTypeRepository,
+            IQueryRepository<Purchase> purchaseLedger,
+            IQueryRepository<PurchaseLedgerTransactionType> purchaseLedgerTransactionTypeRepository,
+            IQueryRepository<Supplier> supplierRepository)
         {
             this.ledgerEntryRepository = ledgerEntryRepository;
             this.ledgerMasterRepository = ledgerMasterRepository;
             this.transactionTypeRepository = transactionTypeRepository;
+            this.purchaseLedger = purchaseLedger;
+            this.purchaseLedgerTransactionTypeRepository = purchaseLedgerTransactionTypeRepository;
+            this.supplierRepository = supplierRepository;
         }
 
         public VatReturn CalculateVatReturn()
@@ -48,17 +60,26 @@
             // ARRIVALS
 
             // to get PURCHASES goods/vat values
-            //select
-            //sum(pl_pack.get_payment_value(pl.pl_trans_type, pl.base_net_total)) net,
-            //sum(pl_pack.get_payment_value(pl.pl_trans_type, pl.base_vat_total)) vat
-            //    from purchase_ledger pl, suppliers s,
-            //pl_trans_types tt
-            //where pl.ledger_period  in (1438, 1439, 1440)
-            //and trans_category = 'INV'
-            //and pl.pl_Trans_type = tt.pl_trans_type
-            //and pl.supplier_id = s.supplier_id
-            //and s.live_on_oracle = 'Y'
-            //group by tt.trans_category;
+            var join2 = this.purchaseLedger.FilterBy(p => periodsInCurrentQuarter.Contains(p.LedgerPeriod))
+                .Join(
+                    this.supplierRepository.FindAll(),
+                    pl => new { pl.SupplierId },
+                    s => new { s.SupplierId },
+                    (pl, s) => new { pl, s })
+                .Where(j => j.s.LiveOnOracle == "Y")
+                .Join(
+                    this.purchaseLedgerTransactionTypeRepository.FindAll(),
+                    join1 => new { join1.pl.TransactionType },
+                    tt => new { tt.TransactionType },
+                    (join1, tt) => new { join1, tt }).Where(r => r.tt.TransactionCategory == "INV")
+                .ToList();
+
+            var totals = join2.GroupBy(purchase => purchase.tt.TransactionCategory)
+                .Select(p => new
+                                 {
+                                     net = p.Sum(e => this.GetPaymentValue(e.tt, e.join1.pl.NetTotal)),
+                                     vat = p.Sum(e => this.GetPaymentValue(e.tt, e.join1.pl.VatTotal))
+                });
 
             return new VatReturn();
         }

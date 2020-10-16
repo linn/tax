@@ -23,7 +23,7 @@
 
         public IQueryable<SalesLedgerTransactionType> FilterBy(Expression<Func<SalesLedgerTransactionType, bool>> expression)
         {
-            return this.serviceDbContext.TrasnsactionTypes.Where(expression);
+            return this.serviceDbContext.TransactionTypes.Where(expression);
         }
 
         public IQueryable<SalesLedgerTransactionType> FindAll()
