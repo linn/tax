@@ -5,7 +5,7 @@
 
     public interface IHmrcApiService
     {
-        IRestResponse<string> SubmitVatReturn(VatReturnRequestResource vatReturn, TokenResource token, string deviceId);
+        IRestResponse<string> SubmitVatReturn(VatReturnResource vatReturn, TokenResource token, string deviceId);
 
         IRestResponse<string> GetVatObligations(ObligationsRequestResource resource, TokenResource token, string deviceId);
 

@@ -16,14 +16,14 @@
 
     public class WhenPostingVatReturn : ContextBase
     {
-        private VatReturnRequestResource resource;
+        private VatReturnResource resource;
         [SetUp]
         public void SetUp()
         {
-            this.resource = new VatReturnRequestResource();
+            this.resource = new VatReturnResource();
 
             this.VatReturnService
-                .SubmitVatReturn(Arg.Any<VatReturnRequestResource>(), Arg.Any<TokenResource>(), Arg.Any<string>())
+                .SubmitVatReturn(Arg.Any<VatReturnResource>(), Arg.Any<TokenResource>(), Arg.Any<string>())
                 .Returns(new CreatedResult<VatReturnReceiptResource>(new VatReturnReceiptResource
                                                                           {
                                                                               ChargeRefNumber = "ref",
@@ -50,7 +50,7 @@
         public void ShouldCallService()
         {
             this.VatReturnService.Received().SubmitVatReturn(
-                Arg.Any<VatReturnRequestResource>(), 
+                Arg.Any<VatReturnResource>(), 
                 Arg.Any<TokenResource>(), 
                 Arg.Any<string>());
         }

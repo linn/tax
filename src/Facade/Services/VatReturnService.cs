@@ -27,7 +27,7 @@
             return new SuccessResult<VatReturn>(this.calculationService.CalculateVatReturn());
         }
 
-        public IResult<VatReturnReceiptResource> SubmitVatReturn(VatReturnRequestResource resource, TokenResource token, string deviceId)
+        public IResult<VatReturnReceiptResource> SubmitVatReturn(VatReturnResource resource, TokenResource token, string deviceId)
         {
             var apiResponse = this.apiService.SubmitVatReturn(resource, token, deviceId);
             var json = new JsonSerializer();
