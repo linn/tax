@@ -24,7 +24,7 @@
 
             this.VatReturnService
                 .SubmitVatReturn(Arg.Any<VatReturnRequestResource>(), Arg.Any<TokenResource>(), Arg.Any<string>())
-                .Returns(new CreatedResult<VatReturnResponseResource>(new VatReturnResponseResource
+                .Returns(new CreatedResult<VatReturnReceiptResource>(new VatReturnReceiptResource
                                                                           {
                                                                               ChargeRefNumber = "ref",
                                                                               FormBundleNumber = "bundle"
@@ -58,7 +58,7 @@
         [Test]
         public void ShouldReturnResource()
         {
-            var res = this.Response.Body.DeserializeJson<VatReturnResponseResource>();
+            var res = this.Response.Body.DeserializeJson<VatReturnReceiptResource>();
             res.ChargeRefNumber.Should().Be("ref");
         }
     }

@@ -1,9 +1,7 @@
 ﻿namespace Linn.Tax.Service.Modules
 {
-    using System.Collections.Generic;
-
     using Linn.Common.Facade;
-    using Linn.Tax.Facade;
+    using Linn.Tax.Facade.Services;
     using Linn.Tax.Resources;
     using Linn.Tax.Service.Models;
 

@@ -1,6 +1,6 @@
 ﻿namespace Linn.Tax.Resources
 {
-    public class VatReturnResponseResource
+    public class VatReturnReceiptResource
     {
         public string ProcessingDate { get; set; }
 

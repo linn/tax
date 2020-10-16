@@ -2,17 +2,13 @@
 {
     using System.Collections.Generic;
 
-    using Amazon.SQS;
     using Autofac;
     using Autofac.Core;
-    using Autofac.Core.Activators.Reflection;
 
     using Linn.Common.Configuration;
-    using Linn.Common.Logging;
-    using Linn.Common.Logging.AmazonSqs;
     using Linn.Common.Proxy;
     using Linn.Tax.Domain;
-    using Linn.Tax.Facade;
+    using Linn.Tax.Facade.Services;
     using Linn.Tax.Proxy;
 
     public class ServiceModule : Module

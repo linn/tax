@@ -1,4 +1,4 @@
-﻿namespace Linn.Tax.Facade
+﻿namespace Linn.Tax.Facade.Services
 {
     using System.Linq;
     using System.Net;
@@ -27,14 +27,14 @@
             return new SuccessResult<VatReturn>(this.calculationService.CalculateVatReturn());
         }
 
-        public IResult<VatReturnResponseResource> SubmitVatReturn(VatReturnRequestResource resource, TokenResource token, string deviceId)
+        public IResult<VatReturnReceiptResource> SubmitVatReturn(VatReturnRequestResource resource, TokenResource token, string deviceId)
         {
             var apiResponse = this.apiService.SubmitVatReturn(resource, token, deviceId);
             var json = new JsonSerializer();
 
             if (apiResponse.StatusCode == HttpStatusCode.Created)
             {
-                return new CreatedResult<VatReturnResponseResource>(json.Deserialize<VatReturnResponseResource>(apiResponse.Value));
+                return new CreatedResult<VatReturnReceiptResource>(json.Deserialize<VatReturnReceiptResource>(apiResponse.Value));
             }
 
             var error = json.Deserialize<ErrorResponseResource>(apiResponse.Value);
@@ -46,7 +46,7 @@
                 message = error.Errors.Aggregate(message, (current, e) => current + $" {e.Message}.");
             }
             
-            return new BadRequestResult<VatReturnResponseResource>(message);
+            return new BadRequestResult<VatReturnReceiptResource>(message);
         }
 
         public IResult<ObligationsResource> GetObligations(ObligationsRequestResource resource, TokenResource token, string deviceId)

@@ -1,7 +1,7 @@
 ﻿namespace Linn.Tax.Service.Modules
 {
     using Linn.Common.Facade;
-    using Linn.Tax.Facade;
+    using Linn.Tax.Facade.Services;
     using Linn.Tax.Resources;
     using Linn.Tax.Service.Models;
 
@@ -33,7 +33,7 @@
             var resource = this.Bind<VatReturnRequestResource>();
             
             var result = this.vatReturnService.SubmitVatReturn(resource, (TokenResource)this.Session["access_token"], this.Request.Cookies["device_id"]);
-            if (result is CreatedResult<VatReturnResponseResource> createdResult)
+            if (result is CreatedResult<VatReturnReceiptResource> createdResult)
             {
                 return this.Negotiate
                     .WithModel(createdResult.Data)
@@ -42,7 +42,7 @@
             }
 
             return this.Negotiate
-                .WithModel((BadRequestResult<VatReturnResponseResource>)result)
+                .WithModel((BadRequestResult<VatReturnReceiptResource>)result)
                 .WithStatusCode(400)
                 .WithMediaRangeModel("text/html", ApplicationSettings.Get)
                 .WithView("Index");
