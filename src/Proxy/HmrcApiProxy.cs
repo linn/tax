@@ -28,7 +28,7 @@
             this.clientSecret = clientSecret;
         }
 
-        public IRestResponse<string> SubmitVatReturn(VatReturnResource resource, TokenResource token, string deviceId)
+        public IRestResponse<string> SubmitVatReturn(VatReturnSubmissionResource resource, TokenResource token, string deviceId)
         {
             var json = new JsonSerializer();
             var uri = new Uri($"{this.rootUri}organisations/vat/{resource.Vrn}/returns", UriKind.RelativeOrAbsolute);

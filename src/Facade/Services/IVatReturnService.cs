@@ -8,7 +8,7 @@
     {
         IResult<VatReturn> CalculateVatReturn();
 
-        IResult<VatReturnReceiptResource> SubmitVatReturn(VatReturnResource resource, TokenResource token, string deviceId);
+        IResult<VatReturnReceiptResource> SubmitVatReturn(VatReturnSubmissionResource resource, TokenResource token, string deviceId);
 
         IResult<ObligationsResource> GetObligations(ObligationsRequestResource resource, TokenResource token, string deviceId);
     }

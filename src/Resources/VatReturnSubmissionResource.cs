@@ -1,6 +1,6 @@
 ﻿namespace Linn.Tax.Resources
 {
-    public class VatReturnResource
+    public class VatReturnSubmissionResource : FraudPreventionMetadataResource
     {
         public int? Vrn { get; set; }
 
