@@ -18,8 +18,6 @@
 
             builder.RegisterType<LedgerEntryRepository>().As<IQueryRepository<LedgerEntry>>();
             builder.RegisterType<LedgerMasterRepository>().As<IQueryRepository<LedgerMaster>>();
-            builder.RegisterType<TransactionTypeRepository>()
-                .As<IQueryRepository<SalesLedgerTransactionType>>();
             builder.RegisterType<PurchaseLedgerRepository>().As<IQueryRepository<Purchase>>();
             builder.RegisterType<SupplierRepository>().As<IQueryRepository<Supplier>>();
             builder.RegisterType<PurchaseLedgerTransactionTypeRepository>()
