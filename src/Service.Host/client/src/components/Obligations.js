@@ -11,6 +11,7 @@ import useFraudPreventionHeaders from '../hooks/useFraudPreventionHeaders';
 function TaxReturn({ requestObligations, obligations, errorMessage, loading, profile }) {
     const [vrn, setVrn] = useState();
 
+    // eslint-disable-next-line camelcase
     const metadata = useFraudPreventionHeaders(profile?.preferred_username);
 
     const handleFieldChange = (propertyName, newValue) => {
@@ -98,12 +99,18 @@ function TaxReturn({ requestObligations, obligations, errorMessage, loading, pro
 }
 
 TaxReturn.propTypes = {
+    obligations: PropTypes.arrayOf(PropTypes.shape),
+    loading: PropTypes.bool,
     requestObligations: PropTypes.func.isRequired,
-    profile: PropTypes.shape({})
+    profile: PropTypes.shape({}),
+    errorMessage: PropTypes.string
 };
 
 TaxReturn.defaultProps = {
-    profile: null
+    profile: null,
+    obligations: [],
+    loading: false,
+    errorMessage: ''
 };
 
 export default TaxReturn;

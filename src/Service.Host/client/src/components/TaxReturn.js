@@ -39,7 +39,7 @@ function TaxReturn({
         totalAcquisitionsExVAT: null,
         finalised: false
     });
-
+    // eslint-disable-next-line camelcase
     const metadata = useFraudPreventionHeaders(profile?.preferred_username);
 
     const handleFieldChange = (propertyName, newValue) => {
@@ -68,7 +68,7 @@ function TaxReturn({
                 <Grid item xs={12}>
                     <InputField
                         fullWidth
-                        value={receipt.processingDate}
+                        value={receipt?.processingDate}
                         label="Processing Date"
                         disabled
                     />
@@ -76,7 +76,7 @@ function TaxReturn({
                 <Grid item xs={12}>
                     <InputField
                         fullWidth
-                        value={receipt.formBundleNumber}
+                        value={receipt?.formBundleNumber}
                         label="Form Bundle Number"
                         disabled
                     />
@@ -84,7 +84,7 @@ function TaxReturn({
                 <Grid item xs={12}>
                     <InputField
                         fullWidth
-                        value={receipt.paymentIndicator}
+                        value={receipt?.paymentIndicator}
                         label="Payment Indicator"
                         disabled
                     />
@@ -92,7 +92,7 @@ function TaxReturn({
                 <Grid item xs={12}>
                     <InputField
                         fullWidth
-                        value={receipt.chargeRefNumber}
+                        value={receipt?.chargeRefNumber}
                         label="Charge Reference Number"
                         disabled
                     />

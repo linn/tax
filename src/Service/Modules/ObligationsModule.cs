@@ -1,5 +1,7 @@
 ﻿namespace Linn.Tax.Service.Modules
 {
+    using System;
+
     using Linn.Common.Facade;
     using Linn.Tax.Facade.Services;
     using Linn.Tax.Resources;
@@ -21,8 +23,13 @@
         private object GetObligations()
         {
             var resource = this.Bind<ObligationsRequestResource>();
+            
+            var result = this.vatReturnService.GetObligations(
+                    resource,
+                    (TokenResource)this.Session["access_token"],
+                    null);
+            
 
-            var result = this.vatReturnService.GetObligations(resource, (TokenResource)this.Session["access_token"], this.Request.Cookies["device_id"]);
             if (result is SuccessResult<ObligationsResource> successResult)
             {
                 return this.Negotiate

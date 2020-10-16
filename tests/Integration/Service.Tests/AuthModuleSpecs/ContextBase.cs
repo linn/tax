@@ -1,6 +1,8 @@
 ﻿namespace Linn.Tax.Service.Tests.AuthModuleSpecs
 {
     using System;
+
+    using Linn.Common.Facade;
     using Linn.Tax.Proxy;
     using Nancy.Testing;
 

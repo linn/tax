@@ -1,5 +1,8 @@
 ﻿namespace Linn.Tax.Service.Tests.VatReturnModuleSpecs
 {
+    using System.Net;
+
+    using Linn.Tax.Facade;
     using Linn.Tax.Facade.Services;
     using Linn.Tax.Proxy;
     using Linn.Tax.Service.Modules;

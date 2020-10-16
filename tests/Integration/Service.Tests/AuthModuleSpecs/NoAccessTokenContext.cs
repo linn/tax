@@ -2,6 +2,9 @@
 {
     using System.Collections.Generic;
 
+    using Linn.Common.Facade;
+    using Linn.Tax.Domain;
+    using Linn.Tax.Facade.ResourceBuilders;
     using Linn.Tax.Resources;
     using Linn.Tax.Service.Modules;
 
@@ -21,6 +24,7 @@
             this.Cfg = with =>
                 {
                     with.Dependency(this.ApiService);
+                    with.Dependency<IResourceBuilder<VatReturn>>(new VatReturnResourceBuilder());
                     with.Module<AuthenticationModule>();
                     with.RequestStartup(
                         (container, pipelines, context) =>
