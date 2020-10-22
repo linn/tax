@@ -36,6 +36,40 @@ export const add = item => ({
     }
 });
 
+export const getFigures = item => ({
+    [RSAA]: {
+        endpoint: `${config.appRoot}/tax/return`,
+        method: 'GET',
+        options: { requiresAuth: true },
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(item),
+        types: [
+            {
+                type: actionTypes.REQUEST_VAT_RETURN,
+                payload: {}
+            },
+            {
+                type: actionTypes.RECEIVE_VAT_RETURN,
+                payload: async (action, state, res) => ({ data: await res.json() })
+            },
+            {
+                type: actionTypes.FETCH_ERROR,
+                payload: async (action, state, res) =>
+                    res
+                        ? {
+                              error: {
+                                  details: await res.json()
+                              }
+                          }
+                        : `Network request failed`
+            }
+        ]
+    }
+});
+
 export const hideSnackbar = () => ({
     type: 'HIDE_SNACKBAR'
 });

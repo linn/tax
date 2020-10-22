@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
@@ -24,21 +24,27 @@ function TaxReturn({
     hideSnackbar,
     receipt,
     match,
-    profile
+    profile,
+    figures
 }) {
     const [vatReturn, setVatReturn] = useState({
         periodKey: match?.params?.periodKey,
-        vatDueSales: null,
+        vatDueSales: figures?.vatDueSales,
         vatDueAcquisitions: null,
         totalVatDue: null,
         vatReclaimedCurrPeriod: null,
         netVatDue: null,
-        totalValueSalesExVAT: null,
-        totalValuePurchasesExVAT: null,
-        totalValueGoodsSuppliedExVAT: null,
-        totalAcquisitionsExVAT: null,
+        totalValueSalesExVat: null,
+        totalValuePurchasesExVat: null,
+        totalValueGoodsSuppliedExVat: null,
+        totalAcquisitionsExVat: null,
         finalised: false
     });
+
+    useEffect(() => {
+        setVatReturn({ ...figures });
+    }, [figures]);
+
     // eslint-disable-next-line camelcase
     const metadata = useFraudPreventionHeaders(profile?.preferred_username);
 
@@ -208,11 +214,11 @@ function TaxReturn({
                     <InputField
                         fullWidth
                         type="number"
-                        value={vatReturn.totalValueSalesExVAT}
+                        value={vatReturn.totalValueSalesExVat}
                         label="Total Value of Sales Excluding VAT"
                         required
                         onChange={handleFieldChange}
-                        propertyName="totalValueSalesExVAT"
+                        propertyName="totalValueSalesExVat"
                         disabled={vatReturn.finalised}
                     />
                 </Grid>
@@ -220,11 +226,11 @@ function TaxReturn({
                     <InputField
                         fullWidth
                         type="number"
-                        value={vatReturn.totalValuePurchasesExVAT}
+                        value={vatReturn.totalValuePurchasesExVat}
                         label="Total Value of Purchases Excluding VAT"
                         required
                         onChange={handleFieldChange}
-                        propertyName="totalValuePurchasesExVAT"
+                        propertyName="totalValuePurchasesExVat"
                         disabled={vatReturn.finalised}
                     />
                 </Grid>
@@ -232,11 +238,11 @@ function TaxReturn({
                     <InputField
                         fullWidth
                         type="number"
-                        value={vatReturn.totalValueGoodsSuppliedExVAT}
+                        value={vatReturn.totalValueGoodsSuppliedExVat}
                         label="Total Value of Goods Suppled Excluding VAT"
                         required
                         onChange={handleFieldChange}
-                        propertyName="totalValueGoodsSuppliedExVAT"
+                        propertyName="totalValueGoodsSuppliedExVat"
                         disabled={vatReturn.finalised}
                     />
                 </Grid>
@@ -244,11 +250,11 @@ function TaxReturn({
                     <InputField
                         fullWidth
                         type="number"
-                        value={vatReturn.totalAcquisitionsExVAT}
+                        value={vatReturn.totalAcquisitionsExVat}
                         label="Total Acquisitions Excluding VAT"
                         required
                         onChange={handleFieldChange}
-                        propertyName="totalAcquisitionsExVAT"
+                        propertyName="totalAcquisitionsExVat"
                         disabled={vatReturn.finalised}
                     />
                 </Grid>
@@ -286,7 +292,8 @@ TaxReturn.propTypes = {
     loading: PropTypes.bool,
     hideSnackbar: PropTypes.func.isRequired,
     receipt: PropTypes.shape({}),
-    match: PropTypes.shape({})
+    match: PropTypes.shape({}),
+    figures: PropTypes.shape({})
 };
 
 TaxReturn.defaultProps = {
@@ -295,7 +302,8 @@ TaxReturn.defaultProps = {
     snackbarVisible: false,
     loading: false,
     receipt: null,
-    match: null
+    match: null,
+    figures: null
 };
 
 export default TaxReturn;
