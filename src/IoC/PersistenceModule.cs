@@ -16,12 +16,13 @@
                 .As<DbContext>().InstancePerRequest();
             builder.RegisterType<TransactionManager>().As<ITransactionManager>();
 
-            builder.RegisterType<LedgerEntryRepository>().As<IQueryRepository<LedgerEntry>>();
+            builder.RegisterType<LedgerEntryRepository>().As<IQueryRepository<SalesLedgerEntry>>();
             builder.RegisterType<LedgerMasterRepository>().As<IQueryRepository<LedgerMaster>>();
             builder.RegisterType<PurchaseLedgerRepository>().As<IQueryRepository<Purchase>>();
             builder.RegisterType<SupplierRepository>().As<IQueryRepository<Supplier>>();
             builder.RegisterType<PurchaseLedgerTransactionTypeRepository>()
                 .As<IQueryRepository<PurchaseLedgerTransactionType>>();
+            builder.RegisterType<NominalLedgerRepository>().As<IQueryRepository<NominalLedgerEntry>>();
         }
     }
 }

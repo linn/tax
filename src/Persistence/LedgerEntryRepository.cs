@@ -7,7 +7,7 @@
     using Linn.Common.Persistence;
     using Linn.Tax.Domain;
 
-    public class LedgerEntryRepository : IQueryRepository<LedgerEntry>
+    public class LedgerEntryRepository : IQueryRepository<SalesLedgerEntry>
     {
         private readonly ServiceDbContext serviceDbContext;
 
@@ -16,17 +16,17 @@
             this.serviceDbContext = serviceDbContext;
         }
 
-        public LedgerEntry FindBy(Expression<Func<LedgerEntry, bool>> expression)
+        public SalesLedgerEntry FindBy(Expression<Func<SalesLedgerEntry, bool>> expression)
         {
             throw new NotImplementedException();
         }
 
-        public IQueryable<LedgerEntry> FilterBy(Expression<Func<LedgerEntry, bool>> expression)
+        public IQueryable<SalesLedgerEntry> FilterBy(Expression<Func<SalesLedgerEntry, bool>> expression)
         {
             return this.serviceDbContext.LedgerEntries.Where(expression);
         }
 
-        public IQueryable<LedgerEntry> FindAll()
+        public IQueryable<SalesLedgerEntry> FindAll()
         {
             throw new NotImplementedException();
         }

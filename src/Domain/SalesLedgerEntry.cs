@@ -1,6 +1,6 @@
 ﻿namespace Linn.Tax.Domain
 {
-    public class LedgerEntry
+    public class SalesLedgerEntry
     {
         public decimal BaseNetAmount { get; set; }
 

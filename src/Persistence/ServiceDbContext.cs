@@ -16,7 +16,7 @@
 
         public DbQuery<LedgerMaster> LedgerMaster { get; set; }
 
-        public DbQuery<LedgerEntry> LedgerEntries { get; set; }
+        public DbQuery<SalesLedgerEntry> LedgerEntries { get; set; }
 
         public DbQuery<SalesLedgerTransactionType> TransactionTypes { get; set; }
 
@@ -26,6 +26,8 @@
 
         public DbQuery<Supplier> Suppliers { get; set; }
 
+        public DbQuery<NominalLedgerEntry> NominalLedger { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             this.QueryMasterLedger(builder);
@@ -34,6 +36,7 @@
             this.QueryPurchaseLedger(builder);
             this.QueryPurchaseLedgerTransactionTypes(builder);
             this.QuerySuppliers(builder);
+            this.QueryNominalLedger(builder);
             base.OnModelCreating(builder);
         }
 
@@ -61,12 +64,12 @@
 
         private void QueryLedgerEntries(ModelBuilder builder)
         {
-            builder.Query<LedgerEntry>().ToView("SL_LEDGER_ENTRIES");
-            builder.Query<LedgerEntry>().Property(e => e.LedgerPeriod).HasColumnName("LEDGER_PERIOD");
-            builder.Query<LedgerEntry>().Property(e => e.LedgerId).HasColumnName("LEDGER_ID");
-            builder.Query<LedgerEntry>().Property(e => e.BaseNetAmount).HasColumnName("BASE_NET_AMOUNT");
-            builder.Query<LedgerEntry>().Property(e => e.BaseVatAmount).HasColumnName("BASE_VAT_AMOUNT");
-            builder.Query<LedgerEntry>().Property(e => e.TransactionType).HasColumnName("TRANS_TYPE");
+            builder.Query<SalesLedgerEntry>().ToView("SL_LEDGER_ENTRIES");
+            builder.Query<SalesLedgerEntry>().Property(e => e.LedgerPeriod).HasColumnName("LEDGER_PERIOD");
+            builder.Query<SalesLedgerEntry>().Property(e => e.LedgerId).HasColumnName("LEDGER_ID");
+            builder.Query<SalesLedgerEntry>().Property(e => e.BaseNetAmount).HasColumnName("BASE_NET_AMOUNT");
+            builder.Query<SalesLedgerEntry>().Property(e => e.BaseVatAmount).HasColumnName("BASE_VAT_AMOUNT");
+            builder.Query<SalesLedgerEntry>().Property(e => e.TransactionType).HasColumnName("TRANS_TYPE");
         }
 
         private void QueryTransactionTypes(ModelBuilder builder)
@@ -101,6 +104,18 @@
             builder.Query<Supplier>().ToView("SUPPLIERS");
             builder.Query<Supplier>().Property(s => s.SupplierId).HasColumnName("SUPPLIER_ID");
             builder.Query<Supplier>().Property(s => s.LiveOnOracle).HasColumnName("LIVE_ON_ORACLE");
+        }
+
+        private void QueryNominalLedger(ModelBuilder builder)
+        {
+            builder.Query<NominalLedgerEntry>().ToView("NOMINAL_LEDGER");
+            builder.Query<NominalLedgerEntry>().Property(e => e.Amount).HasColumnName("AMOUNT");
+            builder.Query<NominalLedgerEntry>().Property(e => e.TransactionType).HasColumnName("TRANS_TYPE");
+            builder.Query<NominalLedgerEntry>().Property(e => e.Comments).HasColumnName("COMMENTS");
+            builder.Query<NominalLedgerEntry>().Property(e => e.NominalAccountId).HasColumnName("NOMACC_ID");
+            builder.Query<NominalLedgerEntry>().Property(e => e.PeriodNumber).HasColumnName("PERIOD_NUMBER");
+            builder.Query<NominalLedgerEntry>().Property(e => e.JournalNumber).HasColumnName("JOURNAL_NUMBER");
+            builder.Query<NominalLedgerEntry>().Property(e => e.CreditOrDebit).HasColumnName("CREDIT_OR_DEBIT");
         }
     }
 }
