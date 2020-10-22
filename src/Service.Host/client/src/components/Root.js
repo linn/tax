@@ -12,7 +12,7 @@ import Callback from '../containers/Callback';
 import userManager from '../helpers/userManager';
 import 'typeface-roboto';
 import TaxReturn from '../containers/TaxReturn';
-import TestFPH from './TestFPH';
+import TestFPH from '../containers/TestFPH';
 import Obligations from '../containers/Obligations';
 
 const Root = ({ store }) => (

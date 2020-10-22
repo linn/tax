@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useEffect } from 'react';
+import React, { useState, Fragment } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
@@ -280,11 +280,22 @@ function TaxReturn({
 
 TaxReturn.propTypes = {
     submitVatReturn: PropTypes.func.isRequired,
-    profile: PropTypes.shape({})
+    profile: PropTypes.shape({}),
+    errorMessage: PropTypes.string,
+    snackbarVisible: PropTypes.bool,
+    loading: PropTypes.bool,
+    hideSnackbar: PropTypes.func.isRequired,
+    receipt: PropTypes.shape({}),
+    match: PropTypes.shape({})
 };
 
 TaxReturn.defaultProps = {
-    profile: null
+    profile: null,
+    errorMessage: null,
+    snackbarVisible: false,
+    loading: false,
+    receipt: null,
+    match: null
 };
 
 export default TaxReturn;
