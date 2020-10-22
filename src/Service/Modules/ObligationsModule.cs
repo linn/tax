@@ -17,7 +17,7 @@
         public ObligationsModule(IVatReturnService vatReturnService)
         {
             this.vatReturnService = vatReturnService;
-            this.Post("/tax/obligations", _ => this.GetObligations());
+            this.Get("/tax/obligations", _ => this.GetObligations());
         }
 
         private object GetObligations()

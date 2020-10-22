@@ -5,7 +5,7 @@ import * as actionTypes from './index';
 const requestObligations = item => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/tax/obligations`,
-        method: 'POST',
+        method: 'GET',
         options: { requiresAuth: true },
         headers: {
             Accept: 'application/json',
