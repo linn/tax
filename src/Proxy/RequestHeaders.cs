@@ -32,11 +32,16 @@
                            { "Gov-Client-Timezone", new[] { $"UTC{ToUtcString(resource.TimezoneOffset)}" } },
                            { "Gov-Client-User-IDs", new[] { $"Linn={resource.Username}" } },
                            { "Gov-Client-Window-Size", new[] { $"width={resource.WindowWidth}&height={resource.WindowHeight}" } },
-                           { "Gov-Vendor-Version", new[] { "Linn.Tax.Service.Host=v1.0.0&Linn.Tax=v1.0" } }, // todo - don't hardcode?
+                           { "Gov-Vendor-Version", new[] { "Linn.Tax.Service.Host=v1.1.0&Linn.Tax=v1.1" } },
+                           { "Gov-Client-Multi-Factor", new[] { string.Empty } },
+                           { "Gov-Vendor-License-IDs", new[] { string.Empty } },
+                           { "Gov-Client-Public-Port", new[] { string.Empty } },
+                           { "Gov-Client-Public-IP", new[] { string.Empty } },
+                           { "Gov-Vendor-Public-IP", new[] { string.Empty } },
+                           { "Gov-Vendor-Forwarded", new[] { string.Empty } }
                        };
         }
 
-        // todo - is this sensible?
         public static string ToCommaSeparatedList(IEnumerable<string> list)
         {
             var str = string.Empty;
@@ -54,8 +59,6 @@
             return str;
         }
 
-
-        // todo - test
         public static string ToUtcString(int offsetInMinutes)
         {
             var str = offsetInMinutes < 0 ? "-" : "+";
