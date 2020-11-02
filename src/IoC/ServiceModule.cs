@@ -18,6 +18,9 @@
             // domain services
             builder.RegisterType<VatReturnCalculationService>().As<IVatReturnCalculationService>();
 
+            // oracle proxy
+            builder.RegisterType<DatabaseService>().As<IDatabaseService>();
+
             // facade services
             builder.RegisterType<VatReturnService>().As<IVatReturnService>();
 

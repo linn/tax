@@ -19,6 +19,8 @@
 
         private readonly IQueryRepository<NominalLedgerEntry> nominalLedgerRepository;
 
+        private readonly IDatabaseService databaseService;
+
         private readonly List<int> periodsInCurrentQuarter;
 
         public VatReturnCalculationService(
@@ -27,7 +29,8 @@
             IQueryRepository<Purchase> purchaseLedger,
             IQueryRepository<PurchaseLedgerTransactionType> purchaseLedgerTransactionTypeRepository,
             IQueryRepository<Supplier> supplierRepository,
-            IQueryRepository<NominalLedgerEntry> nominalLedgerRepository)
+            IQueryRepository<NominalLedgerEntry> nominalLedgerRepository,
+            IDatabaseService databaseService)
         {
             this.ledgerEntryRepository = ledgerEntryRepository;
             this.purchaseLedger = purchaseLedger;
@@ -35,7 +38,8 @@
             this.supplierRepository = supplierRepository;
             this.nominalLedgerRepository = nominalLedgerRepository;
             var m = ledgerMasterRepository.FindAll().ToList().First();
-            this.periodsInCurrentQuarter = new List<int> { m.CurrentPeriod, m.CurrentPeriod - 1, m.CurrentPeriod - 2 };
+            this.periodsInCurrentQuarter = new List<int> { 1438, 1439, 1440 }; //{ m.CurrentPeriod, m.CurrentPeriod - 1, m.CurrentPeriod - 2 };
+            this.databaseService = databaseService;
         }
 
         public VatReturn CalculateVatReturn()
@@ -121,33 +125,41 @@
 
         private Dictionary<string, decimal> GetCanteenTotals()
         {
-            var vatOrCanteenExpr = 
-                new Func<IGrouping<int, NominalLedgerEntry>, bool>(
-                    t => this.nominalLedgerRepository
-                             .FilterBy(e => e.JournalNumber == t.Key).Any(x => x.NominalAccountId == 4039)
-                         && this.nominalLedgerRepository
-                             .FilterBy(e => e.JournalNumber == t.Key).Any(x => x.NominalAccountId == 1012));
+            var sql = $@"select sum(ct.total_currency) tot
+                        from 
+                        cashbook_transactions ct,
+                        cashbook_transaction_lines ctl,
+                        ledger_periods lp,
+                        nominal_accounts  n,
+                        cashbooks c,
+                        linn_nominals ln,
+                        linn_departments ld,
+                        cashbook_alloc_codes cac
+                        where
+                        ct.cashbook_id = ctl.cashbook_id 
+                        and ct.payment_or_lodgement = 'L'
+                        and ct.period_number in 
+                        ({this.periodsInCurrentQuarter[0]}, {this.periodsInCurrentQuarter[1]}, {this.periodsInCurrentQuarter[2]})
+                        and ct.cashbook_id = c.cashbook_id 
+                        and ctl.alloc_code = 'CE'
+                        and ct.payment_or_lodgement = ctl.payment_or_lodgement
+                        and ct.tref = ctl.tref 
+                        and ct.period_number = lp.period_number 
+                        and ctl.nomacc_id = n.nomacc_id (+)
+                        and ctl.cashbook_id = cac.cashbook_id
+                        and ctl.payment_or_lodgement = cac.payment_or_lodgement
+                        and ctl.alloc_code = cac.alloc_code 
+                        and n.nominal = ln.nominal_code (+)
+                        and n.department = ld.department_code (+)";
 
-            var canteenJournalNumbers = this.nominalLedgerRepository
-                .FilterBy(n => this.periodsInCurrentQuarter.Contains(n.PeriodNumber)
-                               && n.TransactionType == "JRNL")
-                .GroupBy(n => n.JournalNumber).AsEnumerable()
-                .Where(vatOrCanteenExpr).Select(g => g.Key);
-
-            var canteenNominalLedgerEntries = this.nominalLedgerRepository
-                .FilterBy(l => canteenJournalNumbers.Contains(l.JournalNumber) && l.CreditOrDebit == "C").ToList();
-
-            var vat = canteenNominalLedgerEntries.Sum(x => x.Amount);
-            var goods = canteenNominalLedgerEntries.Sum(x => decimal // todo - find these values in a less terrible way
-                .Parse(
-                    Regex.Match(
-                            x.Comments.Replace(",", string.Empty),
-                            @"[0-9]+(\.[0-9]+)?")
-                        .Value));
+            var res = this.databaseService.ExecuteQuery(sql).Tables[0].Rows[0][0];
+            var net = decimal.Parse(res.ToString());
+            var goods = net / 1.2m; 
+            var vat = 0.2m * goods;
             return new Dictionary<string, decimal>
                        {
-                           { "goods", goods },
-                           { "vat", vat }
+                           { "goods", Math.Round(goods, 2) },
+                           { "vat", Math.Round(vat, 2) }
                        };
         }
     }
