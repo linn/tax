@@ -23,6 +23,7 @@
             builder.RegisterType<PurchaseLedgerTransactionTypeRepository>()
                 .As<IQueryRepository<PurchaseLedgerTransactionType>>();
             builder.RegisterType<NominalLedgerRepository>().As<IQueryRepository<NominalLedgerEntry>>();
+            builder.RegisterType<VatReturnReceiptRepository>().As<IRepository<VatReturnReceipt, int>>();
         }
     }
 }

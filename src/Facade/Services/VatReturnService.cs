@@ -1,9 +1,11 @@
 ﻿namespace Linn.Tax.Facade.Services
 {
+    using System;
     using System.Linq;
     using System.Net;
 
     using Linn.Common.Facade;
+    using Linn.Common.Persistence;
     using Linn.Common.Proxy;
     using Linn.Common.Serialization.Json;
     using Linn.Tax.Domain;
@@ -16,10 +18,16 @@
 
         private readonly IVatReturnCalculationService calculationService;
 
-        public VatReturnService(IHmrcApiService apiService, IVatReturnCalculationService calculationService)
+        private readonly IRepository<VatReturnReceipt, int> vatReturnReceiptRepository;
+
+        public VatReturnService(
+            IHmrcApiService apiService, 
+            IVatReturnCalculationService calculationService,
+            IRepository<VatReturnReceipt, int> vatReturnReceiptRepository)
         {
             this.apiService = apiService;
             this.calculationService = calculationService;
+            this.vatReturnReceiptRepository = vatReturnReceiptRepository;
         }
 
         public IResult<VatReturn> CalculateVatReturn()
@@ -34,7 +42,16 @@
 
             if (apiResponse.StatusCode == HttpStatusCode.Created)
             {
-                return new CreatedResult<VatReturnReceiptResource>(json.Deserialize<VatReturnReceiptResource>(apiResponse.Value));
+                var receipt = json.Deserialize<VatReturnReceiptResource>(apiResponse.Value);
+                this.vatReturnReceiptRepository.Add(new VatReturnReceipt
+                {
+                    ProcessingDate = DateTime.Parse(receipt.ProcessingDate),
+                    ChargeRefNumber = receipt.ChargeRefNumber,
+                    FormBundleNumber = receipt.FormBundleNumber,
+                    PaymentIndicator = receipt.PaymentIndicator
+                });
+
+                return new CreatedResult<VatReturnReceiptResource>(receipt);
             }
 
             var error = json.Deserialize<ErrorResponseResource>(apiResponse.Value);

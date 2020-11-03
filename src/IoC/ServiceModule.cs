@@ -6,10 +6,12 @@
     using Autofac.Core;
 
     using Linn.Common.Configuration;
+    using Linn.Common.Facade;
     using Linn.Common.Proxy;
     using Linn.Tax.Domain;
     using Linn.Tax.Facade.Services;
     using Linn.Tax.Proxy;
+    using Linn.Tax.Resources;
 
     public class ServiceModule : Module
     {
@@ -23,7 +25,7 @@
 
             // facade services
             builder.RegisterType<VatReturnService>().As<IVatReturnService>();
-
+           
             // rest client proxies
             builder.RegisterType<RestClient>().As<IRestClient>();
             builder.RegisterType<HmrcApiProxy>()

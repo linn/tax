@@ -5,6 +5,7 @@
 
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
+    using System.Net.Http.Headers;
 
     public class ServiceDbContext : DbContext
     {
@@ -28,6 +29,8 @@
 
         public DbQuery<NominalLedgerEntry> NominalLedger { get; set; }
 
+        public DbSet<VatReturnReceipt> VatReturnReceipts { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             this.QueryMasterLedger(builder);
@@ -37,6 +40,7 @@
             this.QueryPurchaseLedgerTransactionTypes(builder);
             this.QuerySuppliers(builder);
             this.QueryNominalLedger(builder);
+            this.BuildVatReturnReceipts(builder);
             base.OnModelCreating(builder);
         }
 
@@ -108,14 +112,25 @@
 
         private void QueryNominalLedger(ModelBuilder builder)
         {
-            builder.Query<NominalLedgerEntry>().ToView("NOMINAL_LEDGER");
-            builder.Query<NominalLedgerEntry>().Property(e => e.Amount).HasColumnName("AMOUNT");
-            builder.Query<NominalLedgerEntry>().Property(e => e.TransactionType).HasColumnName("TRANS_TYPE");
-            builder.Query<NominalLedgerEntry>().Property(e => e.Comments).HasColumnName("COMMENTS");
-            builder.Query<NominalLedgerEntry>().Property(e => e.NominalAccountId).HasColumnName("NOMACC_ID");
-            builder.Query<NominalLedgerEntry>().Property(e => e.PeriodNumber).HasColumnName("PERIOD_NUMBER");
-            builder.Query<NominalLedgerEntry>().Property(e => e.JournalNumber).HasColumnName("JOURNAL_NUMBER");
-            builder.Query<NominalLedgerEntry>().Property(e => e.CreditOrDebit).HasColumnName("CREDIT_OR_DEBIT");
+           builder.Query<NominalLedgerEntry>().ToView("NOMINAL_LEDGER");
+           builder.Query<NominalLedgerEntry>().Property(e => e.Amount).HasColumnName("AMOUNT");
+           builder.Query<NominalLedgerEntry>().Property(e => e.TransactionType).HasColumnName("TRANS_TYPE");
+           builder.Query<NominalLedgerEntry>().Property(e => e.Comments).HasColumnName("COMMENTS");
+           builder.Query<NominalLedgerEntry>().Property(e => e.NominalAccountId).HasColumnName("NOMACC_ID");
+           builder.Query<NominalLedgerEntry>().Property(e => e.PeriodNumber).HasColumnName("PERIOD_NUMBER");
+           builder.Query<NominalLedgerEntry>().Property(e => e.JournalNumber).HasColumnName("JOURNAL_NUMBER");
+           builder.Query<NominalLedgerEntry>().Property(e => e.CreditOrDebit).HasColumnName("CREDIT_OR_DEBIT");
+        }
+
+        private void BuildVatReturnReceipts(ModelBuilder builder)
+        {
+           builder.Entity<VatReturnReceipt>().ToTable("VAT_RETURN_RECEIPTS");
+           builder.Entity<VatReturnReceipt>().HasKey(r => r.Id);
+           builder.Entity<VatReturnReceipt>().Property(r => r.Id).HasColumnName("ID");
+           builder.Entity<VatReturnReceipt>().Property(r => r.ProcessingDate).HasColumnName("PROCESSING_DATE");
+           builder.Entity<VatReturnReceipt>().Property(r => r.FormBundleNumber).HasColumnName("FORM_BUNDLE_NUMBER");
+           builder.Entity<VatReturnReceipt>().Property(r => r.ChargeRefNumber).HasColumnName("CHARGE_REF_NUMBER");
+           builder.Entity<VatReturnReceipt>().Property(r => r.PaymentIndicator).HasColumnName("PAYMENT_INDICATOR");
         }
     }
 }

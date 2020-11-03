@@ -1,18 +1,17 @@
-﻿using System;
-
-namespace Linn.Tax.Domain
+﻿namespace Linn.Tax.Domain
 {
-    class VatReturnReceipt
+    using System;
+
+    public class VatReturnReceipt
     {
-        public class VatReturnReceiptResource
-        {
-            public DateTime ProcessingDate { get; set; }
+        public int Id { get; set; }
 
-            public string PaymentIndicator { get; set; }
-
-            public int FormBundleNumber { get; set; }
-
-            public string ChargeRefNumber { get; set; }
-        }
+        public DateTime ProcessingDate { get; set; }
+        
+        public string PaymentIndicator { get; set; }
+        
+        public string FormBundleNumber { get; set; }
+        
+        public string ChargeRefNumber { get; set; }
     }
 }
