@@ -38,7 +38,7 @@
             this.supplierRepository = supplierRepository;
             this.nominalLedgerRepository = nominalLedgerRepository;
             var m = ledgerMasterRepository.FindAll().ToList().First();
-            this.periodsInCurrentQuarter = new List<int> { 1438, 1439, 1440 }; //{ m.CurrentPeriod, m.CurrentPeriod - 1, m.CurrentPeriod - 2 };
+            this.periodsInCurrentQuarter = new List<int> { 1438, 1439, 1440 }; // { m.CurrentPeriod, m.CurrentPeriod - 1, m.CurrentPeriod - 2 };
             this.databaseService = databaseService;
         }
 
@@ -65,24 +65,23 @@
             // todo - find these values
             decimal cashbookVat = new decimal(0);
             decimal intraDispatches = new decimal(0);
-            decimal intraArrivals = new decimal(0);
-            decimal intraVat = new decimal(0);
+            var intraArrivals = this.GetIntrastatArrivals();
 
             decimal vatDueSales = (decimal)netVatOnGoodsSales + this.GetCanteenTotals()["vat"];
-            decimal vatReclaimed = this.GetPurchasesTotals()["vat"] + cashbookVat + intraVat;
-            decimal totalVatDue = vatDueSales + intraVat;
+            decimal vatReclaimed = this.GetPurchasesTotals()["vat"] + cashbookVat + intraArrivals["vat"];
+            decimal totalVatDue = vatDueSales + intraArrivals["vat"];
 
             return new VatReturn
                        {
                            VatDueSales = vatDueSales,
-                           VatDueAcquisitions = intraVat,
+                           VatDueAcquisitions = intraArrivals["vat"],
                            TotalVatDue = totalVatDue,
                            VatReclaimedCurrPeriod = vatReclaimed,
                            NetVatDue = totalVatDue - vatReclaimed,
                            TotalValueSalesExVat = this.GetCanteenTotals()["goods"] + netGoodsSales,
                            TotalValuePurchasesExVat = this.GetPurchasesTotals()["net"],
                            TotalValueGoodsSuppliedExVat = intraDispatches,
-                           TotalAcquisitionsExVat = intraArrivals
+                           TotalAcquisitionsExVat = intraArrivals["net"]
                        };
         }
 
@@ -159,6 +158,40 @@
             return new Dictionary<string, decimal>
                        {
                            { "goods", Math.Round(goods, 2) },
+                           { "vat", Math.Round(vat, 2) }
+                       };
+        }
+
+        private Dictionary<string, decimal> GetIntrastatArrivals()
+        {
+            var sql = $@"select sum(order_vat) from
+                        (select imp.impbook_id,
+                        imp.supplier_id,
+                        supp.supplier_name,
+                        sum(iod.vat_value) order_vat
+                        from impbooks imp,
+                        suppliers supp,
+                        impbook_order_details iod,
+                        countries co
+                        where imp.impbook_id=iod.impbook_id
+                        and imp.supplier_id=supp.supplier_id
+                        and trunc(imp.date_Created) between TO_DATE('01-oct-2019') and TO_DATE('31-dec-2019')
+                        and imp.date_Cancelled is null
+                        and co.country_code=supp.country
+                        and co.eec_member='Y'
+                        and imp.date_cancelled is null
+                        group by imp.impbook_id,
+                        imp.supplier_id,
+                        supp.supplier_name,
+                        imp.linn_vat,
+                        imp.total_import_value)";
+
+            var res = this.databaseService.ExecuteQuery(sql).Tables[0].Rows[0][0];
+            var net = decimal.Parse(res.ToString());
+            var vat = 0.2m * net;
+            return new Dictionary<string, decimal>
+                       {
+                           { "net", Math.Round(net, 2) },
                            { "vat", Math.Round(vat, 2) }
                        };
         }
