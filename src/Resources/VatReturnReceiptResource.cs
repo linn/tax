@@ -6,7 +6,7 @@
 
         public string PaymentIndicator { get; set; }
 
-        public string FormBundleNumber { get; set; }
+        public int FormBundleNumber { get; set; }
 
         public string ChargeRefNumber { get; set; }
     }

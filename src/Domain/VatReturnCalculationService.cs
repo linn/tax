@@ -69,7 +69,7 @@
             decimal intraVat = new decimal(0);
 
             decimal vatDueSales = (decimal)netVatOnGoodsSales + this.GetCanteenTotals()["vat"];
-            decimal vatReclaimed = this.GetPurchasesTotals()["vat"] + cashbookVat + intraVat;
+            decimal vatReclaimed = this.GetPurchasesTotals()["vat"] + this.GetOtherJournals() + intraVat;
             decimal totalVatDue = vatDueSales + intraVat;
 
             return new VatReturn
@@ -161,6 +161,19 @@
                            { "goods", Math.Round(goods, 2) },
                            { "vat", Math.Round(vat, 2) }
                        };
+        }
+
+        private decimal GetOtherJournals()
+        {
+            var sql = $@"select SUM( DECODE(CREDIT_OR_DEBIT,'C',-1,1)* AMOUNT) 
+                         from nominal_ledger
+                         where nomacc_id = 1012  and TRANS_TYPE IN ('JRNL', 'CBPO') 
+                         AND period_number in 
+                         ({this.periodsInCurrentQuarter[0]}, {this.periodsInCurrentQuarter[1]}, {this.periodsInCurrentQuarter[2]})
+                         AND NARRATIVE != 'SALES' AND NARRATIVE NOT LIKE '%BANK%L'";
+
+            var res = this.databaseService.ExecuteQuery(sql).Tables[0].Rows[0][0];
+            return decimal.Parse(res.ToString()) - this.GetCanteenTotals()["goods"];
         }
     }
 }
