@@ -41,7 +41,7 @@ Parameters:
     Type: String
     Description: Logging Environment
   vrn:
-    Type: String
+    Type: Number
     Description: Vat Registration Number
   loggingMaxInnerExceptionDepth:
     Type: Number
@@ -150,6 +150,8 @@ Resources:
           Value: !ImportValue logging-queue-url
         - Name: LOG_ENVIRONMENT
           Value: !Ref loggingEnvironment
+        - Name: LOG_MAX_INNER_EXCEPTION_DEPTH
+          Value: !Ref loggingMaxInnerExceptionDepth
         - Name: VRN
           Value: !Ref vrn
         - Name: awsRegion
