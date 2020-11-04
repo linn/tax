@@ -11,7 +11,7 @@ install:
 before_script:
  - ./scripts/test.sh
 script: ./scripts/package.sh
-after_success: travis_wait ./scripts/deploy.sh
+after_success: travis_wait 30 ./scripts/deploy.sh
 cache:
   directories:
     - ./src/Service.Host/node_modules
