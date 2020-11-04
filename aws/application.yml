@@ -13,6 +13,18 @@ Parameters:
   authorityUri:
     Type: String
     Description: OIDC authority uri
+  databaseHost:
+    Type: String
+    Description: Database host
+  databaseName:
+    Type: String
+    Description: Database name
+  databaseUserId:
+    Type: String
+    Description: Database user id
+  databasePassword:
+    Type: String
+    Description: Database password
   hmrcApiRoot:
     Type: String
     Description: HMRC api root
@@ -109,6 +121,14 @@ Resources:
             'gelf-address': 'udp://syslog.linn.co.uk:12201'
             'tag': !Sub tax-${dockerTag}-ecs-task
         Environment:
+        - Name: DATABASE_HOST
+          Value: !Ref databaseHost
+        - Name: DATABASE_NAME
+          Value: !Ref databaseName
+        - Name: DATABASE_USER_ID
+          Value: !Ref databaseUserId
+        - Name: DATABASE_PASSWORD
+          Value: !Ref databasePassword
         - Name: APP_ROOT
           Value: !Ref appRoot
         - Name: PROXY_ROOT
