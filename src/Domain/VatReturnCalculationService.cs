@@ -65,6 +65,7 @@
             // todo - find these values
             decimal intraDispatches = new decimal(1206741);
             var intraArrivals = this.GetIntrastatArrivals();
+            var xy = 0;
 
             decimal vatDueSales = (decimal)netVatOnGoodsSales + this.GetCanteenTotals()["vat"];
             decimal vatReclaimed = this.GetPurchasesTotals()["vat"] + this.GetOtherJournals() + intraArrivals["vat"];
