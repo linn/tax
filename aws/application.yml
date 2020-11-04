@@ -40,6 +40,9 @@ Parameters:
   loggingEnvironment:
     Type: String
     Description: Logging Environment
+  vrn:
+    Type: String
+    Description: Vat Registration Number
   loggingMaxInnerExceptionDepth:
     Type: Number
     Description: Logging Max Inner Exception Depth
