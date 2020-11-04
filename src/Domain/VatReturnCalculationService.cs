@@ -63,9 +63,8 @@
                 - vatOnSalesTotals.ToList().First(t => t.TransactionType == "CRED").Total;
 
             // todo - find these values
-            decimal intraDispatches = new decimal(1206741);
+            decimal intraDispatches = new decimal(0);
             var intraArrivals = this.GetIntrastatArrivals();
-            var xy = 0;
 
             decimal vatDueSales = (decimal)netVatOnGoodsSales + this.GetCanteenTotals()["vat"];
             decimal vatReclaimed = this.GetPurchasesTotals()["vat"] + this.GetOtherJournals() + intraArrivals["vat"];
