@@ -35,6 +35,23 @@
             return new SuccessResult<VatReturn>(this.calculationService.CalculateVatReturn());
         }
 
+        public IResult<CalculationValuesResource> GetCalculationValues()
+        {
+            return new SuccessResult<CalculationValuesResource>(
+                new CalculationValuesResource
+                    {
+                        SalesGoodsTotal = this.calculationService.GetSalesGoodsTotal(),
+                        SalesVatTotal = this.calculationService.GetSalesVatTotal(),
+                        CanteenGoodsTotal = this.calculationService.GetCanteenTotals()["goods"],
+                        CanteenVatTotal = this.calculationService.GetCanteenTotals()["vat"],
+                        CashbookAndOtherTotal = this.calculationService.GetOtherJournals(),
+                        PurchasesGoodsTotal = this.calculationService.GetPurchasesTotals()["goods"],
+                        PurchasesVatTotal = this.calculationService.GetPurchasesTotals()["vat"],
+                        IntrastatArrivalsGoodsTotal = this.calculationService.GetIntrastatArrivals()["goods"],
+                        IntrastatArrivalsVatTotal = this.calculationService.GetIntrastatArrivals()["vat"]
+                    });
+        }
+
         public IResult<VatReturnReceiptResource> SubmitVatReturn(VatReturnSubmissionResource resource, TokenResource token, string deviceId)
         {
             var apiResponse = this.apiService.SubmitVatReturn(resource, token, deviceId);

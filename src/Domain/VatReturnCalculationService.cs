@@ -37,9 +37,72 @@
             this.purchaseLedgerTransactionTypeRepository = purchaseLedgerTransactionTypeRepository;
             this.supplierRepository = supplierRepository;
             this.nominalLedgerRepository = nominalLedgerRepository;
-            var m = ledgerMasterRepository.FindAll().ToList().First();
+            //var m = ledgerMasterRepository.FindAll().ToList().First();
             this.periodsInCurrentQuarter = new List<int> { 1438, 1439, 1440 }; // { m.CurrentPeriod, m.CurrentPeriod - 1, m.CurrentPeriod - 2 };
             this.databaseService = databaseService;
+        }
+
+        public decimal GetSalesGoodsTotal()
+        {
+            var salesTotals = this.ledgerEntryRepository
+                .FilterBy(e => this.periodsInCurrentQuarter.Contains(e.LedgerPeriod))
+                .GroupBy(l => l.TransactionType)
+                .Select(g => new { TransactionType = g.Key, Total = g.Sum(x => x.BaseNetAmount) });
+
+            return
+                salesTotals.ToList().First(t => t.TransactionType == "INV").Total // no other transaction types?
+                - salesTotals.ToList().First(t => t.TransactionType == "CRED").Total;
+        }
+
+        public decimal GetSalesVatTotal()
+        {
+            var vatOnSalesTotals = this.ledgerEntryRepository
+                .FilterBy(e => this.periodsInCurrentQuarter.Contains(e.LedgerPeriod))
+                .GroupBy(l => l.TransactionType)
+                .Select(g => new { TransactionType = g.Key, Total = g.Sum(x => x.BaseVatAmount) });
+            
+            return vatOnSalesTotals.ToList().First(t => t.TransactionType == "INV").Total
+                - vatOnSalesTotals.ToList().First(t => t.TransactionType == "CRED").Total;
+        }
+
+        public IDictionary<string, decimal> GetCanteenTotals()
+        {
+            var sql = $@"select sum(ct.total_currency) tot
+                        from 
+                        cashbook_transactions ct,
+                        cashbook_transaction_lines ctl,
+                        ledger_periods lp,
+                        nominal_accounts  n,
+                        cashbooks c,
+                        linn_nominals ln,
+                        linn_departments ld,
+                        cashbook_alloc_codes cac
+                        where
+                        ct.cashbook_id = ctl.cashbook_id 
+                        and ct.payment_or_lodgement = 'L'
+                        and ct.period_number in 
+                        ({this.periodsInCurrentQuarter[0]}, {this.periodsInCurrentQuarter[1]}, {this.periodsInCurrentQuarter[2]})
+                        and ct.cashbook_id = c.cashbook_id 
+                        and ctl.alloc_code = 'CE'
+                        and ct.payment_or_lodgement = ctl.payment_or_lodgement
+                        and ct.tref = ctl.tref 
+                        and ct.period_number = lp.period_number 
+                        and ctl.nomacc_id = n.nomacc_id (+)
+                        and ctl.cashbook_id = cac.cashbook_id
+                        and ctl.payment_or_lodgement = cac.payment_or_lodgement
+                        and ctl.alloc_code = cac.alloc_code 
+                        and n.nominal = ln.nominal_code (+)
+                        and n.department = ld.department_code (+)";
+
+            var res = this.databaseService.ExecuteQuery(sql).Tables[0].Rows[0][0];
+            var net = decimal.Parse(res.ToString());
+            var goods = net / 1.2m;
+            var vat = 0.2m * goods;
+            return new Dictionary<string, decimal>
+                       {
+                           { "goods", Math.Round(goods, 2) },
+                           { "vat", Math.Round(vat, 2) }
+                       };
         }
 
         public VatReturn CalculateVatReturn()
@@ -84,12 +147,7 @@
                        };
         }
 
-        private static decimal GetPaymentValue(PurchaseLedgerTransactionType transactionType, decimal absoluteValue)
-        {
-            return transactionType.DebitOrCredit == "C" ? absoluteValue : absoluteValue * -1;
-        }
-
-        private Dictionary<string, decimal> GetPurchasesTotals()
+        public IDictionary<string, decimal> GetPurchasesTotals()
         {
             var join2 = this.purchaseLedger
                 .FilterBy(p => this.periodsInCurrentQuarter.Contains(p.LedgerPeriod))
@@ -108,7 +166,7 @@
 
             var totals = join2
                 .GroupBy(purchase => purchase.tt.TransactionCategory)
-                .Select(p => new 
+                .Select(p => new
                                  {
                                      Net = p.Sum(e => GetPaymentValue(e.tt, e.join1.pl.NetTotal)),
                                      Vat = p.Sum(e => GetPaymentValue(e.tt, e.join1.pl.VatTotal))
@@ -116,52 +174,12 @@
                 .First();
             return new Dictionary<string, decimal>
                        {
-                           { "net", totals.Net },
+                           { "goods", totals.Net },
                            { "vat", totals.Vat }
                        };
         }
 
-        private Dictionary<string, decimal> GetCanteenTotals()
-        {
-            var sql = $@"select sum(ct.total_currency) tot
-                        from 
-                        cashbook_transactions ct,
-                        cashbook_transaction_lines ctl,
-                        ledger_periods lp,
-                        nominal_accounts  n,
-                        cashbooks c,
-                        linn_nominals ln,
-                        linn_departments ld,
-                        cashbook_alloc_codes cac
-                        where
-                        ct.cashbook_id = ctl.cashbook_id 
-                        and ct.payment_or_lodgement = 'L'
-                        and ct.period_number in 
-                        ({this.periodsInCurrentQuarter[0]}, {this.periodsInCurrentQuarter[1]}, {this.periodsInCurrentQuarter[2]})
-                        and ct.cashbook_id = c.cashbook_id 
-                        and ctl.alloc_code = 'CE'
-                        and ct.payment_or_lodgement = ctl.payment_or_lodgement
-                        and ct.tref = ctl.tref 
-                        and ct.period_number = lp.period_number 
-                        and ctl.nomacc_id = n.nomacc_id (+)
-                        and ctl.cashbook_id = cac.cashbook_id
-                        and ctl.payment_or_lodgement = cac.payment_or_lodgement
-                        and ctl.alloc_code = cac.alloc_code 
-                        and n.nominal = ln.nominal_code (+)
-                        and n.department = ld.department_code (+)";
-
-            var res = this.databaseService.ExecuteQuery(sql).Tables[0].Rows[0][0];
-            var net = decimal.Parse(res.ToString());
-            var goods = net / 1.2m; 
-            var vat = 0.2m * goods;
-            return new Dictionary<string, decimal>
-                       {
-                           { "goods", Math.Round(goods, 2) },
-                           { "vat", Math.Round(vat, 2) }
-                       };
-        }
-
-        private decimal GetOtherJournals()
+        public decimal GetOtherJournals()
         {
             var sql = $@"select SUM( DECODE(CREDIT_OR_DEBIT,'C',-1,1)* AMOUNT) 
                          from nominal_ledger
@@ -173,7 +191,8 @@
             var res = this.databaseService.ExecuteQuery(sql).Tables[0].Rows[0][0];
             return decimal.Parse(res.ToString()) + this.GetCanteenTotals()["vat"];
         }
-        private Dictionary<string, decimal> GetIntrastatArrivals()
+
+        public IDictionary<string, decimal> GetIntrastatArrivals()
         {
             var sql = $@"select sum(order_vat) from
                         (select imp.impbook_id,
@@ -205,6 +224,10 @@
                            { "vat", Math.Round(vat, 2) },
                            { "goods", Math.Round(goods, 2) }
                        };
+        }
+        private static decimal GetPaymentValue(PurchaseLedgerTransactionType transactionType, decimal absoluteValue)
+        {
+            return transactionType.DebitOrCredit == "C" ? absoluteValue : absoluteValue * -1;
         }
     }
 }

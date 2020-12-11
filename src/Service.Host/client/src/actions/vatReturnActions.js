@@ -36,6 +36,39 @@ export const add = item => ({
     }
 });
 
+export const getCalculationValues = () => ({
+    [RSAA]: {
+        endpoint: `${config.appRoot}/tax/return/calculation-values`,
+        method: 'GET',
+        options: { requiresAuth: true },
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        types: [
+            {
+                type: actionTypes.REQUEST_CALCULATION_VALUES,
+                payload: {}
+            },
+            {
+                type: actionTypes.RECEIVE_CALCULATION_VALUES,
+                payload: async (action, state, res) => ({ data: await res.json() })
+            },
+            {
+                type: actionTypes.FETCH_ERROR,
+                payload: async (action, state, res) =>
+                    res
+                        ? {
+                              error: {
+                                  details: await res.json()
+                              }
+                          }
+                        : `Network request failed`
+            }
+        ]
+    }
+});
+
 export const getFigures = item => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/tax/return`,

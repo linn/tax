@@ -16,16 +16,36 @@
         {
             this.vatReturnService = vatReturnService;
             this.Post("/tax/return", _ => this.SubmitTaxReturn());
-            this.Get("/tax/return", _ => this.GetFigures());
+            this.Get("/tax/return", _ => this.GetTaxReturnCalculationResult());
+            this.Get("/tax/return/calculation-values", _ => this.GetCalculationValues());
         }
 
-        private object GetFigures()
+        private object GetTaxReturnCalculationResult()
         {
             var result = this.vatReturnService.CalculateVatReturn();
             return this.Negotiate
                 .WithModel(result)
                 .WithMediaRangeModel("text/html", ApplicationSettings.Get)
                 .WithView("Index");
+        }
+
+        private object GetCalculationValues()
+        {
+            var result = this.vatReturnService.GetCalculationValues();
+            if (result is SuccessResult<CalculationValuesResource> successResult)
+            {
+                return this.Negotiate
+                    .WithModel(successResult.Data)
+                    .WithMediaRangeModel("text/html", ApplicationSettings.Get)
+                    .WithView("Index");
+            }
+
+            return this.Negotiate
+                .WithModel((BadRequestResult<CalculationValuesResource>)result)
+                .WithStatusCode(400)
+                .WithMediaRangeModel("text/html", ApplicationSettings.Get)
+                .WithView("Index");
+
         }
 
         private object SubmitTaxReturn()
