@@ -30,9 +30,19 @@
             this.vatReturnReceiptRepository = vatReturnReceiptRepository;
         }
 
-        public IResult<VatReturn> CalculateVatReturn()
+        public IResult<VatReturn> CalculateVatReturn(CalculationValuesResource resource)
         {
-            return new SuccessResult<VatReturn>(this.calculationService.CalculateVatReturn());
+            return new SuccessResult<VatReturn>(this.calculationService.CalculateVatReturn(
+                    resource.SalesGoodsTotal,
+                    resource.SalesVatTotal,
+                    resource.CanteenGoodsTotal,
+                    resource.CanteenVatTotal,
+                    resource.PurchasesGoodsTotal,
+                    resource.PurchasesVatTotal,
+                    resource.CashbookAndOtherTotal,
+                    resource.InstrastatDispatchesGoodsTotal,
+                    resource.IntrastatArrivalsGoodsTotal,
+                    resource.IntrastatArrivalsVatTotal));
         }
 
         public IResult<CalculationValuesResource> GetCalculationValues()
@@ -48,8 +58,9 @@
                         PurchasesGoodsTotal = this.calculationService.GetPurchasesTotals()["goods"],
                         PurchasesVatTotal = this.calculationService.GetPurchasesTotals()["vat"],
                         IntrastatArrivalsGoodsTotal = this.calculationService.GetIntrastatArrivals()["goods"],
-                        IntrastatArrivalsVatTotal = this.calculationService.GetIntrastatArrivals()["vat"]
-                    });
+                        IntrastatArrivalsVatTotal = this.calculationService.GetIntrastatArrivals()["vat"],
+                        InstrastatDispatchesGoodsTotal = 1206741
+                });
         }
 
         public IResult<VatReturnReceiptResource> SubmitVatReturn(VatReturnSubmissionResource resource, TokenResource token, string deviceId)

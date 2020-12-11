@@ -22,7 +22,9 @@
 
         private object GetTaxReturnCalculationResult()
         {
-            var result = this.vatReturnService.CalculateVatReturn();
+            var resource = this.Bind<CalculationValuesResource>();
+
+            var result = this.vatReturnService.CalculateVatReturn(resource);
             return this.Negotiate
                 .WithModel(result)
                 .WithMediaRangeModel("text/html", ApplicationSettings.Get)

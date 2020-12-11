@@ -17,27 +17,21 @@
 
         private readonly IQueryRepository<Supplier> supplierRepository;
 
-        private readonly IQueryRepository<NominalLedgerEntry> nominalLedgerRepository;
-
         private readonly IDatabaseService databaseService;
 
         private readonly List<int> periodsInCurrentQuarter;
 
         public VatReturnCalculationService(
             IQueryRepository<SalesLedgerEntry> ledgerEntryRepository,
-            IQueryRepository<LedgerMaster> ledgerMasterRepository,
             IQueryRepository<Purchase> purchaseLedger,
             IQueryRepository<PurchaseLedgerTransactionType> purchaseLedgerTransactionTypeRepository,
             IQueryRepository<Supplier> supplierRepository,
-            IQueryRepository<NominalLedgerEntry> nominalLedgerRepository,
             IDatabaseService databaseService)
         {
             this.ledgerEntryRepository = ledgerEntryRepository;
             this.purchaseLedger = purchaseLedger;
             this.purchaseLedgerTransactionTypeRepository = purchaseLedgerTransactionTypeRepository;
             this.supplierRepository = supplierRepository;
-            this.nominalLedgerRepository = nominalLedgerRepository;
-            //var m = ledgerMasterRepository.FindAll().ToList().First();
             this.periodsInCurrentQuarter = new List<int> { 1438, 1439, 1440 }; // { m.CurrentPeriod, m.CurrentPeriod - 1, m.CurrentPeriod - 2 };
             this.databaseService = databaseService;
         }
@@ -105,45 +99,31 @@
                        };
         }
 
-        public VatReturn CalculateVatReturn()
+        public VatReturn CalculateVatReturn(
+            decimal salesGoodsTotal,
+            decimal salesVatTotal,
+            decimal canteenGoodsTotal,
+            decimal canteenVatTotal,
+            decimal purchasesGoodsTotal,
+            decimal purchasesVatTotal,
+            decimal cashbookAndOtherTotal,
+            decimal instrastatDispatchesGoodsTotal, 
+            decimal intrastatArrivalsGoodsTotal, 
+            decimal intrastatArrivalsVatTotal) 
         {
-            var salesTotals = this.ledgerEntryRepository
-                .FilterBy(e => this.periodsInCurrentQuarter.Contains(e.LedgerPeriod)) 
-                .GroupBy(l => l.TransactionType)
-                .Select(g => new { TransactionType = g.Key, Total = g.Sum(x => x.BaseNetAmount) });
-
-            var vatOnSalesTotals = this.ledgerEntryRepository
-                .FilterBy(e => this.periodsInCurrentQuarter.Contains(e.LedgerPeriod))
-                .GroupBy(l => l.TransactionType)
-                .Select(g => new { TransactionType = g.Key, Total = g.Sum(x => x.BaseVatAmount) });
-
-            var netGoodsSales = 
-                salesTotals.ToList().First(t => t.TransactionType == "INV").Total // no other transaction types?
-                - salesTotals.ToList().First(t => t.TransactionType == "CRED").Total;
-
-            var netVatOnGoodsSales = 
-                vatOnSalesTotals.ToList().First(t => t.TransactionType == "INV").Total
-                - vatOnSalesTotals.ToList().First(t => t.TransactionType == "CRED").Total;
-
-            // todo - find these values
-            decimal intraDispatches = new decimal(0);
-            var intraArrivals = this.GetIntrastatArrivals();
-
-            decimal vatDueSales = (decimal)netVatOnGoodsSales + this.GetCanteenTotals()["vat"];
-            decimal vatReclaimed = this.GetPurchasesTotals()["vat"] + this.GetOtherJournals() + intraArrivals["vat"];
-            decimal totalVatDue = vatDueSales + intraArrivals["vat"];
-
+            decimal vatReclaimed = purchasesVatTotal + cashbookAndOtherTotal + intrastatArrivalsVatTotal;
+            decimal totalVatDue = salesVatTotal + canteenVatTotal + intrastatArrivalsVatTotal;
             return new VatReturn
                        {
-                           VatDueSales = vatDueSales,
-                           VatDueAcquisitions = intraArrivals["vat"],
+                           VatDueSales = salesVatTotal + canteenVatTotal,
+                           VatDueAcquisitions = intrastatArrivalsVatTotal,
                            TotalVatDue = totalVatDue,
                            VatReclaimedCurrPeriod = vatReclaimed,
                            NetVatDue = totalVatDue - vatReclaimed,
-                           TotalValueSalesExVat = this.GetCanteenTotals()["goods"] + netGoodsSales,
-                           TotalValuePurchasesExVat = this.GetPurchasesTotals()["net"],
-                           TotalValueGoodsSuppliedExVat = intraDispatches,
-                           TotalAcquisitionsExVat = intraArrivals["goods"]
+                           TotalValueSalesExVat = canteenGoodsTotal + salesGoodsTotal,
+                           TotalValuePurchasesExVat = purchasesGoodsTotal,
+                           TotalValueGoodsSuppliedExVat = instrastatDispatchesGoodsTotal,
+                           TotalAcquisitionsExVat = intrastatArrivalsGoodsTotal
                        };
         }
 

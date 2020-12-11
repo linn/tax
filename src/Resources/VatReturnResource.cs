@@ -24,6 +24,6 @@
 
         public decimal TotalAcquisitionsExVat { get; set; }
 
-        public bool Finalised { get; set; }
+        public bool? Finalised { get; set; }
     }
 }

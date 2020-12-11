@@ -6,9 +6,9 @@
 
     public interface IVatReturnService
     {
-        IResult<VatReturn> CalculateVatReturn();
-
         IResult<CalculationValuesResource> GetCalculationValues();
+
+        IResult<VatReturn> CalculateVatReturn(CalculationValuesResource resource);
 
         IResult<VatReturnReceiptResource> SubmitVatReturn(VatReturnSubmissionResource resource, TokenResource token, string deviceId);
 

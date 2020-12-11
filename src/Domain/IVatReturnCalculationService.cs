@@ -4,7 +4,17 @@
 
     public interface IVatReturnCalculationService
     {
-        VatReturn CalculateVatReturn();
+        VatReturn CalculateVatReturn(
+            decimal salesGoodsTotal,
+            decimal salesVatTotal,
+            decimal canteenGoodsTotal,
+            decimal canteenVatTotal,
+            decimal purchasesGoodsTotal,
+            decimal purchasesVatTotal,
+            decimal cashbookAndOtherTotal,
+            decimal instrastatDispatchesGoodsTotal,
+            decimal intrastatArrivalsGoodsTotal,
+            decimal intrastatArrivalsVatTotal);
 
         decimal GetSalesGoodsTotal();
 
