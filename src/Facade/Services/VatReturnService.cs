@@ -63,7 +63,10 @@
                 });
         }
 
-        public IResult<VatReturnReceiptResource> SubmitVatReturn(VatReturnSubmissionResource resource, TokenResource token, string deviceId)
+        public IResult<VatReturnReceiptResource> SubmitVatReturn(
+            VatReturnSubmissionResource resource, 
+            TokenResource token, 
+            string deviceId)
         {
             var apiResponse = this.apiService.SubmitVatReturn(resource, token, deviceId);
             var json = new JsonSerializer();
@@ -94,13 +97,17 @@
             return new BadRequestResult<VatReturnReceiptResource>(message);
         }
 
-        public IResult<ObligationsResource> GetObligations(ObligationsRequestResource resource, TokenResource token, string deviceId)
+        public IResult<ObligationsResource> GetObligations(
+            ObligationsRequestResource resource, 
+            TokenResource token, 
+            string deviceId)
         {
             var apiResponse = this.apiService.GetVatObligations(resource, token, deviceId);
             var json = new JsonSerializer();
             if (apiResponse.StatusCode == HttpStatusCode.OK)
             {
-                return new SuccessResult<ObligationsResource>(json.Deserialize<ObligationsResource>(apiResponse.Value));
+                return new SuccessResult<ObligationsResource>(json
+                    .Deserialize<ObligationsResource>(apiResponse.Value));
             }
 
             return BuildErrorResponse(apiResponse);

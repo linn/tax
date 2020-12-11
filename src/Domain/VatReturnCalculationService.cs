@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text.RegularExpressions;
 
     using Linn.Common.Persistence;
 
@@ -13,7 +12,8 @@
 
         private readonly IQueryRepository<Purchase> purchaseLedger;
 
-        private readonly IQueryRepository<PurchaseLedgerTransactionType> purchaseLedgerTransactionTypeRepository;
+        private readonly IQueryRepository<PurchaseLedgerTransactionType> 
+            purchaseLedgerTransactionTypeRepository;
 
         private readonly IQueryRepository<Supplier> supplierRepository;
 
@@ -21,17 +21,23 @@
 
         private readonly List<int> periodsInCurrentQuarter;
 
+        private readonly IQueryRepository<LedgerMaster> ledgerMasterRepository;
+
         public VatReturnCalculationService(
             IQueryRepository<SalesLedgerEntry> ledgerEntryRepository,
             IQueryRepository<Purchase> purchaseLedger,
             IQueryRepository<PurchaseLedgerTransactionType> purchaseLedgerTransactionTypeRepository,
             IQueryRepository<Supplier> supplierRepository,
+            IQueryRepository<LedgerMaster> ledgerMasterRepository,
             IDatabaseService databaseService)
         {
             this.ledgerEntryRepository = ledgerEntryRepository;
             this.purchaseLedger = purchaseLedger;
-            this.purchaseLedgerTransactionTypeRepository = purchaseLedgerTransactionTypeRepository;
+            this.purchaseLedgerTransactionTypeRepository 
+                = purchaseLedgerTransactionTypeRepository;
             this.supplierRepository = supplierRepository;
+            this.ledgerMasterRepository = ledgerMasterRepository;
+            var m = this.ledgerMasterRepository.FindAll().ToList().FirstOrDefault();
             this.periodsInCurrentQuarter = new List<int> { 1438, 1439, 1440 }; // { m.CurrentPeriod, m.CurrentPeriod - 1, m.CurrentPeriod - 2 };
             this.databaseService = databaseService;
         }
@@ -75,7 +81,9 @@
                         ct.cashbook_id = ctl.cashbook_id 
                         and ct.payment_or_lodgement = 'L'
                         and ct.period_number in 
-                        ({this.periodsInCurrentQuarter[0]}, {this.periodsInCurrentQuarter[1]}, {this.periodsInCurrentQuarter[2]})
+                        ({this.periodsInCurrentQuarter[0]}, 
+                        {this.periodsInCurrentQuarter[1]}, 
+                        {this.periodsInCurrentQuarter[2]})
                         and ct.cashbook_id = c.cashbook_id 
                         and ctl.alloc_code = 'CE'
                         and ct.payment_or_lodgement = ctl.payment_or_lodgement
@@ -165,7 +173,9 @@
                          from nominal_ledger
                          where nomacc_id = 1012  and TRANS_TYPE IN ('JRNL', 'CBPO') 
                          AND period_number in 
-                         ({this.periodsInCurrentQuarter[0]}, {this.periodsInCurrentQuarter[1]}, {this.periodsInCurrentQuarter[2]})
+                         ({this.periodsInCurrentQuarter[0]}, 
+                        {this.periodsInCurrentQuarter[1]}, 
+                        {this.periodsInCurrentQuarter[2]})
                          AND NARRATIVE != 'SALES' AND NARRATIVE NOT LIKE '%BANK%L'";
 
             var res = this.databaseService.ExecuteQuery(sql).Tables[0].Rows[0][0];
@@ -205,9 +215,13 @@
                            { "goods", Math.Round(goods, 2) }
                        };
         }
-        private static decimal GetPaymentValue(PurchaseLedgerTransactionType transactionType, decimal absoluteValue)
+
+        private static decimal GetPaymentValue(
+            PurchaseLedgerTransactionType transactionType, 
+            decimal absoluteValue)
         {
-            return transactionType.DebitOrCredit == "C" ? absoluteValue : absoluteValue * -1;
+            return transactionType.DebitOrCredit == "C" 
+                       ? absoluteValue : absoluteValue * -1;
         }
     }
 }
