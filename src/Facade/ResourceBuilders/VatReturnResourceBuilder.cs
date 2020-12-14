@@ -11,7 +11,7 @@
         {
             return new VatReturnResource
                        {
-                           // Vrn = int.Parse(ConfigurationManager.Configuration["VRN"]),
+                           Vrn = int.Parse(ConfigurationManager.Configuration["VRN"]),
                            VatDueSales = model.VatDueSales,
                            VatDueAcquisitions = model.VatDueAcquisitions,
                            TotalVatDue = model.TotalVatDue,
