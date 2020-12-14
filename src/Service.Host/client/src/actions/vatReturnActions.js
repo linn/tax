@@ -1,9 +1,7 @@
 import { RSAA } from 'redux-api-middleware';
 import config from '../config';
 import * as actionTypes from './index';
-
-const queryString = object =>
-    object ? Object.keys(object).reduce((a, n) => `${a}${n}=${object[n]}&`, '?') : null;
+import toQueryString from '../helpers/utilities';
 
 export const add = item => ({
     [RSAA]: {
@@ -74,7 +72,7 @@ export const getCalculationValues = () => ({
 
 export const getFigures = item => ({
     [RSAA]: {
-        endpoint: `${config.appRoot}/tax/return${queryString(item)}`,
+        endpoint: `${config.appRoot}/tax/return${toQueryString(item)}`,
         method: 'GET',
         options: { requiresAuth: false },
         headers: {
