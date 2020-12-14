@@ -5,7 +5,6 @@
 
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
-    using System.Net.Http.Headers;
 
     public class ServiceDbContext : DbContext
     {
@@ -125,8 +124,7 @@
         private void BuildVatReturnReceipts(ModelBuilder builder)
         {
            builder.Entity<VatReturnReceipt>().ToTable("VAT_RETURN_RECEIPTS");
-           builder.Entity<VatReturnReceipt>().HasKey(r => r.Id);
-           builder.Entity<VatReturnReceipt>().Property(r => r.Id).HasColumnName("ID");
+           builder.Entity<VatReturnReceipt>().HasKey(r => r.FormBundleNumber);
            builder.Entity<VatReturnReceipt>().Property(r => r.ProcessingDate).HasColumnName("PROCESSING_DATE");
            builder.Entity<VatReturnReceipt>().Property(r => r.FormBundleNumber).HasColumnName("FORM_BUNDLE_NUMBER");
            builder.Entity<VatReturnReceipt>().Property(r => r.ChargeRefNumber).HasColumnName("CHARGE_REF_NUMBER");

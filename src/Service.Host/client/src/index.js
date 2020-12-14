@@ -22,7 +22,7 @@ const render = Component => {
                 <AppContainer>
                     <Component store={store} />
                 </AppContainer>
-            </SnackbarProvider>{' '}
+            </SnackbarProvider>
         </ThemeProvider>,
         document.getElementById('root')
     );

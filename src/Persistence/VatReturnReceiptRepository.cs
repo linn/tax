@@ -19,6 +19,7 @@
         public void Add(VatReturnReceipt entity)
         {
             this.serviceDbContext.VatReturnReceipts.Add(entity);
+            this.serviceDbContext.SaveChanges();
         }
 
         public IQueryable<VatReturnReceipt> FilterBy(Expression<Func<VatReturnReceipt, bool>> expression)
