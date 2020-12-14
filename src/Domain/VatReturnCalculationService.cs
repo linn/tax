@@ -182,7 +182,8 @@
                          AND NARRATIVE != 'SALES' AND NARRATIVE NOT LIKE '%BANK%L'";
 
             var res = this.databaseService.ExecuteQuery(sql).Tables[0].Rows[0][0];
-            return decimal.Parse(res.ToString()) + this.GetCanteenTotals()["vat"];
+            var decimalResult = res == DBNull.Value ? 0 : decimal.Parse(res.ToString());
+            return decimalResult + this.GetCanteenTotals()["vat"];
         }
 
         public IDictionary<string, decimal> GetIntrastatArrivals()

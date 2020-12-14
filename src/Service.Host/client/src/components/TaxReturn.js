@@ -196,6 +196,7 @@ function TaxReturn({
                                 required
                                 onChange={handleFieldChange}
                                 propertyName="totalValueSalesExVat"
+                                helperText="Omit decimal places for this box."
                                 disabled={vatReturn.finalised}
                             />
                         </Grid>
@@ -207,6 +208,7 @@ function TaxReturn({
                                 required
                                 onChange={handleFieldChange}
                                 propertyName="totalValuePurchasesExVat"
+                                helperText="Omit decimal places for this box."
                                 disabled={vatReturn.finalised}
                             />
                         </Grid>
@@ -218,6 +220,7 @@ function TaxReturn({
                                 required
                                 onChange={handleFieldChange}
                                 propertyName="totalValueGoodsSuppliedExVat"
+                                helperText="Omit decimal places for this box."
                                 disabled={vatReturn.finalised}
                             />
                         </Grid>
@@ -227,6 +230,7 @@ function TaxReturn({
                                 value={vatReturn.totalAcquisitionsExVat}
                                 label="Total Acquisitions Excluding VAT"
                                 required
+                                helperText="Omit decimal places for this box."
                                 onChange={handleFieldChange}
                                 propertyName="totalAcquisitionsExVat"
                                 disabled={vatReturn.finalised}
