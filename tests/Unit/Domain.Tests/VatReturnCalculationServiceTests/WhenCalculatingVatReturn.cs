@@ -32,7 +32,7 @@
             this.result.VatDueAcquisitions.Should().Be(20780.65m);
             this.result.TotalVatDue.Should().Be(193285.72m);
             this.result.VatReclaimedCurrPeriod.Should().Be(347294.36m);
-            this.result.NetVatDue.Should().Be(-154008.64m);
+            this.result.NetVatDue.Should().Be(154008.64m);
             this.result.TotalValueSalesExVat.Should().Be(3639426.39m);
             this.result.TotalValuePurchasesExVat.Should().Be(2031905.52m);
             this.result.TotalValueGoodsSuppliedExVat.Should().Be(1206741m);
