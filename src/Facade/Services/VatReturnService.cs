@@ -59,7 +59,7 @@
                         PurchasesVatTotal = this.calculationService.GetPurchasesTotals()["vat"],
                         IntrastatArrivalsGoodsTotal = this.calculationService.GetIntrastatArrivals()["goods"],
                         IntrastatArrivalsVatTotal = this.calculationService.GetIntrastatArrivals()["vat"],
-                        InstrastatDispatchesGoodsTotal = 1206741
+                        InstrastatDispatchesGoodsTotal = 0 // didn't manage to obtain this value, still needs to be entered for now
                 });
         }
 

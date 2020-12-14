@@ -47,7 +47,6 @@
                 .WithStatusCode(400)
                 .WithMediaRangeModel("text/html", ApplicationSettings.Get)
                 .WithView("Index");
-
         }
 
         private object SubmitTaxReturn()
