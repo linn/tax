@@ -1,7 +1,7 @@
 import { RSAA } from 'redux-api-middleware';
 import config from '../config';
 import * as actionTypes from './index';
-import toQueryString from '../helpers/utilities';
+import { toQueryString } from '../helpers/utilities';
 
 export const add = item => ({
     [RSAA]: {
