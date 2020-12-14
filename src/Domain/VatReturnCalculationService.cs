@@ -38,7 +38,7 @@
             this.supplierRepository = supplierRepository;
             this.ledgerMasterRepository = ledgerMasterRepository;
             var m = this.ledgerMasterRepository.FindAll().ToList().FirstOrDefault();
-            this.periodsInCurrentQuarter = new List<int> { 1438, 1439, 1440 }; // { m.CurrentPeriod, m.CurrentPeriod - 1, m.CurrentPeriod - 2 };
+            this.periodsInCurrentQuarter = new List<int> { 1450, 1451, 1452 }; // { m.CurrentPeriod, m.CurrentPeriod - 1, m.CurrentPeriod - 2 };
             this.databaseService = databaseService;
         }
 
@@ -97,8 +97,10 @@
                         and n.department = ld.department_code (+)";
 
             var res = this.databaseService.ExecuteQuery(sql).Tables[0].Rows[0][0];
-            var net = decimal.Parse(res.ToString());
+            var net = res == DBNull.Value ? 0 : decimal.Parse(res.ToString());
+           
             var goods = net / 1.2m;
+           
             var vat = 0.2m * goods;
             return new Dictionary<string, decimal>
                        {

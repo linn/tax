@@ -61,16 +61,10 @@ function TaxReturn({
                     <Title text="VAT Return Confirmation" />
                 </Grid>
                 <Grid item xs={12}>
-                    <InputField
-                        fullWidth
-                        value={receipt?.processingDate}
-                        label="Processing Date"
-                        disabled
-                    />
+                    <InputField value={receipt?.processingDate} label="Processing Date" disabled />
                 </Grid>
                 <Grid item xs={12}>
                     <InputField
-                        fullWidth
                         value={receipt?.formBundleNumber}
                         label="Form Bundle Number"
                         disabled
@@ -78,7 +72,6 @@ function TaxReturn({
                 </Grid>
                 <Grid item xs={12}>
                     <InputField
-                        fullWidth
                         value={receipt?.paymentIndicator}
                         label="Payment Indicator"
                         disabled
@@ -86,7 +79,6 @@ function TaxReturn({
                 </Grid>
                 <Grid item xs={12}>
                     <InputField
-                        fullWidth
                         value={receipt?.chargeRefNumber}
                         label="Charge Reference Number"
                         disabled
@@ -131,7 +123,6 @@ function TaxReturn({
                         </Grid>
                         <Grid item xs={12}>
                             <InputField
-                                fullWidth
                                 value={vatReturn.vrn}
                                 label=" 9 Digit VAT Registration Number"
                                 type="number"
@@ -144,7 +135,6 @@ function TaxReturn({
                         </Grid>
                         <Grid item xs={12}>
                             <InputField
-                                fullWidth
                                 value={vatReturn.vatDueSales}
                                 label="VAT Due On Sales"
                                 type="number"
@@ -156,7 +146,6 @@ function TaxReturn({
                         </Grid>
                         <Grid item xs={12}>
                             <InputField
-                                fullWidth
                                 type="number"
                                 value={vatReturn.vatDueAcquisitions}
                                 label="VAT Due On Acquisitions"
@@ -168,7 +157,6 @@ function TaxReturn({
                         </Grid>
                         <Grid item xs={12}>
                             <InputField
-                                fullWidth
                                 type="number"
                                 value={vatReturn.totalVatDue}
                                 label="Total VAT Due"
@@ -180,7 +168,6 @@ function TaxReturn({
                         </Grid>
                         <Grid item xs={12}>
                             <InputField
-                                fullWidth
                                 type="number"
                                 value={vatReturn.vatReclaimedCurrPeriod}
                                 label="VAT Reclaimed in Current Period"
@@ -192,7 +179,6 @@ function TaxReturn({
                         </Grid>
                         <Grid item xs={12}>
                             <InputField
-                                fullWidth
                                 type="number"
                                 value={vatReturn.netVatDue}
                                 label="Net VAT due"
@@ -204,7 +190,6 @@ function TaxReturn({
                         </Grid>
                         <Grid item xs={12}>
                             <InputField
-                                fullWidth
                                 type="number"
                                 value={vatReturn.totalValueSalesExVat}
                                 label="Total Value of Sales Excluding VAT"
@@ -216,7 +201,6 @@ function TaxReturn({
                         </Grid>
                         <Grid item xs={12}>
                             <InputField
-                                fullWidth
                                 type="number"
                                 value={vatReturn.totalValuePurchasesExVat}
                                 label="Total Value of Purchases Excluding VAT"
@@ -228,7 +212,6 @@ function TaxReturn({
                         </Grid>
                         <Grid item xs={12}>
                             <InputField
-                                fullWidth
                                 type="number"
                                 value={vatReturn.totalValueGoodsSuppliedExVat}
                                 label="Total Value of Goods Suppled Excluding VAT"
@@ -240,7 +223,6 @@ function TaxReturn({
                         </Grid>
                         <Grid item xs={12}>
                             <InputField
-                                fullWidth
                                 type="number"
                                 value={vatReturn.totalAcquisitionsExVat}
                                 label="Total Acquisitions Excluding VAT"

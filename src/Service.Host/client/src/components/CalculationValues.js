@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { InputField, Title, ErrorCard } from '@linn-it/linn-form-components-library';
 import Grid from '@material-ui/core/Grid';
 
-function CalculationValues({ item, errorMessage, fetchVatReturn }) {
+function CalculationValues({ item, errorMessage, loading, fetchVatReturn }) {
     const [calculationValues, setcalculationValues] = useState({
         SalesGoodsTotal: item?.salesGoodsTotal
     });
@@ -135,6 +135,7 @@ function CalculationValues({ item, errorMessage, fetchVatReturn }) {
                 <Button
                     className={{ float: 'right' }}
                     variant="outlined"
+                    disabled={loading}
                     color="primary"
                     onClick={() => {
                         fetchVatReturn(calculationValues);
@@ -150,6 +151,7 @@ function CalculationValues({ item, errorMessage, fetchVatReturn }) {
 
 CalculationValues.propTypes = {
     fetchVatReturn: PropTypes.func.isRequired,
+    loading: PropTypes.bool,
     receipt: PropTypes.shape({}),
     item: PropTypes.shape({ salesGoodsTotal: PropTypes.number }),
     errorMessage: PropTypes.string,
@@ -158,6 +160,7 @@ CalculationValues.propTypes = {
 
 CalculationValues.defaultProps = {
     errorMessage: null,
+    loading: false,
     receipt: null,
     item: null
 };

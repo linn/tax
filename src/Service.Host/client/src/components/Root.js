@@ -14,7 +14,6 @@ import 'typeface-roboto';
 import TaxReturn from '../containers/TaxReturn';
 import TestFPH from '../containers/TestFPH';
 import Obligations from '../containers/Obligations';
-import CalculationValues from '../containers/CalculationValues';
 
 const Root = ({ store }) => (
     <Provider store={store}>
@@ -38,12 +37,6 @@ const Root = ({ store }) => (
                         <Route exact path="/tax" component={App} />
 
                         <Route exact path="/tax/signin-oidc-client" component={Callback} />
-
-                        <Route
-                            exact
-                            path="/tax/return/calculation-values"
-                            component={CalculationValues}
-                        />
 
                         <Route exact path="/tax/submit-return/:periodKey" component={TaxReturn} />
 
