@@ -39,6 +39,7 @@
             this.ledgerMasterRepository = ledgerMasterRepository;
             var m = this.ledgerMasterRepository.FindAll().ToList().FirstOrDefault();
             this.periodsInCurrentQuarter = new List<int> { 1450, 1451, 1452 }; // { m.CurrentPeriod, m.CurrentPeriod - 1, m.CurrentPeriod - 2 };
+                                                                               // todo - un-hardcode these when we know when return will be submitted
             this.databaseService = databaseService;
         }
 
@@ -129,7 +130,7 @@
                            VatDueAcquisitions = intrastatArrivalsVatTotal,
                            TotalVatDue = totalVatDue,
                            VatReclaimedCurrPeriod = vatReclaimed,
-                           NetVatDue = totalVatDue - vatReclaimed,
+                           NetVatDue = vatReclaimed - totalVatDue,
                            TotalValueSalesExVat = canteenGoodsTotal + salesGoodsTotal,
                            TotalValuePurchasesExVat = purchasesGoodsTotal,
                            TotalValueGoodsSuppliedExVat = instrastatDispatchesGoodsTotal,
