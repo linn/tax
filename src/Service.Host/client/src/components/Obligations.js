@@ -108,7 +108,7 @@ TaxReturn.propTypes = {
 
 TaxReturn.defaultProps = {
     profile: null,
-    obligations: [],
+    obligations: null,
     loading: false,
     errorMessage: ''
 };
