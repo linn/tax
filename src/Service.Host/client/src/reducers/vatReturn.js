@@ -3,7 +3,7 @@ import * as actionTypes from '../actions';
 const vatReturn = (
     state = {
         loading: false,
-        vatReturn: null,
+        figures: null,
         receipt: null,
         error: null,
         snackbarVisible: false

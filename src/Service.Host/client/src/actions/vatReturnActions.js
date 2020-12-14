@@ -2,6 +2,9 @@ import { RSAA } from 'redux-api-middleware';
 import config from '../config';
 import * as actionTypes from './index';
 
+const queryString = object =>
+    object ? Object.keys(object).reduce((a, n) => `${a}${n}=${object[n]}&`, '?') : null;
+
 export const add = item => ({
     [RSAA]: {
         endpoint: `${config.appRoot}/tax/return`,
@@ -71,14 +74,13 @@ export const getCalculationValues = () => ({
 
 export const getFigures = item => ({
     [RSAA]: {
-        endpoint: `${config.appRoot}/tax/return`,
+        endpoint: `${config.appRoot}/tax/return${queryString(item)}`,
         method: 'GET',
-        options: { requiresAuth: true },
+        options: { requiresAuth: false },
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(item),
         types: [
             {
                 type: actionTypes.REQUEST_VAT_RETURN,

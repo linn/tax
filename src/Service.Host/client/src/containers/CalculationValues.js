@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { initialiseOnMount } from '@linn-it/linn-form-components-library';
 import CalculationValues from '../components/CalculationValues';
-import { getCalculationValues } from '../actions/vatReturnActions';
+import { getCalculationValues, getFigures } from '../actions/vatReturnActions';
 
 const mapStateToProps = state => ({
     loading: state.calculationValues?.loading,
@@ -14,7 +14,8 @@ const initialise = () => dispatch => {
 };
 
 const mapDispatchToProps = {
-    initialise
+    initialise,
+    fetchVatReturn: getFigures
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(initialiseOnMount(CalculationValues));

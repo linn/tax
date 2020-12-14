@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { initialiseOnMount } from '@linn-it/linn-form-components-library';
 import TaxReturn from '../components/TaxReturn';
-import { add, hideSnackbar, getFigures } from '../actions/vatReturnActions';
+import { add, hideSnackbar } from '../actions/vatReturnActions';
 import getProfile from '../selectors/getProfile';
 
 const mapStateToProps = state => ({
@@ -13,12 +13,7 @@ const mapStateToProps = state => ({
     figures: state.vatReturn.figures
 });
 
-const initialise = () => dispatch => {
-    dispatch(getFigures());
-};
-
 const mapDispatchToProps = {
-    initialise,
     submitVatReturn: add,
     hideSnackbar
 };
