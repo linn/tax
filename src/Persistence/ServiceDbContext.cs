@@ -106,7 +106,6 @@
         {
             builder.Query<Supplier>().ToView("SUPPLIERS");
             builder.Query<Supplier>().Property(s => s.SupplierId).HasColumnName("SUPPLIER_ID");
-            builder.Query<Supplier>().Property(s => s.LiveOnOracle).HasColumnName("LIVE_ON_ORACLE");
         }
 
         private void QueryNominalLedger(ModelBuilder builder)

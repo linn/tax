@@ -147,7 +147,6 @@
                     pl => new { pl.SupplierId },
                     s => new { s.SupplierId },
                     (pl, s) => new { pl, s })
-                .Where(j => j.s.LiveOnOracle == "Y")
                 .Join(
                     this.purchaseLedgerTransactionTypeRepository.FindAll(),
                     join1 => new { join1.pl.TransactionType },
