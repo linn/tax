@@ -2,25 +2,30 @@
 {
     using System.Collections.Generic;
 
-    using Amazon.SQS;
     using Autofac;
     using Autofac.Core;
-    using Autofac.Core.Activators.Reflection;
 
     using Linn.Common.Configuration;
-    using Linn.Common.Logging;
-    using Linn.Common.Logging.AmazonSqs;
+    using Linn.Common.Facade;
     using Linn.Common.Proxy;
-    using Linn.Tax.Facade;
+    using Linn.Tax.Domain;
+    using Linn.Tax.Facade.Services;
     using Linn.Tax.Proxy;
+    using Linn.Tax.Resources;
 
     public class ServiceModule : Module
     {
         protected override void Load(ContainerBuilder builder)
         {
-            // facade services
-            builder.RegisterType<VatApiService>().As<IVatApiService>();
+            // domain services
+            builder.RegisterType<VatReturnCalculationService>().As<IVatReturnCalculationService>();
 
+            // oracle proxy
+            builder.RegisterType<DatabaseService>().As<IDatabaseService>();
+
+            // facade services
+            builder.RegisterType<VatReturnService>().As<IVatReturnService>();
+           
             // rest client proxies
             builder.RegisterType<RestClient>().As<IRestClient>();
             builder.RegisterType<HmrcApiProxy>()

@@ -1,8 +1,8 @@
 ﻿namespace Linn.Tax.Resources
 {
-    public class VatReturnRequestResource : FraudPreventionMetadataResource
+    public class VatReturnResource
     {
-        public int Vrn { get; set; }
+        public int? Vrn { get; set; }
 
         public string PeriodKey { get; set; }
 
@@ -24,6 +24,6 @@
 
         public decimal TotalAcquisitionsExVat { get; set; }
 
-        public bool Finalised { get; set; }
+        public bool? Finalised { get; set; }
     }
 }

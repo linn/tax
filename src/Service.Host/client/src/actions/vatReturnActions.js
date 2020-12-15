@@ -1,6 +1,7 @@
 import { RSAA } from 'redux-api-middleware';
 import config from '../config';
 import * as actionTypes from './index';
+import { toQueryString } from '../helpers/utilities';
 
 export const add = item => ({
     [RSAA]: {
@@ -19,6 +20,72 @@ export const add = item => ({
             },
             {
                 type: actionTypes.RECEIVE_VAT_RETURN_RECEIPT,
+                payload: async (action, state, res) => ({ data: await res.json() })
+            },
+            {
+                type: actionTypes.FETCH_ERROR,
+                payload: async (action, state, res) =>
+                    res
+                        ? {
+                              error: {
+                                  details: await res.json()
+                              }
+                          }
+                        : `Network request failed`
+            }
+        ]
+    }
+});
+
+export const getCalculationValues = () => ({
+    [RSAA]: {
+        endpoint: `${config.appRoot}/tax/return/calculation-values`,
+        method: 'GET',
+        options: { requiresAuth: true },
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        types: [
+            {
+                type: actionTypes.REQUEST_CALCULATION_VALUES,
+                payload: {}
+            },
+            {
+                type: actionTypes.RECEIVE_CALCULATION_VALUES,
+                payload: async (action, state, res) => ({ data: await res.json() })
+            },
+            {
+                type: actionTypes.FETCH_ERROR,
+                payload: async (action, state, res) =>
+                    res
+                        ? {
+                              error: {
+                                  details: await res.json()
+                              }
+                          }
+                        : `Network request failed`
+            }
+        ]
+    }
+});
+
+export const getFigures = item => ({
+    [RSAA]: {
+        endpoint: `${config.appRoot}/tax/return${toQueryString(item)}`,
+        method: 'GET',
+        options: { requiresAuth: false },
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        types: [
+            {
+                type: actionTypes.REQUEST_VAT_RETURN,
+                payload: {}
+            },
+            {
+                type: actionTypes.RECEIVE_VAT_RETURN,
                 payload: async (action, state, res) => ({ data: await res.json() })
             },
             {

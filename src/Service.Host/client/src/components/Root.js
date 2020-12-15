@@ -12,53 +12,45 @@ import Callback from '../containers/Callback';
 import userManager from '../helpers/userManager';
 import 'typeface-roboto';
 import TaxReturn from '../containers/TaxReturn';
-import TestFPH from './TestFPH';
+import TestFPH from '../containers/TestFPH';
 import Obligations from '../containers/Obligations';
 
 const Root = ({ store }) => (
-    <div>
-        <div style={{ paddingTop: '40px' }}>
-            <Provider store={store}>
-                <OidcProvider store={store} userManager={userManager}>
-                    <Router history={history}>
-                        <div>
-                            <Navigation />
-                            <CssBaseline />
+    <Provider store={store}>
+        <OidcProvider store={store} userManager={userManager}>
+            <Router history={history}>
+                <div>
+                    <Navigation />
+                    <CssBaseline />
 
-                            <Route exact path="/" render={() => <Redirect to="/tax" />} />
+                    <Route exact path="/" render={() => <Redirect to="/tax" />} />
 
-                            <Route
-                                path="/"
-                                render={() => {
-                                    document.title = 'tax';
-                                    return false;
-                                }}
-                            />
+                    <Route
+                        path="/"
+                        render={() => {
+                            document.title = 'tax';
+                            return false;
+                        }}
+                    />
 
-                            <Switch>
-                                <Route exact path="/tax" component={App} />
+                    <Switch>
+                        <Route exact path="/tax" component={App} />
 
-                                <Route exact path="/tax/signin-oidc-client" component={Callback} />
+                        <Route exact path="/tax/signin-oidc-client" component={Callback} />
 
-                                <Route
-                                    exact
-                                    path="/tax/submit-return/:periodKey"
-                                    component={TaxReturn}
-                                />
+                        <Route exact path="/tax/submit-return/:periodKey" component={TaxReturn} />
 
-                                <Route
-                                    exact
-                                    path="/tax/test/fraud-prevention-headers"
-                                    component={TestFPH}
-                                />
-                                <Route exact path="/tax/view-obligations" component={Obligations} />
-                            </Switch>
-                        </div>
-                    </Router>
-                </OidcProvider>
-            </Provider>
-        </div>
-    </div>
+                        <Route
+                            exact
+                            path="/tax/test/fraud-prevention-headers"
+                            component={TestFPH}
+                        />
+                        <Route exact path="/tax/view-obligations" component={Obligations} />
+                    </Switch>
+                </div>
+            </Router>
+        </OidcProvider>
+    </Provider>
 );
 
 Root.propTypes = {

@@ -1,9 +1,9 @@
 ﻿namespace Linn.Tax.Service.Modules
 {
-    using System.Collections.Generic;
+    using System;
 
     using Linn.Common.Facade;
-    using Linn.Tax.Facade;
+    using Linn.Tax.Facade.Services;
     using Linn.Tax.Resources;
     using Linn.Tax.Service.Models;
 
@@ -12,19 +12,24 @@
 
     public sealed class ObligationsModule : NancyModule
     {
-        private readonly IVatApiService vatApiService;
+        private readonly IVatReturnService vatReturnService;
 
-        public ObligationsModule(IVatApiService vatApiService)
+        public ObligationsModule(IVatReturnService vatReturnService)
         {
-            this.vatApiService = vatApiService;
-            this.Post("/tax/obligations", _ => this.GetObligations());
+            this.vatReturnService = vatReturnService;
+            this.Get("/tax/obligations", _ => this.GetObligations());
         }
 
         private object GetObligations()
         {
             var resource = this.Bind<ObligationsRequestResource>();
+            
+            var result = this.vatReturnService.GetObligations(
+                    resource,
+                    (TokenResource)this.Session["access_token"],
+                    null);
+            
 
-            var result = this.vatApiService.GetObligations(resource, (TokenResource)this.Session["access_token"], this.Request.Cookies["device_id"]);
             if (result is SuccessResult<ObligationsResource> successResult)
             {
                 return this.Negotiate

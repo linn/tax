@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { initialiseOnMount } from '@linn-it/linn-form-components-library';
 import TaxReturn from '../components/TaxReturn';
 import { add, hideSnackbar } from '../actions/vatReturnActions';
 import getProfile from '../selectors/getProfile';
@@ -8,7 +9,8 @@ const mapStateToProps = state => ({
     snackbarVisible: state.vatReturn.snackbarVisible,
     errorMessage: state.vatReturn?.error?.details?.message,
     receipt: state.vatReturn.receipt,
-    profile: getProfile(state)
+    profile: getProfile(state),
+    figures: state.vatReturn.figures
 });
 
 const mapDispatchToProps = {
@@ -16,4 +18,4 @@ const mapDispatchToProps = {
     hideSnackbar
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(TaxReturn);
+export default connect(mapStateToProps, mapDispatchToProps)(initialiseOnMount(TaxReturn));

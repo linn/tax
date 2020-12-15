@@ -16,15 +16,16 @@
 
     public class WhenPostingVatReturn : ContextBase
     {
-        private VatReturnRequestResource resource;
+        private VatReturnSubmissionResource resource;
+
         [SetUp]
         public void SetUp()
         {
-            this.resource = new VatReturnRequestResource();
+            this.resource = new VatReturnSubmissionResource();
 
-            this.VatApiService
-                .SubmitVatReturn(Arg.Any<VatReturnRequestResource>(), Arg.Any<TokenResource>(), Arg.Any<string>())
-                .Returns(new CreatedResult<VatReturnResponseResource>(new VatReturnResponseResource
+            this.VatReturnService
+                .SubmitVatReturn(Arg.Any<VatReturnSubmissionResource>(), Arg.Any<TokenResource>(), Arg.Any<string>())
+                .Returns(new CreatedResult<VatReturnReceiptResource>(new VatReturnReceiptResource
                                                                           {
                                                                               ChargeRefNumber = "ref",
                                                                               FormBundleNumber = "bundle"
@@ -49,8 +50,8 @@
         [Test]
         public void ShouldCallService()
         {
-            this.VatApiService.Received().SubmitVatReturn(
-                Arg.Any<VatReturnRequestResource>(), 
+            this.VatReturnService.Received().SubmitVatReturn(
+                Arg.Any<VatReturnSubmissionResource>(), 
                 Arg.Any<TokenResource>(), 
                 Arg.Any<string>());
         }
@@ -58,7 +59,7 @@
         [Test]
         public void ShouldReturnResource()
         {
-            var res = this.Response.Body.DeserializeJson<VatReturnResponseResource>();
+            var res = this.Response.Body.DeserializeJson<VatReturnReceiptResource>();
             res.ChargeRefNumber.Should().Be("ref");
         }
     }

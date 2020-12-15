@@ -4,6 +4,18 @@ Parameters:
   dockerTag:
     Type: String
     Description: Docker tag to deploy
+  databaseHost:
+    Type: String
+    Description: Database host
+  databaseName:
+    Type: String
+    Description: Database name
+  databaseUserId:
+    Type: String
+    Description: Database user id
+  databasePassword:
+    Type: String
+    Description: Database password
   appRoot:
     Type: String
     Description: app root
@@ -28,6 +40,9 @@ Parameters:
   loggingEnvironment:
     Type: String
     Description: Logging Environment
+  vrn:
+    Type: Number
+    Description: Vat Registration Number
   loggingMaxInnerExceptionDepth:
     Type: Number
     Description: Logging Max Inner Exception Depth
@@ -109,6 +124,14 @@ Resources:
             'gelf-address': 'udp://syslog.linn.co.uk:12201'
             'tag': !Sub tax-${dockerTag}-ecs-task
         Environment:
+        - Name: DATABASE_HOST
+          Value: !Ref databaseHost
+        - Name: DATABASE_NAME
+          Value: !Ref databaseName
+        - Name: DATABASE_USER_ID
+          Value: !Ref databaseUserId
+        - Name: DATABASE_PASSWORD
+          Value: !Ref databasePassword
         - Name: APP_ROOT
           Value: !Ref appRoot
         - Name: PROXY_ROOT
@@ -127,6 +150,10 @@ Resources:
           Value: !ImportValue logging-queue-url
         - Name: LOG_ENVIRONMENT
           Value: !Ref loggingEnvironment
+        - Name: LOG_MAX_INNER_EXCEPTION_DEPTH
+          Value: !Ref loggingMaxInnerExceptionDepth
+        - Name: VRN
+          Value: !Ref vrn
         - Name: awsRegion
           Value: !Ref AWS::Region
         - Name: KEYS_BUCKET_NAME

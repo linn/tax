@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Button from '@material-ui/core/Button';
 
@@ -9,8 +10,9 @@ import Page from '../containers/Page';
 
 import useFraudPreventionHeaders from '../hooks/useFraudPreventionHeaders';
 
-function TestFPH() {
-    const fraudPreventionHeaders = useFraudPreventionHeaders('username');
+function TestFPH({ profile }) {
+    // eslint-disable-next-line camelcase
+    const fraudPreventionHeaders = useFraudPreventionHeaders(profile?.preferred_username);
 
     const submitTestRequest = () => {
         const xhr = new XMLHttpRequest();
@@ -163,5 +165,9 @@ function TestFPH() {
         </Page>
     );
 }
+
+TestFPH.propTypes = {
+    profile: PropTypes.shape({}).isRequired
+};
 
 export default TestFPH;

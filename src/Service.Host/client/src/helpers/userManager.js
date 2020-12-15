@@ -14,7 +14,7 @@ const oidcConfig = {
     automaticSilentRenew: true,
     filterProtocolClaims: true,
     loadUserInfo: true,
-    monitorSessions: false
+    monitorSession: false
 };
 
 const userManager = createUserManager(oidcConfig);

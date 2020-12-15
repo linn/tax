@@ -1,17 +1,17 @@
 import { RSAA } from 'redux-api-middleware';
 import config from '../config';
 import * as actionTypes from './index';
+import { toQueryString } from '../helpers/utilities';
 
 const requestObligations = item => ({
     [RSAA]: {
-        endpoint: `${config.appRoot}/tax/obligations`,
-        method: 'POST',
+        endpoint: `${config.appRoot}/tax/obligations${toQueryString(item)}`,
+        method: 'GET',
         options: { requiresAuth: true },
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(item),
         types: [
             {
                 type: actionTypes.REQUEST_OBLIGATIONS,
