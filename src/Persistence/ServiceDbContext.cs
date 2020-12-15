@@ -30,6 +30,8 @@
 
         public DbSet<VatReturnReceipt> VatReturnReceipts { get; set; }
 
+        public DbQuery<LedgerPeriod> LedgerPeriods { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             this.QueryMasterLedger(builder);
@@ -40,6 +42,7 @@
             this.QuerySuppliers(builder);
             this.QueryNominalLedger(builder);
             this.BuildVatReturnReceipts(builder);
+            this.QueryLedgerPeriods(builder);
             base.OnModelCreating(builder);
         }
 
@@ -128,6 +131,13 @@
            builder.Entity<VatReturnReceipt>().Property(r => r.FormBundleNumber).HasColumnName("FORM_BUNDLE_NUMBER");
            builder.Entity<VatReturnReceipt>().Property(r => r.ChargeRefNumber).HasColumnName("CHARGE_REF_NUMBER");
            builder.Entity<VatReturnReceipt>().Property(r => r.PaymentIndicator).HasColumnName("PAYMENT_INDICATOR");
+        }
+
+        private void QueryLedgerPeriods(ModelBuilder builder)
+        {
+            builder.Query<LedgerPeriod>().ToView("LEDGER_PERIODS");
+            builder.Query<LedgerPeriod>().Property(p => p.PeriodNumber).HasColumnName("PERIOD_NUMBER");
+            builder.Query<LedgerPeriod>().Property(p => p.MonthName).HasColumnName("MONTH_NAME");
         }
     }
 }

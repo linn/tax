@@ -23,6 +23,8 @@
 
         protected IQueryRepository<LedgerMaster> LedgerMasterRepository { get; private set; }
 
+        protected IQueryRepository<LedgerPeriod> LedgerPeriodRepository { get; set; }
+
         protected IVatReturnCalculationService Sut { get; private set; }
 
         protected IDatabaseService DatabaseService { get; private set; }
@@ -37,12 +39,14 @@
             this.SupplierRepository = Substitute.For<IQueryRepository<Supplier>>();
             this.LedgerMasterRepository = Substitute.For<IQueryRepository<LedgerMaster>>();
             this.DatabaseService = Substitute.For<IDatabaseService>();
+            this.LedgerPeriodRepository = Substitute.For<IQueryRepository<LedgerPeriod>>();
             this.Sut = new VatReturnCalculationService(
                 this.LedgerEntryRepository,
                 this.PurchaseLedger,
                 this.PurchaseLedgerTransactionTypeRepository,
                 this.SupplierRepository,
                 this.LedgerMasterRepository,
+                this.LedgerPeriodRepository,
                 this.DatabaseService);
         }
     }

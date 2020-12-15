@@ -23,15 +23,19 @@
 
         private readonly IQueryRepository<LedgerMaster> ledgerMasterRepository;
 
+        private readonly IQueryRepository<LedgerPeriod> ledgerPeriodRepository;
+
         public VatReturnCalculationService(
             IQueryRepository<SalesLedgerEntry> ledgerEntryRepository,
             IQueryRepository<Purchase> purchaseLedger,
             IQueryRepository<PurchaseLedgerTransactionType> purchaseLedgerTransactionTypeRepository,
             IQueryRepository<Supplier> supplierRepository,
             IQueryRepository<LedgerMaster> ledgerMasterRepository,
+            IQueryRepository<LedgerPeriod> ledgerPeriodRepository,
             IDatabaseService databaseService)
         {
             this.ledgerEntryRepository = ledgerEntryRepository;
+            this.ledgerPeriodRepository = ledgerPeriodRepository;
             this.purchaseLedger = purchaseLedger;
             this.purchaseLedgerTransactionTypeRepository 
                 = purchaseLedgerTransactionTypeRepository;
@@ -98,9 +102,9 @@
                         and n.department = ld.department_code (+)";
 
             var res = this.databaseService.ExecuteQuery(sql).Tables[0].Rows[0][0];
-            var net = res == DBNull.Value ? 0 : decimal.Parse(res.ToString());
+            var total = res == DBNull.Value ? 0 : decimal.Parse(res.ToString());
            
-            var goods = net / 1.2m;
+            var goods = total / 1.2m;
            
             var vat = 0.2m * goods;
             return new Dictionary<string, decimal>
@@ -187,6 +191,7 @@
 
         public IDictionary<string, decimal> GetIntrastatArrivals()
         {
+            var dateString = this.GetDateStringFromPeriods();
             var sql = $@"select sum(order_vat) from
                         (select imp.impbook_id,
                         imp.supplier_id,
@@ -198,7 +203,7 @@
                         countries co
                         where imp.impbook_id=iod.impbook_id
                         and imp.supplier_id=supp.supplier_id
-                        and trunc(imp.date_Created) between TO_DATE('01-oct-2019') and TO_DATE('31-dec-2019')
+                        and trunc(imp.date_Created) between {dateString}
                         and imp.date_Cancelled is null
                         and co.country_code=supp.country
                         and co.eec_member='Y'
@@ -225,6 +230,22 @@
         {
             return transactionType.DebitOrCredit == "C" 
                        ? absoluteValue : absoluteValue * -1;
+        }
+
+        private string GetDateStringFromPeriods()
+        {
+            var periods = this.ledgerPeriodRepository
+                .FilterBy(p => this.periodsInCurrentQuarter.Contains(p.PeriodNumber))
+                .OrderBy(p => p.PeriodNumber).ToList();
+
+            var start = periods.First();
+            var end = periods.Last();
+
+            var startMonth = start.MonthName.Substring(0, 3);
+            var startYear = start.MonthName.Substring(3, 4);
+            var endMonth = end.MonthName.Substring(0, 3);
+            var endYear = end.MonthName.Substring(3, 4);
+            return $@"TO_DATE('01-{startMonth}-{startYear}') and TO_DATE('31-{endMonth}-{endYear}')";
         }
     }
 }
