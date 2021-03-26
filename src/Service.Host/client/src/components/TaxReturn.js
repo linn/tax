@@ -253,6 +253,7 @@ function TaxReturn({
                                 disabled={inputInvalid()}
                                 color="primary"
                                 onClick={() => {
+                                    metadata.localIpsTimestamp = new Date().toISOString();
                                     submitVatReturn({ ...vatReturn, ...metadata });
                                 }}
                             >
