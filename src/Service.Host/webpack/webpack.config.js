@@ -2,6 +2,7 @@
 const webpack = require('webpack');
 
 module.exports = {
+    mode: 'development',
     entry: {
         app: [
             'babel-polyfill',
@@ -107,7 +108,7 @@ module.exports = {
         }
         //modules: [path.resolve('node_modules'), 'node_modules'].concat(/* ... */)
     },
-    devtool: 'eval-cheap-source-map',
+    devtool: 'eval-cheap-module-source-map',
     // From https://github.com/gaearon/react-hot-boilerplate/blob/next/webpack.config.js
     plugins: [
         new webpack.HotModuleReplacementPlugin(), // enable HMR globally

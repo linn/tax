@@ -167,7 +167,7 @@ function TestFPH({ profile }) {
 }
 
 TestFPH.propTypes = {
-    profile: PropTypes.shape({}).isRequired
+    profile: PropTypes.shape({ preferred_username: PropTypes.string }).isRequired
 };
 
 export default TestFPH;

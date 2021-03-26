@@ -24,7 +24,7 @@ function getLocalIPs(callback) {
         sdp => {
             connection.setLocalDescription(sdp);
         },
-        function onerror() {}
+        () => {}
     );
 }
 

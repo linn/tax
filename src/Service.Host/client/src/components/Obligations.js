@@ -102,7 +102,7 @@ TaxReturn.propTypes = {
     obligations: PropTypes.arrayOf(PropTypes.shape),
     loading: PropTypes.bool,
     requestObligations: PropTypes.func.isRequired,
-    profile: PropTypes.shape({}),
+    profile: PropTypes.shape({ preferred_username: PropTypes.string }),
     errorMessage: PropTypes.string
 };
 

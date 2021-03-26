@@ -16,7 +16,5 @@ const oidcConfig = {
     loadUserInfo: true,
     monitorSession: false
 };
-
 const userManager = createUserManager(oidcConfig);
-
 export default userManager;
