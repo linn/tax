@@ -13,7 +13,6 @@ import useFraudPreventionHeaders from '../hooks/useFraudPreventionHeaders';
 function TestFPH({ profile }) {
     // eslint-disable-next-line camelcase
     const fraudPreventionHeaders = useFraudPreventionHeaders(profile?.preferred_username);
-
     const submitTestRequest = () => {
         const xhr = new XMLHttpRequest();
         xhr.open('POST', `${config.appRoot}/tax/test/fraud-prevention-headers`);
@@ -87,6 +86,16 @@ function TestFPH({ profile }) {
                         maxLength={9}
                         disabled
                         propertyName="localIPs"
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <InputField
+                        fullWidth
+                        value={fraudPreventionHeaders.localIpsTimestamp}
+                        label="Time when local Ips were detected"
+                        maxLength={9}
+                        disabled
+                        propertyName="localIpsTimestamp"
                     />
                 </Grid>
                 <Grid item xs={12}>
