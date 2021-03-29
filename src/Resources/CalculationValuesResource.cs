@@ -1,5 +1,8 @@
 ﻿namespace Linn.Tax.Resources
 {
+    using System.Collections;
+    using System.Collections.Generic;
+
     public class CalculationValuesResource
     {
         public decimal SalesGoodsTotal { get; set; }
@@ -21,5 +24,7 @@
         public decimal IntrastatArrivalsGoodsTotal { get; set; }
 
         public decimal IntrastatArrivalsVatTotal { get; set; }
+
+        public IEnumerable<NominalLedgerEntryResource> LedgerEntries { get; set; }
     }
 }

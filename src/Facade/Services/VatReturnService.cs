@@ -54,13 +54,18 @@
                         SalesVatTotal = this.calculationService.GetSalesVatTotal(),
                         CanteenGoodsTotal = this.calculationService.GetCanteenTotals()["goods"],
                         CanteenVatTotal = this.calculationService.GetCanteenTotals()["vat"],
-                        CashbookAndOtherTotal = this.calculationService.GetOtherJournals(),
+                        LedgerEntries = this.calculationService.GetOtherJournals().Select(x => new NominalLedgerEntryResource
+                            {
+                                Amount = x.Amount,
+                                Tref = x.Tref,
+                                
+                            }),
                         PurchasesGoodsTotal = this.calculationService.GetPurchasesTotals()["goods"],
                         PurchasesVatTotal = this.calculationService.GetPurchasesTotals()["vat"],
-                        IntrastatArrivalsGoodsTotal = this.calculationService.GetIntrastatArrivals()["goods"],
-                        IntrastatArrivalsVatTotal = this.calculationService.GetIntrastatArrivals()["vat"],
-                        InstrastatDispatchesGoodsTotal = 0 // didn't manage to obtain this value, still needs to be entered for now
-                });
+                        IntrastatArrivalsGoodsTotal = this.calculationService.GetIntrastatArrivals()["goods"], // should be 0 post brexit
+                        IntrastatArrivalsVatTotal = this.calculationService.GetIntrastatArrivals()["vat"], // should be 0 post brexit
+                        InstrastatDispatchesGoodsTotal = 0,
+                    });
         }
 
         public IResult<VatReturnReceiptResource> SubmitVatReturn(

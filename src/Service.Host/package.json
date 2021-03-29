@@ -81,6 +81,7 @@
     "@material-ui/styles": "^4.11.3",
     "@testing-library/jest-dom": "^5.11.10",
     "core-js": "^3.9.1",
+    "decimal.js": "^10.2.1",
     "history": "^4.10.1",
     "isomorphic-fetch": "^3.0.0",
     "moment": "^2.29.1",
