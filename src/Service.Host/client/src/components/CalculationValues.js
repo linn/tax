@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { InputField, Title, ErrorCard, Loading } from '@linn-it/linn-form-components-library';
 import { DataGrid } from '@material-ui/data-grid';
 import Grid from '@material-ui/core/Grid';
+import { Decimal } from 'decimal.js';
 
 function CalculationValues({ item, errorMessage, loading, fetchVatReturn }) {
     const [calculationValues, setcalculationValues] = useState({
@@ -148,9 +149,14 @@ function CalculationValues({ item, errorMessage, loading, fetchVatReturn }) {
                     </Grid>
                     <Grid item xs={12}>
                         <InputField
-                            value={selectedRows.reduce(
-                                (accumulator, currentValue) => accumulator + currentValue.amount,
-                                0
+                            value={parseFloat(
+                                selectedRows.reduce(
+                                    (accumulator, currentValue) =>
+                                        new Decimal(accumulator).plus(
+                                            new Decimal(currentValue.amount)
+                                        ),
+                                    0
+                                )
                             )}
                             label="Cashbook/Other Total (Total of Ledger Entries Selected Above)"
                             type="number"
