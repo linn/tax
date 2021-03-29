@@ -85,7 +85,7 @@ function TaxReturn({
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <Typography variant="subtitle" gutterBottom>
+                    <Typography variant="subtitle1" gutterBottom>
                         Take a note of this data for your records.
                     </Typography>
                 </Grid>
@@ -115,7 +115,7 @@ function TaxReturn({
                             <Fragment />
                         )}
                         <Grid item xs={12}>
-                            <Typography variant="subtitle" gutterBottom>
+                            <Typography variant="subtitle1" gutterBottom>
                                 When you submit this VAT information you are making a legal
                                 declaration that the information is true and complete. A false
                                 declaration can result in prosecution.
