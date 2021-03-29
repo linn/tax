@@ -17,14 +17,23 @@ function CalculationValues({ item, errorMessage, loading, fetchVatReturn }) {
     const [selectedRows, setSelectedRows] = useState([]);
 
     useEffect(() => {
-        setcalculationValues({ ...item });
+        setcalculationValues({
+            ...item,
+            cashbookAndOtherTotal: parseFloat(
+                selectedRows.reduce(
+                    (accumulator, currentValue) =>
+                        new Decimal(accumulator).plus(new Decimal(currentValue.amount)),
+                    0
+                )
+            )
+        });
         setRows(
             item?.ledgerEntries?.map(s => ({
                 ...s,
                 id: s.tref
             }))
         );
-    }, [item]);
+    }, [item, selectedRows]);
 
     const handleFieldChange = (propertyName, newValue) => {
         setcalculationValues({ ...calculationValues, [propertyName]: newValue });
@@ -147,15 +156,7 @@ function CalculationValues({ item, errorMessage, loading, fetchVatReturn }) {
                     </Grid>
                     <Grid item xs={12}>
                         <InputField
-                            value={parseFloat(
-                                selectedRows.reduce(
-                                    (accumulator, currentValue) =>
-                                        new Decimal(accumulator).plus(
-                                            new Decimal(currentValue.amount)
-                                        ),
-                                    0
-                                )
-                            )}
+                            value={calculationValues?.cashbookAndOtherTotal}
                             label="Cashbook/Other Total (Total of Ledger Entries Selected Above)"
                             type="number"
                             onChange={handleFieldChange}
