@@ -32,17 +32,15 @@ function CalculationValues({ item, errorMessage, loading, fetchVatReturn }) {
 
     const columns = [
         { field: 'amount', headerName: 'Amount', width: 140 },
-        { field: 'narrative', headerName: 'Narrative', width: 400 }
+        { field: 'creditOrDebit', headerName: 'Debit/Credit', width: 140 },
+        { field: 'datePosted', headerName: 'Date Posted', width: 200 },
+        { field: 'narrative', headerName: 'Narrative', width: 140 },
+        { field: 'description', headerName: 'Description', width: 140 },
+        { field: 'comments', headerName: 'Comments', width: 400 }
     ];
 
-    const handleSelectRow = row => {
-        if (row.isSelected) {
-            setSelectedRows([...selectedRows, row.data]);
-        }
-        if (!row.isSelected) {
-            setSelectedRows(selectedRows.filter(r => r.tref !== row.data.tref));
-        }
-        console.log(selectedRows);
+    const handleSelectionChange = model => {
+        setSelectedRows(rows.filter(r => model.selectionModel.includes(r.tref.toString())));
     };
 
     return (
@@ -139,9 +137,9 @@ function CalculationValues({ item, errorMessage, loading, fetchVatReturn }) {
                                     rows={rows}
                                     columns={columns}
                                     density="standard"
+                                    onSelectionModelChange={model => handleSelectionChange(model)}
                                     rowHeight={34}
                                     checkboxSelection
-                                    onRowSelected={handleSelectRow}
                                     hideFooter
                                 />
                             )}

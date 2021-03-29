@@ -58,7 +58,11 @@
                             {
                                 Amount = x.Amount,
                                 Tref = x.Tref,
-                                
+                                Narrative = x.Narrative,
+                                Comments = x.Comments,
+                                Description = x.Description,
+                                CreditOrDebit = x.CreditOrDebit,
+                                DatePosted = x.DatePosted.ToString("o")
                             }),
                         PurchasesGoodsTotal = this.calculationService.GetPurchasesTotals()["goods"],
                         PurchasesVatTotal = this.calculationService.GetPurchasesTotals()["vat"],

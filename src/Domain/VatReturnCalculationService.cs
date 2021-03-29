@@ -193,8 +193,10 @@
                     select new NominalLedgerEntry 
                                {
                                    Tref = Convert.ToInt32(values[0]),
-                                   Amount = Convert.ToDecimal(values[5]),
-                                   Comments = values[11].ToString(),
+                                   Amount = values[7].ToString().Equals("D") ? 
+                                                Convert.ToDecimal(values[5]) 
+                                                : 0m - Convert.ToDecimal(values[5]),
+                        Comments = values[11].ToString(),
                                    CreditOrDebit = values[7].ToString(),
                                    DatePosted = Convert.ToDateTime(values[3]),
                                    Description = values[10].ToString(),
