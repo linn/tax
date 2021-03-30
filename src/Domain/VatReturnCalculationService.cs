@@ -42,9 +42,8 @@
                 = purchaseLedgerTransactionTypeRepository;
             this.supplierRepository = supplierRepository;
             this.ledgerMasterRepository = ledgerMasterRepository;
-            //var m = this.ledgerMasterRepository.FindAll().ToList().FirstOrDefault();
-            this.periodsInCurrentQuarter = new List<int> { 1438, 1439, 1440 }; // { m.CurrentPeriod, m.CurrentPeriod - 1, m.CurrentPeriod - 2 };
-                                                                               // todo - un-hardcode these when we know when return will be submitted
+            var m = this.ledgerMasterRepository.FindAll().ToList().FirstOrDefault();
+            this.periodsInCurrentQuarter = new List<int> { m.CurrentPeriod, m.CurrentPeriod - 1, m.CurrentPeriod - 2 };
             this.databaseService = databaseService;
         }
 

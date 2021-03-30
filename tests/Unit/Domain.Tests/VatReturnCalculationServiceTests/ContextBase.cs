@@ -1,6 +1,7 @@
 ﻿namespace Linn.Tax.Domain.Tests.VatReturnCalculationServiceTests
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     using Linn.Common.Persistence;
 
@@ -40,6 +41,10 @@
             this.LedgerMasterRepository = Substitute.For<IQueryRepository<LedgerMaster>>();
             this.DatabaseService = Substitute.For<IDatabaseService>();
             this.LedgerPeriodRepository = Substitute.For<IQueryRepository<LedgerPeriod>>();
+
+            this.LedgerMasterRepository.FindAll()
+                .Returns(new List<LedgerMaster> { new LedgerMaster { CurrentPeriod = 1000 } }.AsQueryable());
+
             this.Sut = new VatReturnCalculationService(
                 this.LedgerEntryRepository,
                 this.PurchaseLedger,

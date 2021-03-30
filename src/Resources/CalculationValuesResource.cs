@@ -1,6 +1,5 @@
 ﻿namespace Linn.Tax.Resources
 {
-    using System.Collections;
     using System.Collections.Generic;
 
     public class CalculationValuesResource
