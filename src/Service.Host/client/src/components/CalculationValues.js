@@ -72,7 +72,8 @@ function CalculationValues({ item, errorMessage, loading, fetchVatReturn }) {
                 <>
                     <Grid item xs={12}>
                         <Typography variant="subtitle1" gutterBottom>
-                            Check these numbers against manual calculation and ammend if necessary.
+                            Values are calculated for the previous three month period. Check these
+                            values against manual calculation and ammend if necessary.
                         </Typography>
                     </Grid>
                     <Grid item xs={3}>
