@@ -20,7 +20,7 @@
 
         private readonly IDatabaseService databaseService;
 
-        private readonly List<int> periodsInCurrentQuarter;
+        private readonly List<int> periodsInLastQuarter;
 
         private readonly IQueryRepository<LedgerMaster> ledgerMasterRepository;
 
@@ -43,14 +43,19 @@
             this.supplierRepository = supplierRepository;
             this.ledgerMasterRepository = ledgerMasterRepository;
             var m = this.ledgerMasterRepository.FindAll().ToList().FirstOrDefault();
-            this.periodsInCurrentQuarter = new List<int> { m.CurrentPeriod, m.CurrentPeriod - 1, m.CurrentPeriod - 2 };
+            this.periodsInLastQuarter = new List<int>
+                                               {
+                                                   m.CurrentPeriod - 1,
+                                                   m.CurrentPeriod - 2, 
+                                                   m.CurrentPeriod - 3
+                                               };
             this.databaseService = databaseService;
         }
 
         public decimal GetSalesGoodsTotal()
         {
             var salesTotals = this.ledgerEntryRepository
-                .FilterBy(e => this.periodsInCurrentQuarter.Contains(e.LedgerPeriod))
+                .FilterBy(e => this.periodsInLastQuarter.Contains(e.LedgerPeriod))
                 .GroupBy(l => l.TransactionType)
                 .Select(g => new { TransactionType = g.Key, Total = g.Sum(x => x.BaseNetAmount) });
 
@@ -62,7 +67,7 @@
         public decimal GetSalesVatTotal()
         {
             var vatOnSalesTotals = this.ledgerEntryRepository
-                .FilterBy(e => this.periodsInCurrentQuarter.Contains(e.LedgerPeriod))
+                .FilterBy(e => this.periodsInLastQuarter.Contains(e.LedgerPeriod))
                 .GroupBy(l => l.TransactionType)
                 .Select(g => new { TransactionType = g.Key, Total = g.Sum(x => x.BaseVatAmount) });
             
@@ -86,9 +91,9 @@
                         ct.cashbook_id = ctl.cashbook_id 
                         and ct.payment_or_lodgement = 'L'
                         and ct.period_number in 
-                        ({this.periodsInCurrentQuarter[0]}, 
-                        {this.periodsInCurrentQuarter[1]}, 
-                        {this.periodsInCurrentQuarter[2]})
+                        ({this.periodsInLastQuarter[0]}, 
+                        {this.periodsInLastQuarter[1]}, 
+                        {this.periodsInLastQuarter[2]})
                         and ct.cashbook_id = c.cashbook_id
                         and ctl.alloc_code = 'CE'
                         and ct.payment_or_lodgement = ctl.payment_or_lodgement
@@ -145,7 +150,7 @@
         public IDictionary<string, decimal> GetPurchasesTotals()
         {
             var join2 = this.purchaseLedger
-                .FilterBy(p => this.periodsInCurrentQuarter.Contains(p.LedgerPeriod))
+                .FilterBy(p => this.periodsInLastQuarter.Contains(p.LedgerPeriod))
                 .Join(
                     this.supplierRepository.FindAll(),
                     pl => new { pl.SupplierId },
@@ -179,9 +184,9 @@
                          from nominal_ledger
                          where nomacc_id = 1012  and TRANS_TYPE IN ('JRNL', 'CBPO') 
                          AND period_number in 
-                         ({this.periodsInCurrentQuarter[0]}, 
-                        {this.periodsInCurrentQuarter[1]}, 
-                        {this.periodsInCurrentQuarter[2]})
+                         ({this.periodsInLastQuarter[0]}, 
+                        {this.periodsInLastQuarter[1]}, 
+                        {this.periodsInLastQuarter[2]})
                          AND NARRATIVE != 'SALES' AND NARRATIVE NOT LIKE '%BANK%L'";
 
             var result = this.databaseService.ExecuteQuery(sql);
@@ -251,7 +256,7 @@
         private string GetDateStringFromPeriods()
         {
             var periods = this.ledgerPeriodRepository
-                .FilterBy(p => this.periodsInCurrentQuarter.Contains(p.PeriodNumber))
+                .FilterBy(p => this.periodsInLastQuarter.Contains(p.PeriodNumber))
                 .OrderBy(p => p.PeriodNumber).ToList();
 
             var start = periods.First();
