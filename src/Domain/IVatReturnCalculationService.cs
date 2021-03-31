@@ -24,8 +24,8 @@
 
         IDictionary<string, decimal> GetIntrastatArrivals();
 
-        decimal GetSalesVatTotal();
+        IEnumerable<NominalLedgerEntry> GetOtherJournals();
 
-        decimal GetOtherJournals();
+        decimal GetSalesVatTotal();
     }
 }

@@ -25,7 +25,8 @@
                            { "Gov-Client-Connection-Method", new[] { "WEB_APP_VIA_SERVER" } },
                            { "Gov-Client-Browser-Do-Not-Track", new[] { $"{resource.DoNotTrack}".ToLower() } }, 
                            { "Gov-Client-Browser-JS-User-Agent", new[] { resource.UserAgentString } },
-                           { "Gov-Client-Local-IPs", new[] { ToCommaSeparatedList(resource.LocalIps) } }, 
+                           { "Gov-Client-Local-IPs", new[] { ToCommaSeparatedList(resource.LocalIps) } },
+                           { "Gov-Client-Local-IPs-Timestamp", new[] { resource.LocalIpsTimestamp } },
                            { "Gov-Client-Browser-Plugins", new[] { ToCommaSeparatedList(resource.BrowserPlugins) } }, 
                            { "Gov-Client-Device-ID", new[] { deviceId } },
                            { "Gov-Client-Screens", new[] { $"width={resource.ScreenWidth}&height={resource.ScreenHeight}&scaling-factor={resource.ScalingFactor}&colour-depth={resource.ColourDepth}" } },
@@ -37,8 +38,10 @@
                            { "Gov-Vendor-License-IDs", new[] { string.Empty } },
                            { "Gov-Client-Public-Port", new[] { string.Empty } },
                            { "Gov-Client-Public-IP", new[] { string.Empty } },
+                           { "Gov-Client-Public-IP-Timestamp", new[] { string.Empty } },
                            { "Gov-Vendor-Public-IP", new[] { string.Empty } },
-                           { "Gov-Vendor-Forwarded", new[] { string.Empty } }
+                           { "Gov-Vendor-Forwarded", new[] { string.Empty } },
+                           { "Gov-Vendor-Product-Name", new[] { "Linn%20Products%20Ltd" } },
                        };
         }
 

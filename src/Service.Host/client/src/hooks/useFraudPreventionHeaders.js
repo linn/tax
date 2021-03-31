@@ -24,7 +24,7 @@ function getLocalIPs(callback) {
         sdp => {
             connection.setLocalDescription(sdp);
         },
-        function onerror() {}
+        () => {}
     );
 }
 
@@ -36,6 +36,7 @@ function useFraudPreventionHeaders(username) {
         browserPlugins: null,
         userAgentString: navigator.userAgent,
         localIps: null,
+        localIpsTimestamp: null,
         screenWidth: window.screen.width,
         screenHeight: window.screen.height,
         scalingFactor: window.devicePixelRatio,
@@ -50,7 +51,13 @@ function useFraudPreventionHeaders(username) {
             plugins.push(navigator.plugins[i]);
         }
         setFraudPreventionHeaders(r => ({ ...r, browserPlugins: plugins.map(p => p.name) }));
-        getLocalIPs(ipList => setFraudPreventionHeaders(r => ({ ...r, localIps: ipList })));
+        getLocalIPs(ipList =>
+            setFraudPreventionHeaders(r => ({
+                ...r,
+                localIps: ipList,
+                localIpsTimestamp: new Date().toISOString()
+            }))
+        );
     }, [setFraudPreventionHeaders]);
 
     function windowSize() {

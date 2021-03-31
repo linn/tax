@@ -84,11 +84,6 @@ function TaxReturn({
                         disabled
                     />
                 </Grid>
-                <Grid item xs={12}>
-                    <Typography variant="subtitle" gutterBottom>
-                        Take a note of this data for your records.
-                    </Typography>
-                </Grid>
             </Page>
         );
     }
@@ -115,7 +110,7 @@ function TaxReturn({
                             <Fragment />
                         )}
                         <Grid item xs={12}>
-                            <Typography variant="subtitle" gutterBottom>
+                            <Typography variant="subtitle1" gutterBottom>
                                 When you submit this VAT information you are making a legal
                                 declaration that the information is true and complete. A false
                                 declaration can result in prosecution.
@@ -253,6 +248,7 @@ function TaxReturn({
                                 disabled={inputInvalid()}
                                 color="primary"
                                 onClick={() => {
+                                    metadata.localIpsTimestamp = new Date().toISOString();
                                     submitVatReturn({ ...vatReturn, ...metadata });
                                 }}
                             >
@@ -268,13 +264,18 @@ function TaxReturn({
 
 TaxReturn.propTypes = {
     submitVatReturn: PropTypes.func.isRequired,
-    profile: PropTypes.shape({}),
+    profile: PropTypes.shape({ preferred_username: PropTypes.string }),
     errorMessage: PropTypes.string,
     snackbarVisible: PropTypes.bool,
     hideSnackbar: PropTypes.func.isRequired,
-    receipt: PropTypes.shape({}),
-    match: PropTypes.shape({}),
-    figures: PropTypes.shape({})
+    receipt: PropTypes.shape({
+        chargeRefNumber: PropTypes.string,
+        paymentIndicator: PropTypes.string,
+        processingDate: PropTypes.string,
+        formBundleNumber: PropTypes.string
+    }),
+    match: PropTypes.shape({ params: PropTypes.shape({ periodKey: PropTypes.string }) }),
+    figures: PropTypes.shape({ vatDueSales: PropTypes.number })
 };
 
 TaxReturn.defaultProps = {

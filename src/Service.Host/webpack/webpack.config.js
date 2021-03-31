@@ -2,6 +2,7 @@
 const webpack = require('webpack');
 
 module.exports = {
+    mode: 'development',
     entry: {
         app: [
             'babel-polyfill',
@@ -23,7 +24,7 @@ module.exports = {
                 exclude: [/\.html$/, /\.(js|jsx)$/, /\.css$/, /\.scss$/, /\.json$/, /\.svg$/],
                 use: {
                     loader: 'url-loader',
-                    query: {
+                    options: {
                         limit: 10000,
                         name: 'media/[name].[hash:8].[ext]'
                     }
@@ -45,7 +46,7 @@ module.exports = {
                 exclude: /(node_modules)/,
                 use: {
                     loader: 'babel-loader',
-                    query: {
+                    options: {
                         presets: [['@babel/preset-env', { modules: false }], '@babel/react'],
                         plugins: [
                             'react-hot-loader/babel',
@@ -91,7 +92,7 @@ module.exports = {
                 test: /\.svg$/,
                 use: {
                     loader: 'file-loader',
-                    query: {
+                    options: {
                         name: 'media/[name].[hash:8].[ext]'
                     }
                 }
@@ -107,11 +108,10 @@ module.exports = {
         }
         //modules: [path.resolve('node_modules'), 'node_modules'].concat(/* ... */)
     },
-    devtool: 'cheap-module-eval-source-map',
+    devtool: 'eval-cheap-module-source-map',
     // From https://github.com/gaearon/react-hot-boilerplate/blob/next/webpack.config.js
     plugins: [
         new webpack.HotModuleReplacementPlugin(), // enable HMR globally
-        new webpack.NamedModulesPlugin(), // prints more readable module names in the browser console on HMR updates
         new webpack.NoEmitOnErrorsPlugin(), // do not emit compiled assets that include errors
         new webpack.DefinePlugin({
             'PROCESS.ENV': {

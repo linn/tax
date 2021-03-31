@@ -2,6 +2,7 @@
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin');
 
 module.exports = {
+    mode: 'production',
     entry: {
         app: ['babel-polyfill', './client/src/index.js'],
         'silent-renew': './client/silent-renew/index.js'
@@ -17,7 +18,7 @@ module.exports = {
                 exclude: [/\.html$/, /\.(js|jsx)$/, /\.css$/, /\.scss$/, /\.json$/, /\.svg$/],
                 use: {
                     loader: 'url-loader',
-                    query: {
+                    options: {
                         limit: 10000,
                         name: 'media/[name].[hash:8].[ext]'
                     }
@@ -61,7 +62,7 @@ module.exports = {
                 test: /\.svg$/,
                 use: {
                     loader: 'file-loader',
-                    query: {
+                    options: {
                         name: 'media/[name].[hash:8].[ext]'
                     }
                 }
@@ -71,8 +72,7 @@ module.exports = {
     plugins: [
         // To strip all locales except “en”
         new MomentLocalesPlugin()
-    ],
-    devtool: 'none'
+    ]
     // enhance debugging by adding meta info for the browser devtools
     // source-map most detailed at the expense of build speed.
 };
