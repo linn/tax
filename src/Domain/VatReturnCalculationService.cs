@@ -212,27 +212,25 @@
         public IDictionary<string, decimal> GetIntrastatArrivals()
         {
             var dateString = this.GetDateStringFromPeriods();
-            var sql = $@"select sum(order_vat) from
-                        (select imp.impbook_id,
-                        imp.supplier_id,
-                        supp.supplier_name,
-                        sum(iod.vat_value) order_vat
-                        from impbooks imp,
-                        suppliers supp,
-                        impbook_order_details iod,
-                        countries co
-                        where imp.impbook_id=iod.impbook_id
-                        and imp.supplier_id=supp.supplier_id
-                        and trunc(imp.date_Created) between {dateString}
-                        and imp.date_Cancelled is null
-                        and co.country_code=supp.country
-                        and co.eec_member='Y'
-                        and imp.date_cancelled is null
-                        group by imp.impbook_id,
-                        imp.supplier_id,
-                        supp.supplier_name,
-                        imp.linn_vat,
-                        imp.total_import_value)";
+            var sql = $@"select sum(
+              nvl(sum(iod.vat_value),0)+nvl(imp.linn_vat,0))
+              from impbooks imp,
+              suppliers supp,
+              impbook_order_details iod,
+              countries co
+              where imp.impbook_id=iod.impbook_id
+              and imp.supplier_id=supp.supplier_id
+              and trunc(imp.date_Created) between {dateString}
+              and imp.date_Cancelled is null
+              and co.country_code=supp.country
+              and co.eec_member='Y'
+              and imp.date_cancelled is null
+              group by imp.impbook_id,
+              imp.supplier_id,
+              supp.supplier_name,
+              imp.linn_vat,
+              imp.total_import_value
+              order by imp.impbook_id";
 
             var res = this.databaseService.ExecuteQuery(sql).Tables[0].Rows[0][0];
             var vat = decimal.Parse(res.ToString());
@@ -265,7 +263,7 @@
             var startYear = start.MonthName.Substring(3, 4);
             var endMonth = end.MonthName.Substring(0, 3);
             var endYear = end.MonthName.Substring(3, 4);
-            return $@"TO_DATE('01-{startMonth}-{startYear}') and TO_DATE('31-{endMonth}-{endYear}')";
+            return $@"TO_DATE('01-{startMonth}-{startYear}') and LAST_DAY(TO_DATE('01-{endMonth}-{endYear}'))";
         }
     }
 }
