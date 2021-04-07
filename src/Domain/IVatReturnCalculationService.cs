@@ -22,8 +22,6 @@
 
         IDictionary<string, decimal> GetPurchasesTotals();
 
-        IDictionary<string, decimal> GetIntrastatArrivals();
-
         IEnumerable<NominalLedgerEntry> GetOtherJournals();
 
         decimal GetSalesVatTotal();

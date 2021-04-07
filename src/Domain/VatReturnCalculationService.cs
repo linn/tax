@@ -136,7 +136,7 @@
             return new VatReturn
                        {
                            VatDueSales = salesVatTotal + canteenVatTotal,
-                           VatDueAcquisitions = intrastatArrivalsVatTotal,
+                           VatDueAcquisitions = 0m,
                            TotalVatDue = totalVatDue,
                            VatReclaimedCurrPeriod = vatReclaimed,
                            NetVatDue = vatReclaimed - totalVatDue,
@@ -209,38 +209,38 @@
                                }).ToList();
         }
 
-        public IDictionary<string, decimal> GetIntrastatArrivals()
-        {
-            var dateString = this.GetDateStringFromPeriods();
-            var sql = $@"select sum(
-              nvl(sum(iod.vat_value),0)+nvl(imp.linn_vat,0))
-              from impbooks imp,
-              suppliers supp,
-              impbook_order_details iod,
-              countries co
-              where imp.impbook_id=iod.impbook_id
-              and imp.supplier_id=supp.supplier_id
-              and trunc(imp.date_Created) between {dateString}
-              and imp.date_Cancelled is null
-              and co.country_code=supp.country
-              and co.eec_member='Y'
-              and imp.date_cancelled is null
-              group by imp.impbook_id,
-              imp.supplier_id,
-              supp.supplier_name,
-              imp.linn_vat,
-              imp.total_import_value
-              order by imp.impbook_id";
+        //public IDictionary<string, decimal> GetIntrastatArrivals()
+        //{
+        //    var dateString = this.GetDateStringFromPeriods();
+        //    var sql = $@"select sum(
+        //      nvl(sum(iod.vat_value),0)+nvl(imp.linn_vat,0))
+        //      from impbooks imp,
+        //      suppliers supp,
+        //      impbook_order_details iod,
+        //      countries co
+        //      where imp.impbook_id=iod.impbook_id
+        //      and imp.supplier_id=supp.supplier_id
+        //      and trunc(imp.date_Created) between {dateString}
+        //      and imp.date_Cancelled is null
+        //      and co.country_code=supp.country
+        //      and co.eec_member='Y'
+        //      and imp.date_cancelled is null
+        //      group by imp.impbook_id,
+        //      imp.supplier_id,
+        //      supp.supplier_name,
+        //      imp.linn_vat,
+        //      imp.total_import_value
+        //      order by imp.impbook_id";
 
-            var res = this.databaseService.ExecuteQuery(sql).Tables[0].Rows[0][0];
-            var vat = decimal.Parse(res.ToString());
-            var goods = 0m;
-            return new Dictionary<string, decimal>
-                       {
-                           { "vat", Math.Round(vat, 2) },
-                           { "goods", Math.Round(goods, 2) }
-                       };
-        }
+        //    var res = this.databaseService.ExecuteQuery(sql).Tables[0].Rows[0][0];
+        //    var vat = decimal.Parse(res.ToString());
+        //    var goods = 0m;
+        //    return new Dictionary<string, decimal>
+        //               {
+        //                   { "vat", Math.Round(vat, 2) },
+        //                   { "goods", Math.Round(goods, 2) }
+        //               };
+        //}
 
         private static decimal GetPaymentValue(
             PurchaseLedgerTransactionType transactionType, 

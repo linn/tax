@@ -66,9 +66,9 @@
                             }),
                         PurchasesGoodsTotal = this.calculationService.GetPurchasesTotals()["goods"],
                         PurchasesVatTotal = this.calculationService.GetPurchasesTotals()["vat"],
-                        IntrastatArrivalsGoodsTotal = this.calculationService.GetIntrastatArrivals()["goods"], // should be 0 post brexit
-                        IntrastatArrivalsVatTotal = this.calculationService.GetIntrastatArrivals()["vat"], // should be 0 post brexit
-                        InstrastatDispatchesGoodsTotal = 0
+                        IntrastatArrivalsGoodsTotal = 0m, // 0 post brexit
+                        IntrastatArrivalsVatTotal = 0m, // 0 post brexit
+                        InstrastatDispatchesGoodsTotal = 0m
                     });
         }
 

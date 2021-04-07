@@ -29,7 +29,7 @@
         {
             this.result.Should().BeOfType<VatReturn>();
             this.result.VatDueSales.Should().Be(172505.07m);
-            this.result.VatDueAcquisitions.Should().Be(20780.65m);
+            this.result.VatDueAcquisitions.Should().Be(0m);
             this.result.TotalVatDue.Should().Be(193285.72m);
             this.result.VatReclaimedCurrPeriod.Should().Be(347294.36m);
             this.result.NetVatDue.Should().Be(154008.64m);
