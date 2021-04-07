@@ -140,10 +140,10 @@
                            TotalVatDue = totalVatDue,
                            VatReclaimedCurrPeriod = vatReclaimed,
                            NetVatDue = vatReclaimed - totalVatDue,
-                           TotalValueSalesExVat = canteenGoodsTotal + salesGoodsTotal,
-                           TotalValuePurchasesExVat = purchasesGoodsTotal,
-                           TotalValueGoodsSuppliedExVat = instrastatDispatchesGoodsTotal,
-                           TotalAcquisitionsExVat = intrastatArrivalsGoodsTotal
+                           TotalValueSalesExVat = Math.Round(canteenGoodsTotal + salesGoodsTotal, 0),
+                           TotalValuePurchasesExVat = Math.Round(purchasesGoodsTotal, 0),
+                           TotalValueGoodsSuppliedExVat = Math.Round(instrastatDispatchesGoodsTotal, 0),
+                           TotalAcquisitionsExVat = Math.Round(intrastatArrivalsGoodsTotal, 0)
                        };
         }
 
@@ -182,12 +182,11 @@
         {
             var sql = $@"select *
                          from nominal_ledger
-                         where nomacc_id = 1012  and TRANS_TYPE IN ('JRNL', 'CBPO') 
+                         where nomacc_id = 1012 
                          AND period_number in 
                          ({this.periodsInLastQuarter[0]}, 
-                        {this.periodsInLastQuarter[1]}, 
-                        {this.periodsInLastQuarter[2]})
-                         AND NARRATIVE != 'SALES' AND NARRATIVE NOT LIKE '%BANK%L'";
+                         {this.periodsInLastQuarter[1]}, 
+                         {this.periodsInLastQuarter[2]})";
 
             var result = this.databaseService.ExecuteQuery(sql);
             
@@ -213,27 +212,25 @@
         public IDictionary<string, decimal> GetIntrastatArrivals()
         {
             var dateString = this.GetDateStringFromPeriods();
-            var sql = $@"select sum(order_vat) from
-                        (select imp.impbook_id,
-                        imp.supplier_id,
-                        supp.supplier_name,
-                        sum(iod.vat_value) order_vat
-                        from impbooks imp,
-                        suppliers supp,
-                        impbook_order_details iod,
-                        countries co
-                        where imp.impbook_id=iod.impbook_id
-                        and imp.supplier_id=supp.supplier_id
-                        and trunc(imp.date_Created) between {dateString}
-                        and imp.date_Cancelled is null
-                        and co.country_code=supp.country
-                        and co.eec_member='Y'
-                        and imp.date_cancelled is null
-                        group by imp.impbook_id,
-                        imp.supplier_id,
-                        supp.supplier_name,
-                        imp.linn_vat,
-                        imp.total_import_value)";
+            var sql = $@"select sum(
+              nvl(sum(iod.vat_value),0)+nvl(imp.linn_vat,0))
+              from impbooks imp,
+              suppliers supp,
+              impbook_order_details iod,
+              countries co
+              where imp.impbook_id=iod.impbook_id
+              and imp.supplier_id=supp.supplier_id
+              and trunc(imp.date_Created) between {dateString}
+              and imp.date_Cancelled is null
+              and co.country_code=supp.country
+              and co.eec_member='Y'
+              and imp.date_cancelled is null
+              group by imp.impbook_id,
+              imp.supplier_id,
+              supp.supplier_name,
+              imp.linn_vat,
+              imp.total_import_value
+              order by imp.impbook_id";
 
             var res = this.databaseService.ExecuteQuery(sql).Tables[0].Rows[0][0];
             var vat = decimal.Parse(res.ToString());
@@ -266,7 +263,7 @@
             var startYear = start.MonthName.Substring(3, 4);
             var endMonth = end.MonthName.Substring(0, 3);
             var endYear = end.MonthName.Substring(3, 4);
-            return $@"TO_DATE('01-{startMonth}-{startYear}') and TO_DATE('31-{endMonth}-{endYear}')";
+            return $@"TO_DATE('01-{startMonth}-{startYear}') and LAST_DAY(TO_DATE('01-{endMonth}-{endYear}'))";
         }
     }
 }
