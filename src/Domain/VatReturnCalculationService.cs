@@ -140,7 +140,7 @@
                            TotalVatDue = totalVatDue,
                            VatReclaimedCurrPeriod = vatReclaimed,
                            NetVatDue = vatReclaimed - totalVatDue,
-                           TotalValueSalesExVat = canteenGoodsTotal + salesGoodsTotal,
+                           TotalValueSalesExVat = Math.Round(canteenGoodsTotal + salesGoodsTotal, 0),
                            TotalValuePurchasesExVat = purchasesGoodsTotal,
                            TotalValueGoodsSuppliedExVat = instrastatDispatchesGoodsTotal,
                            TotalAcquisitionsExVat = intrastatArrivalsGoodsTotal

@@ -33,10 +33,10 @@
             this.result.TotalVatDue.Should().Be(193285.72m);
             this.result.VatReclaimedCurrPeriod.Should().Be(347294.36m);
             this.result.NetVatDue.Should().Be(154008.64m);
-            this.result.TotalValueSalesExVat.Should().Be(3639426.39m);
-            this.result.TotalValuePurchasesExVat.Should().Be(2031905.52m);
+            this.result.TotalValueSalesExVat.Should().Be(3639426m);
+            this.result.TotalValuePurchasesExVat.Should().Be(2031906m);
             this.result.TotalValueGoodsSuppliedExVat.Should().Be(1206741m);
-            this.result.TotalAcquisitionsExVat.Should().Be(103903.25m);
+            this.result.TotalAcquisitionsExVat.Should().Be(103903m);
         }
     }
 }
