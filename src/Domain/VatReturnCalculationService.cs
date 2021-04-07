@@ -141,9 +141,9 @@
                            VatReclaimedCurrPeriod = vatReclaimed,
                            NetVatDue = vatReclaimed - totalVatDue,
                            TotalValueSalesExVat = Math.Round(canteenGoodsTotal + salesGoodsTotal, 0),
-                           TotalValuePurchasesExVat = purchasesGoodsTotal,
-                           TotalValueGoodsSuppliedExVat = instrastatDispatchesGoodsTotal,
-                           TotalAcquisitionsExVat = intrastatArrivalsGoodsTotal
+                           TotalValuePurchasesExVat = Math.Round(purchasesGoodsTotal, 0),
+                           TotalValueGoodsSuppliedExVat = Math.Round(instrastatDispatchesGoodsTotal, 0),
+                           TotalAcquisitionsExVat = Math.Round(intrastatArrivalsGoodsTotal, 0)
                        };
         }
 
