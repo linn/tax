@@ -24,7 +24,7 @@
 
         public int ScreenHeight { get; set; }
 
-        public int ScalingFactor { get; set; }
+        public decimal ScalingFactor { get; set; }
 
         public int ColourDepth { get; set; }
 
