@@ -234,7 +234,7 @@
 
             var res = this.databaseService.ExecuteQuery(sql).Tables[0].Rows[0][0];
             var vat = decimal.Parse(res.ToString());
-            var goods = 5m * vat;
+            var goods = 0m;
             return new Dictionary<string, decimal>
                        {
                            { "vat", Math.Round(vat, 2) },
