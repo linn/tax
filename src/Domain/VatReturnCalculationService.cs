@@ -182,12 +182,11 @@
         {
             var sql = $@"select *
                          from nominal_ledger
-                         where nomacc_id = 1012  and TRANS_TYPE IN ('JRNL', 'CBPO') 
+                         where nomacc_id = 1012 
                          AND period_number in 
                          ({this.periodsInLastQuarter[0]}, 
-                        {this.periodsInLastQuarter[1]}, 
-                        {this.periodsInLastQuarter[2]})
-                         AND NARRATIVE != 'SALES' AND NARRATIVE NOT LIKE '%BANK%L'";
+                         {this.periodsInLastQuarter[1]}, 
+                         {this.periodsInLastQuarter[2]})";
 
             var result = this.databaseService.ExecuteQuery(sql);
             
