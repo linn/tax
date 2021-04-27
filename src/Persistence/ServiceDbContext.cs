@@ -18,8 +18,6 @@
 
         public DbQuery<SalesLedgerEntry> LedgerEntries { get; set; }
 
-        public DbQuery<SalesLedgerTransactionType> TransactionTypes { get; set; }
-
         public DbQuery<Purchase> PurchaseLedger { get; set; }
 
         public DbQuery<PurchaseLedgerTransactionType> PurchaseLedgerTransactionTypes { get; set; }
@@ -32,17 +30,19 @@
 
         public DbQuery<LedgerPeriod> LedgerPeriods { get; set; }
 
+        public DbQuery<ImportBook> ImportBooks { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             this.QueryMasterLedger(builder);
             this.QueryLedgerEntries(builder);
-            this.QueryTransactionTypes(builder);
             this.QueryPurchaseLedger(builder);
             this.QueryPurchaseLedgerTransactionTypes(builder);
             this.QuerySuppliers(builder);
             this.QueryNominalLedger(builder);
             this.BuildVatReturnReceipts(builder);
             this.QueryLedgerPeriods(builder);
+            this.QueryImportBooks(builder);
             base.OnModelCreating(builder);
         }
 
@@ -76,12 +76,6 @@
             builder.Query<SalesLedgerEntry>().Property(e => e.BaseNetAmount).HasColumnName("BASE_NET_AMOUNT");
             builder.Query<SalesLedgerEntry>().Property(e => e.BaseVatAmount).HasColumnName("BASE_VAT_AMOUNT");
             builder.Query<SalesLedgerEntry>().Property(e => e.TransactionType).HasColumnName("TRANS_TYPE");
-        }
-
-        private void QueryTransactionTypes(ModelBuilder builder)
-        {
-            builder.Query<SalesLedgerTransactionType>().ToView("SL_TRANS_TYPES");
-            builder.Query<SalesLedgerTransactionType>().Property(t => t.TransactionName).HasColumnName("TRANSACTION_NAME");
         }
 
         private void QueryPurchaseLedger(ModelBuilder builder)
@@ -138,6 +132,15 @@
             builder.Query<LedgerPeriod>().ToView("LEDGER_PERIODS");
             builder.Query<LedgerPeriod>().Property(p => p.PeriodNumber).HasColumnName("PERIOD_NUMBER");
             builder.Query<LedgerPeriod>().Property(p => p.MonthName).HasColumnName("MONTH_NAME");
+        }
+
+        private void QueryImportBooks(ModelBuilder builder)
+        {
+            builder.Query<ImportBook>().ToView("IMPBOOKS");
+            builder.Query<ImportBook>().Property(i => i.LinnVat).HasColumnName("LINN_VAT");
+            builder.Query<ImportBook>().Property(i => i.DateCreated).HasColumnName("DATE_CREATED");
+            builder.Query<ImportBook>().Property(i => i.Pva).HasColumnName("PVA");
+            builder.Query<ImportBook>().Property(i => i.PeriodNumber).HasColumnName("PERIOD_NUMBER");
         }
     }
 }

@@ -28,6 +28,8 @@
 
         protected IVatReturnCalculationService Sut { get; private set; }
 
+        protected IQueryRepository<ImportBook> ImportBookRepository { get; private set; }
+
         protected IDatabaseService DatabaseService { get; private set; }
 
         [SetUp]
@@ -41,7 +43,7 @@
             this.LedgerMasterRepository = Substitute.For<IQueryRepository<LedgerMaster>>();
             this.DatabaseService = Substitute.For<IDatabaseService>();
             this.LedgerPeriodRepository = Substitute.For<IQueryRepository<LedgerPeriod>>();
-
+            this.ImportBookRepository = Substitute.For<IQueryRepository<ImportBook>>();
             this.LedgerMasterRepository.FindAll()
                 .Returns(new List<LedgerMaster> { new LedgerMaster { CurrentPeriod = 1000 } }.AsQueryable());
 
@@ -52,6 +54,7 @@
                 this.SupplierRepository,
                 this.LedgerMasterRepository,
                 this.LedgerPeriodRepository,
+                this.ImportBookRepository,
                 this.DatabaseService);
         }
     }

@@ -40,6 +40,7 @@
                     resource.PurchasesGoodsTotal,
                     resource.PurchasesVatTotal,
                     resource.CashbookAndOtherTotal,
+                    resource.PvaTotal,
                     resource.InstrastatDispatchesGoodsTotal,
                     resource.IntrastatArrivalsGoodsTotal,
                     resource.IntrastatArrivalsVatTotal));
@@ -66,6 +67,7 @@
                             }),
                         PurchasesGoodsTotal = this.calculationService.GetPurchasesTotals()["goods"],
                         PurchasesVatTotal = this.calculationService.GetPurchasesTotals()["vat"],
+                        PvaTotal = this.calculationService.GetPvaTotal(),
                         IntrastatArrivalsGoodsTotal = 0m, // 0 post brexit
                         IntrastatArrivalsVatTotal = 0m, // 0 post brexit
                         InstrastatDispatchesGoodsTotal = 0m

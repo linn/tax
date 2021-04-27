@@ -1,11 +1,10 @@
 ﻿namespace Linn.Tax.Domain
 {
+    using Linn.Common.Persistence;
     using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
-
-    using Linn.Common.Persistence;
 
     public class VatReturnCalculationService : IVatReturnCalculationService
     {
@@ -26,6 +25,8 @@
 
         private readonly IQueryRepository<LedgerPeriod> ledgerPeriodRepository;
 
+        private readonly IQueryRepository<ImportBook> importBooksRepository;
+
         public VatReturnCalculationService(
             IQueryRepository<SalesLedgerEntry> ledgerEntryRepository,
             IQueryRepository<Purchase> purchaseLedger,
@@ -33,6 +34,7 @@
             IQueryRepository<Supplier> supplierRepository,
             IQueryRepository<LedgerMaster> ledgerMasterRepository,
             IQueryRepository<LedgerPeriod> ledgerPeriodRepository,
+            IQueryRepository<ImportBook> importBooksRepository,
             IDatabaseService databaseService)
         {
             this.ledgerEntryRepository = ledgerEntryRepository;
@@ -49,6 +51,7 @@
                                                    m.CurrentPeriod - 2, 
                                                    m.CurrentPeriod - 3
                                                };
+            this.importBooksRepository = importBooksRepository;
             this.databaseService = databaseService;
         }
 
@@ -73,6 +76,13 @@
             
             return vatOnSalesTotals.ToList().First(t => t.TransactionType == "INV").Total
                 - vatOnSalesTotals.ToList().First(t => t.TransactionType == "CRED").Total;
+        }
+
+        public decimal GetPvaTotal()
+        {
+            return this.importBooksRepository
+                .FilterBy(i => i.Pva == "Y" && this.periodsInLastQuarter.Contains(i.PeriodNumber))
+                .Sum(x => x.LinnVat);
         }
 
         public IDictionary<string, decimal> GetCanteenTotals()
@@ -127,6 +137,7 @@
             decimal purchasesGoodsTotal,
             decimal purchasesVatTotal,
             decimal cashbookAndOtherTotal,
+            decimal pvaTotal,
             decimal instrastatDispatchesGoodsTotal, 
             decimal intrastatArrivalsGoodsTotal, 
             decimal intrastatArrivalsVatTotal) 
@@ -209,61 +220,12 @@
                                }).ToList();
         }
 
-        //public IDictionary<string, decimal> GetIntrastatArrivals()
-        //{
-        //    var dateString = this.GetDateStringFromPeriods();
-        //    var sql = $@"select sum(
-        //      nvl(sum(iod.vat_value),0)+nvl(imp.linn_vat,0))
-        //      from impbooks imp,
-        //      suppliers supp,
-        //      impbook_order_details iod,
-        //      countries co
-        //      where imp.impbook_id=iod.impbook_id
-        //      and imp.supplier_id=supp.supplier_id
-        //      and trunc(imp.date_Created) between {dateString}
-        //      and imp.date_Cancelled is null
-        //      and co.country_code=supp.country
-        //      and co.eec_member='Y'
-        //      and imp.date_cancelled is null
-        //      group by imp.impbook_id,
-        //      imp.supplier_id,
-        //      supp.supplier_name,
-        //      imp.linn_vat,
-        //      imp.total_import_value
-        //      order by imp.impbook_id";
-
-        //    var res = this.databaseService.ExecuteQuery(sql).Tables[0].Rows[0][0];
-        //    var vat = decimal.Parse(res.ToString());
-        //    var goods = 0m;
-        //    return new Dictionary<string, decimal>
-        //               {
-        //                   { "vat", Math.Round(vat, 2) },
-        //                   { "goods", Math.Round(goods, 2) }
-        //               };
-        //}
-
         private static decimal GetPaymentValue(
             PurchaseLedgerTransactionType transactionType, 
             decimal absoluteValue)
         {
             return transactionType.DebitOrCredit == "C" 
                        ? absoluteValue : absoluteValue * -1;
-        }
-
-        private string GetDateStringFromPeriods()
-        {
-            var periods = this.ledgerPeriodRepository
-                .FilterBy(p => this.periodsInLastQuarter.Contains(p.PeriodNumber))
-                .OrderBy(p => p.PeriodNumber).ToList();
-
-            var start = periods.First();
-            var end = periods.Last();
-
-            var startMonth = start.MonthName.Substring(0, 3);
-            var startYear = start.MonthName.Substring(3, 4);
-            var endMonth = end.MonthName.Substring(0, 3);
-            var endYear = end.MonthName.Substring(3, 4);
-            return $@"TO_DATE('01-{startMonth}-{startYear}') and LAST_DAY(TO_DATE('01-{endMonth}-{endYear}'))";
         }
     }
 }
