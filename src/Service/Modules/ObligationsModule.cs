@@ -28,7 +28,6 @@
                     resource,
                     (TokenResource)this.Session["access_token"],
                     this.Request.Cookies["device_id"]);
-            
 
             if (result is SuccessResult<ObligationsResource> successResult)
             {
