@@ -45,7 +45,7 @@ function TestFPH({ profile }) {
                         label="Device Id"
                         maxLength={9}
                         disabled
-                        propertyName="userAgentString"
+                        propertyName="deviceId"
                     />
                 </Grid>
                 <Grid item xs={12}>
