@@ -29,6 +29,8 @@ function getLocalIPs(callback) {
 }
 
 function useFraudPreventionHeaders(username) {
+    const getCookieValue = name =>
+        document.cookie.match(`(^|;)\\s*${name}\\s*=\\s*([^;]+)`)?.pop() || '';
     const [fraudPreventionHeaders, setFraudPreventionHeaders] = useState({
         doNotTrack: !!navigator?.doNotTrack,
         windowWidth: window.innerWidth,
@@ -42,6 +44,7 @@ function useFraudPreventionHeaders(username) {
         scalingFactor: window.devicePixelRatio,
         colourDepth: window.screen.colorDepth,
         timezoneOffset: new Date().getTimezoneOffset(),
+        deviceId: getCookieValue('device_id'),
         username
     });
 
@@ -69,7 +72,6 @@ function useFraudPreventionHeaders(username) {
     }
 
     window.onresize = windowSize;
-
     return fraudPreventionHeaders;
 }
 

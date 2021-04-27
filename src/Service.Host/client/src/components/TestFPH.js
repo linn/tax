@@ -41,6 +41,16 @@ function TestFPH({ profile }) {
                 <Grid item xs={12}>
                     <InputField
                         fullWidth
+                        value={fraudPreventionHeaders.deviceId}
+                        label="Device Id"
+                        maxLength={9}
+                        disabled
+                        propertyName="userAgentString"
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <InputField
+                        fullWidth
                         value={fraudPreventionHeaders.doNotTrack}
                         label="Browser Do Not Track Settings"
                         maxLength={9}
