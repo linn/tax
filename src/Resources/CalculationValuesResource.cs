@@ -24,6 +24,8 @@
 
         public decimal IntrastatArrivalsVatTotal { get; set; }
 
+        public decimal PvaTotal { get; set; }
+
         public IEnumerable<NominalLedgerEntryResource> LedgerEntries { get; set; }
     }
 }

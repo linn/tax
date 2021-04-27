@@ -25,6 +25,7 @@
             builder.RegisterType<NominalLedgerRepository>().As<IQueryRepository<NominalLedgerEntry>>();
             builder.RegisterType<VatReturnReceiptRepository>().As<IRepository<VatReturnReceipt, int>>();
             builder.RegisterType<LedgerPeriodRepository>().As<IQueryRepository<LedgerPeriod>>();
+            builder.RegisterType<ImportBookRepository>().As<IQueryRepository<ImportBook>>();
         }
     }
 }

@@ -12,6 +12,7 @@
             decimal purchasesGoodsTotal,
             decimal purchasesVatTotal,
             decimal cashbookAndOtherTotal,
+            decimal pvaTotal,
             decimal instrastatDispatchesGoodsTotal,
             decimal intrastatArrivalsGoodsTotal,
             decimal intrastatArrivalsVatTotal);
@@ -25,5 +26,7 @@
         IEnumerable<NominalLedgerEntry> GetOtherJournals();
 
         decimal GetSalesVatTotal();
+
+        decimal GetPvaTotal();
     }
 }

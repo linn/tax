@@ -192,6 +192,16 @@ function CalculationValues({ item, errorMessage, loading, fetchVatReturn }) {
                         />
                     </Grid>
                     <Grid item xs={3} />
+                    <Grid item xs={3}>
+                        <InputField
+                            value={calculationValues?.pvaTotal}
+                            label="PVA Total"
+                            type="number"
+                            onChange={handleFieldChange}
+                            propertyName="pvaTotal"
+                        />
+                    </Grid>
+                    <Grid item xs={9} />
                     <Grid item xs={4}>
                         <Button
                             variant="outlined"
