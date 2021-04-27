@@ -59,7 +59,6 @@
             var resource = this.Bind<AuthenticationResource>();
 
             var code = resource.Code;
-
             this.Session["access_token"] = this.apiService.ExchangeCodeForAccessToken(code);
 
             return new RedirectResponse($"{ConfigurationManager.Configuration["APP_ROOT"]}/tax/view-obligations")
@@ -69,11 +68,6 @@
         private object TestFraudPreventionHeaders()
         {
             var resource = this.Bind<FraudPreventionMetadataResource>();
-
-            if (!this.Request.Cookies.ContainsKey("device_id") || this.Request.Cookies["device_id"] == null)
-            {
-                this.Request.Cookies["device_id"] = Guid.NewGuid().ToString();
-            }
 
             var result = this.apiService.TestFraudPreventionHeaders(resource, this.Request.Cookies["device_id"]);
 
