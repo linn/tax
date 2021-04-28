@@ -118,18 +118,6 @@ function TaxReturn({
                         </Grid>
                         <Grid item xs={12}>
                             <InputField
-                                value={vatReturn.vrn}
-                                label=" 9 Digit VAT Registration Number"
-                                type="number"
-                                maxLength={9}
-                                required
-                                onChange={handleFieldChange}
-                                propertyName="vrn"
-                                disabled={vatReturn.finalised}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <InputField
                                 value={vatReturn.vatDueSales}
                                 label="VAT Due On Sales"
                                 type="number"
