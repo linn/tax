@@ -119,7 +119,7 @@ function TaxReturn({
                         <Grid item xs={12}>
                             <InputField
                                 value={vatReturn.vatDueSales}
-                                label="VAT Due On Sales"
+                                label="1. VAT Due On Sales"
                                 type="number"
                                 required
                                 onChange={handleFieldChange}
@@ -131,7 +131,7 @@ function TaxReturn({
                             <InputField
                                 type="number"
                                 value={vatReturn.vatDueAcquisitions}
-                                label="VAT Due On Acquisitions"
+                                label="2. VAT due on acquisitions from other EC Member States"
                                 required
                                 onChange={handleFieldChange}
                                 propertyName="vatDueAcquisitions"
@@ -142,7 +142,7 @@ function TaxReturn({
                             <InputField
                                 type="number"
                                 value={vatReturn.totalVatDue}
-                                label="Total VAT Due"
+                                label="3. Total VAT Due"
                                 required
                                 onChange={handleFieldChange}
                                 propertyName="totalVatDue"
@@ -153,7 +153,7 @@ function TaxReturn({
                             <InputField
                                 type="number"
                                 value={vatReturn.vatReclaimedCurrPeriod}
-                                label="VAT Reclaimed in Current Period"
+                                label="4. VAT reclaimed on purchases and other inputs (including acquisitions from the EU)"
                                 required
                                 onChange={handleFieldChange}
                                 propertyName="vatReclaimedCurrPeriod"
@@ -164,7 +164,7 @@ function TaxReturn({
                             <InputField
                                 type="number"
                                 value={vatReturn.netVatDue}
-                                label="Net VAT due"
+                                label="5. Net VAT due"
                                 required
                                 onChange={handleFieldChange}
                                 propertyName="netVatDue"
@@ -175,7 +175,7 @@ function TaxReturn({
                             <InputField
                                 type="number"
                                 value={vatReturn.totalValueSalesExVat}
-                                label="Total Value of Sales Excluding VAT"
+                                label="6. Total Value of Sales Excluding VAT"
                                 required
                                 onChange={handleFieldChange}
                                 propertyName="totalValueSalesExVat"
@@ -186,7 +186,7 @@ function TaxReturn({
                             <InputField
                                 type="number"
                                 value={vatReturn.totalValuePurchasesExVat}
-                                label="Total Value of Purchases Excluding VAT"
+                                label="7. Total Value of Purchases Excluding VAT"
                                 required
                                 onChange={handleFieldChange}
                                 propertyName="totalValuePurchasesExVat"
@@ -197,7 +197,7 @@ function TaxReturn({
                             <InputField
                                 type="number"
                                 value={vatReturn.totalValueGoodsSuppliedExVat}
-                                label="Total Value of Goods Suppled Excluding VAT"
+                                label="8. Total value of all supplies of goods and related costs, excluding any VAT, to other EC Member States"
                                 required
                                 onChange={handleFieldChange}
                                 propertyName="totalValueGoodsSuppliedExVat"
@@ -208,7 +208,7 @@ function TaxReturn({
                             <InputField
                                 type="number"
                                 value={vatReturn.totalAcquisitionsExVat}
-                                label="Total Acquisitions Excluding VAT"
+                                label="9. Total value of all acquisitions of goods and related costs, excluding any VAT, from other EC Member States"
                                 required
                                 onChange={handleFieldChange}
                                 propertyName="totalAcquisitionsExVat"
