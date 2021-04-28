@@ -149,7 +149,7 @@
                            VatDueSales = salesVatTotal + canteenVatTotal + pvaTotal,
                            VatDueAcquisitions = 0m,
                            TotalVatDue = totalVatDue,
-                           VatReclaimedCurrPeriod = vatReclaimed - pvaTotal,
+                           VatReclaimedCurrPeriod = vatReclaimed + pvaTotal,
                            NetVatDue = vatReclaimed - totalVatDue,
                            TotalValueSalesExVat = Math.Round(canteenGoodsTotal + salesGoodsTotal, 0),
                            TotalValuePurchasesExVat = Math.Round(purchasesGoodsTotal, 0),
