@@ -25,6 +25,7 @@ function TaxReturn({
     figures
 }) {
     const [vatReturn, setVatReturn] = useState({
+        finalised: false,
         periodKey: match?.params?.periodKey,
         vatDueSales: figures?.vatDueSales,
         vatDueAcquisitions: null,
@@ -34,12 +35,11 @@ function TaxReturn({
         totalValueSalesExVat: null,
         totalValuePurchasesExVat: null,
         totalValueGoodsSuppliedExVat: null,
-        totalAcquisitionsExVat: null,
-        finalised: false
+        totalAcquisitionsExVat: null
     });
 
     useEffect(() => {
-        setVatReturn({ ...figures, periodKey: match?.params?.periodKey });
+        setVatReturn({ ...figures, finalised: true, periodKey: match?.params?.periodKey });
     }, [figures, match]);
 
     // eslint-disable-next-line camelcase
@@ -217,17 +217,16 @@ function TaxReturn({
                         </Grid>
                         <Grid item xs={10}>
                             <OnOffSwitch
-                                label="Finalised? (Double check the figures before marking as finalised.)"
+                                label="Finalised?"
                                 value={vatReturn.finalised}
                                 onChange={() =>
                                     setVatReturn(r => ({ ...r, finalised: !r.finalised }))
                                 }
-                                propertyName="monthly"
+                                propertyName="finalised"
                             />
                         </Grid>
                         <Grid item xs={2}>
                             <Button
-                                className={{ float: 'right' }}
                                 variant="outlined"
                                 disabled={inputInvalid()}
                                 color="primary"

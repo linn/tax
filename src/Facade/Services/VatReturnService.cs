@@ -40,10 +40,7 @@
                     resource.PurchasesGoodsTotal,
                     resource.PurchasesVatTotal,
                     resource.CashbookAndOtherTotal,
-                    resource.PvaTotal,
-                    resource.InstrastatDispatchesGoodsTotal,
-                    resource.IntrastatArrivalsGoodsTotal,
-                    resource.IntrastatArrivalsVatTotal));
+                    resource.PvaTotal));
         }
 
         public IResult<CalculationValuesResource> GetCalculationValues()

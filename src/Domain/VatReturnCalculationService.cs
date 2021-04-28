@@ -1,10 +1,11 @@
 ﻿namespace Linn.Tax.Domain
 {
-    using Linn.Common.Persistence;
     using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
+
+    using Linn.Common.Persistence;
 
     public class VatReturnCalculationService : IVatReturnCalculationService
     {
@@ -137,24 +138,21 @@
             decimal purchasesGoodsTotal,
             decimal purchasesVatTotal,
             decimal cashbookAndOtherTotal,
-            decimal pvaTotal,
-            decimal instrastatDispatchesGoodsTotal, 
-            decimal intrastatArrivalsGoodsTotal, 
-            decimal intrastatArrivalsVatTotal) 
+            decimal pvaTotal) 
         {
-            decimal vatReclaimed = purchasesVatTotal + cashbookAndOtherTotal + intrastatArrivalsVatTotal;
-            decimal totalVatDue = salesVatTotal + canteenVatTotal + intrastatArrivalsVatTotal;
+            decimal vatReclaimed = purchasesVatTotal + cashbookAndOtherTotal + pvaTotal;
+            decimal totalVatDue = salesVatTotal + canteenVatTotal + pvaTotal;
             return new VatReturn
                        {
-                           VatDueSales = salesVatTotal + canteenVatTotal + pvaTotal,
+                           VatDueSales = totalVatDue,
                            VatDueAcquisitions = 0m,
                            TotalVatDue = totalVatDue,
-                           VatReclaimedCurrPeriod = vatReclaimed + pvaTotal,
+                           VatReclaimedCurrPeriod = vatReclaimed,
                            NetVatDue = vatReclaimed - totalVatDue,
                            TotalValueSalesExVat = Math.Round(canteenGoodsTotal + salesGoodsTotal, 0),
                            TotalValuePurchasesExVat = Math.Round(purchasesGoodsTotal, 0),
-                           TotalValueGoodsSuppliedExVat = Math.Round(instrastatDispatchesGoodsTotal, 0),
-                           TotalAcquisitionsExVat = Math.Round(intrastatArrivalsGoodsTotal, 0)
+                           TotalValueGoodsSuppliedExVat = 0m,
+                           TotalAcquisitionsExVat = 0m
                        };
         }
 
