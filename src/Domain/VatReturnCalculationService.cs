@@ -1,10 +1,11 @@
 ﻿namespace Linn.Tax.Domain
 {
-    using Linn.Common.Persistence;
     using System;
     using System.Collections.Generic;
     using System.Data;
     using System.Linq;
+
+    using Linn.Common.Persistence;
 
     public class VatReturnCalculationService : IVatReturnCalculationService
     {
