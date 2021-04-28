@@ -12,10 +12,7 @@
             decimal purchasesGoodsTotal,
             decimal purchasesVatTotal,
             decimal cashbookAndOtherTotal,
-            decimal pvaTotal,
-            decimal instrastatDispatchesGoodsTotal,
-            decimal intrastatArrivalsGoodsTotal,
-            decimal intrastatArrivalsVatTotal);
+            decimal pvaTotal);
 
         decimal GetSalesGoodsTotal();
 

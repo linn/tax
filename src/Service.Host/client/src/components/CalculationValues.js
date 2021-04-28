@@ -166,34 +166,6 @@ function CalculationValues({ item, errorMessage, loading, fetchVatReturn }) {
                     </Grid>
                     <Grid item xs={3}>
                         <InputField
-                            value={calculationValues?.instrastatDispatchesGoodsTotal}
-                            label="Intrastat Dispatches - Goods"
-                            type="number"
-                            onChange={handleFieldChange}
-                            propertyName="instrastatDispatchesGoodsTotal"
-                        />
-                    </Grid>
-                    <Grid item xs={3}>
-                        <InputField
-                            value={calculationValues?.intrastatArrivalsGoodsTotal}
-                            label="Intrastat Arrivals - Goods"
-                            type="number"
-                            onChange={handleFieldChange}
-                            propertyName="intrastatArrivalsGoodsTotal"
-                        />
-                    </Grid>
-                    <Grid item xs={3}>
-                        <InputField
-                            value={calculationValues?.intrastatArrivalsVatTotal}
-                            label="Intrastat Arrivals - VAT"
-                            type="number"
-                            onChange={handleFieldChange}
-                            propertyName="intrastatArrivalsVatTotal"
-                        />
-                    </Grid>
-                    <Grid item xs={3} />
-                    <Grid item xs={3}>
-                        <InputField
                             value={calculationValues?.pvaTotal}
                             label="PVA Total"
                             type="number"
