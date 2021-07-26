@@ -29,5 +29,7 @@
         public int ColourDepth { get; set; }
 
         public int TimezoneOffset { get; set; }
+
+        public string DeviceId { get; set; }
     }
 }

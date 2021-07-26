@@ -28,7 +28,7 @@
             this.clientSecret = clientSecret;
         }
 
-        public IRestResponse<string> SubmitVatReturn(VatReturnSubmissionResource resource, TokenResource token, string deviceId)
+        public IRestResponse<string> SubmitVatReturn(VatReturnSubmissionResource resource, TokenResource token)
         {
             var json = new JsonSerializer();
             var uri = new Uri($"{this.rootUri}organisations/vat/{resource.Vrn}/returns", UriKind.RelativeOrAbsolute);
@@ -36,7 +36,7 @@
                 CancellationToken.None,
                 uri,
                 new Dictionary<string, string>(),
-                RequestHeaders.JsonGetHeadersWithAuth(token.access_token, resource, deviceId),
+                RequestHeaders.JsonGetHeadersWithAuth(token.access_token, resource),
                 json.Serialize(new
                                    {
                                         periodKey = resource.PeriodKey,
@@ -54,14 +54,14 @@
                 "application/json").Result;
         }
 
-        public IRestResponse<string> GetVatObligations(ObligationsRequestResource resource, TokenResource token, string deviceId)
+        public IRestResponse<string> GetVatObligations(ObligationsRequestResource resource, TokenResource token)
         {
             var uri = new Uri($"{this.rootUri}organisations/vat/{resource.Vrn}/obligations?status=O", UriKind.RelativeOrAbsolute);
             return this.restClient.Get(
                 CancellationToken.None,
                 uri,
                 new Dictionary<string, string>(),
-                RequestHeaders.JsonGetHeadersWithAuth(token.access_token, resource, deviceId)).Result;
+                RequestHeaders.JsonGetHeadersWithAuth(token.access_token, resource)).Result;
         }
 
         public TokenResource GenerateToken()
@@ -83,14 +83,14 @@
             return response.Value;
         }
 
-        public IRestResponse<string> TestFraudPreventionHeaders(FraudPreventionMetadataResource resource, string deviceId)
+        public IRestResponse<string> TestFraudPreventionHeaders(FraudPreventionMetadataResource resource)
         {
             var token = this.GenerateToken();
             var request = this.restClient.Get(
                 CancellationToken.None, 
                 new Uri($"{this.rootUri}test/fraud-prevention-headers/validate", UriKind.RelativeOrAbsolute),
                 new Dictionary<string, string>(),
-                RequestHeaders.JsonGetHeadersWithAuth(token.access_token, resource, deviceId));
+                RequestHeaders.JsonGetHeadersWithAuth(token.access_token, resource));
 
             return request.Result;
         }

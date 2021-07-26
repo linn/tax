@@ -53,7 +53,7 @@
         {
             var resource = this.Bind<VatReturnSubmissionResource>();
             
-            var result = this.vatReturnService.SubmitVatReturn(resource, (TokenResource)this.Session["access_token"], this.Request.Cookies["device_id"]);
+            var result = this.vatReturnService.SubmitVatReturn(resource, (TokenResource)this.Session["access_token"]);
             if (result is CreatedResult<VatReturnReceiptResource> createdResult)
             {
                 return this.Negotiate

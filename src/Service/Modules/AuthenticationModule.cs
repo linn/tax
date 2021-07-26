@@ -69,7 +69,7 @@
         {
             var resource = this.Bind<FraudPreventionMetadataResource>();
 
-            var result = this.apiService.TestFraudPreventionHeaders(resource, this.Request.Cookies["device_id"]);
+            var result = this.apiService.TestFraudPreventionHeaders(resource);
 
             return result.Value;
         }
