@@ -16,7 +16,7 @@
                        };
         }
 
-        public static IDictionary<string, string[]> JsonGetHeadersWithAuth(string token, FraudPreventionMetadataResource resource, string deviceId)
+        public static IDictionary<string, string[]> JsonGetHeadersWithAuth(string token, FraudPreventionMetadataResource resource)
         {
             return new Dictionary<string, string[]>
                        {
@@ -28,7 +28,7 @@
                            { "Gov-Client-Local-IPs", new[] { ToCommaSeparatedList(resource.LocalIps) } },
                            { "Gov-Client-Local-IPs-Timestamp", new[] { resource.LocalIpsTimestamp } },
                            { "Gov-Client-Browser-Plugins", new[] { ToCommaSeparatedList(resource.BrowserPlugins) } }, 
-                           { "Gov-Client-Device-ID", new[] { deviceId } },
+                           { "Gov-Client-Device-ID", new[] { resource.DeviceId } },
                            { "Gov-Client-Screens", new[] { $"width={resource.ScreenWidth}&height={resource.ScreenHeight}&scaling-factor={resource.ScalingFactor}&colour-depth={resource.ColourDepth}" } },
                            { "Gov-Client-Timezone", new[] { $"UTC{ToUtcString(resource.TimezoneOffset)}" } },
                            { "Gov-Client-User-IDs", new[] { $"Linn={resource.Username}" } },

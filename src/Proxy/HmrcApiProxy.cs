@@ -36,7 +36,7 @@
                 CancellationToken.None,
                 uri,
                 new Dictionary<string, string>(),
-                RequestHeaders.JsonGetHeadersWithAuth(token.access_token, resource, deviceId),
+                RequestHeaders.JsonGetHeadersWithAuth(token.access_token, resource),
                 json.Serialize(new
                                    {
                                         periodKey = resource.PeriodKey,
@@ -61,7 +61,7 @@
                 CancellationToken.None,
                 uri,
                 new Dictionary<string, string>(),
-                RequestHeaders.JsonGetHeadersWithAuth(token.access_token, resource, deviceId)).Result;
+                RequestHeaders.JsonGetHeadersWithAuth(token.access_token, resource)).Result;
         }
 
         public TokenResource GenerateToken()
@@ -83,14 +83,14 @@
             return response.Value;
         }
 
-        public IRestResponse<string> TestFraudPreventionHeaders(FraudPreventionMetadataResource resource, string deviceId)
+        public IRestResponse<string> TestFraudPreventionHeaders(FraudPreventionMetadataResource resource)
         {
             var token = this.GenerateToken();
             var request = this.restClient.Get(
                 CancellationToken.None, 
                 new Uri($"{this.rootUri}test/fraud-prevention-headers/validate", UriKind.RelativeOrAbsolute),
                 new Dictionary<string, string>(),
-                RequestHeaders.JsonGetHeadersWithAuth(token.access_token, resource, deviceId));
+                RequestHeaders.JsonGetHeadersWithAuth(token.access_token, resource));
 
             return request.Result;
         }
