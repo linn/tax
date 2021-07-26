@@ -26,8 +26,7 @@
             
             var result = this.vatReturnService.GetObligations(
                     resource,
-                    (TokenResource)this.Session["access_token"],
-                    this.Request.Cookies["device_id"]);
+                    (TokenResource)this.Session["access_token"]);
 
             if (result is SuccessResult<ObligationsResource> successResult)
             {

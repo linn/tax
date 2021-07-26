@@ -24,7 +24,7 @@
             this.resource = new VatReturnSubmissionResource();
 
             this.VatReturnService
-                .SubmitVatReturn(Arg.Any<VatReturnSubmissionResource>(), Arg.Any<TokenResource>(), Arg.Any<string>())
+                .SubmitVatReturn(Arg.Any<VatReturnSubmissionResource>(), Arg.Any<TokenResource>())
                 .Returns(new CreatedResult<VatReturnReceiptResource>(new VatReturnReceiptResource
                                                                           {
                                                                               ChargeRefNumber = "ref",
@@ -52,8 +52,7 @@
         {
             this.VatReturnService.Received().SubmitVatReturn(
                 Arg.Any<VatReturnSubmissionResource>(), 
-                Arg.Any<TokenResource>(), 
-                Arg.Any<string>());
+                Arg.Any<TokenResource>());
         }
 
         [Test]

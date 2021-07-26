@@ -28,7 +28,7 @@
             this.clientSecret = clientSecret;
         }
 
-        public IRestResponse<string> SubmitVatReturn(VatReturnSubmissionResource resource, TokenResource token, string deviceId)
+        public IRestResponse<string> SubmitVatReturn(VatReturnSubmissionResource resource, TokenResource token)
         {
             var json = new JsonSerializer();
             var uri = new Uri($"{this.rootUri}organisations/vat/{resource.Vrn}/returns", UriKind.RelativeOrAbsolute);
@@ -54,7 +54,7 @@
                 "application/json").Result;
         }
 
-        public IRestResponse<string> GetVatObligations(ObligationsRequestResource resource, TokenResource token, string deviceId)
+        public IRestResponse<string> GetVatObligations(ObligationsRequestResource resource, TokenResource token)
         {
             var uri = new Uri($"{this.rootUri}organisations/vat/{resource.Vrn}/obligations?status=O", UriKind.RelativeOrAbsolute);
             return this.restClient.Get(

@@ -73,10 +73,9 @@
 
         public IResult<VatReturnReceiptResource> SubmitVatReturn(
             VatReturnSubmissionResource resource, 
-            TokenResource token, 
-            string deviceId)
+            TokenResource token)
         {
-            var apiResponse = this.apiService.SubmitVatReturn(resource, token, deviceId);
+            var apiResponse = this.apiService.SubmitVatReturn(resource, token);
             var json = new JsonSerializer();
 
             if (apiResponse.StatusCode == HttpStatusCode.Created)
@@ -107,10 +106,9 @@
 
         public IResult<ObligationsResource> GetObligations(
             ObligationsRequestResource resource, 
-            TokenResource token, 
-            string deviceId)
+            TokenResource token)
         {
-            var apiResponse = this.apiService.GetVatObligations(resource, token, deviceId);
+            var apiResponse = this.apiService.GetVatObligations(resource, token);
             var json = new JsonSerializer();
             if (apiResponse.StatusCode == HttpStatusCode.OK)
             {
