@@ -97,7 +97,7 @@
 
         public TokenResource ExchangeCodeForAccessToken(string code)
         {
-            var uri = new Uri($"{this.rootUri}/oauth/token", UriKind.RelativeOrAbsolute);
+            var uri = new Uri($"{this.rootUri}oauth/token", UriKind.RelativeOrAbsolute);
             var redirect = ConfigurationManager.Configuration["AUTH_CALLBACK_URI"];
             var response = this.restClient.Post<TokenResource>(
                 CancellationToken.None,
