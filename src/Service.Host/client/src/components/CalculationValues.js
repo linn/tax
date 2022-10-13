@@ -188,19 +188,18 @@ function CalculationValues({ item, errorMessage, loading, fetchVatReturn }) {
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
-                        <div style={{ height: 500, width: '100%' }}>
-                            {rows && (
-                                <DataGrid
-                                    rows={rows}
-                                    columns={columns}
-                                    density="standard"
-                                    onSelectionModelChange={model => handleSelectionChange(model)}
-                                    rowHeight={34}
-                                    checkboxSelection
-                                    hideFooter
-                                />
-                            )}
-                        </div>
+                        {rows && (
+                            <DataGrid
+                                rows={rows}
+                                columns={columns}
+                                density="standard"
+                                onSelectionModelChange={model => handleSelectionChange(model)}
+                                rowHeight={34}
+                                autoHeight
+                                checkboxSelection
+                                hideFooter
+                            />
+                        )}
                     </Grid>
                     <Grid item xs={12}>
                         <InputField
