@@ -16,10 +16,12 @@ function CalculationValues({ item, errorMessage, loading, fetchVatReturn }) {
 
     const [selectedRows, setSelectedRows] = useState([]);
 
+    const [canteenTableRows, setCanteenTableRows] = useState([]);
+
     useEffect(() => {
         setcalculationValues({
             ...item,
-            cashbookAndOtherTotal: parseFloat(
+            cashbookAndOtherTotal: Decimal(
                 selectedRows.reduce(
                     (accumulator, currentValue) =>
                         new Decimal(accumulator).plus(new Decimal(currentValue.amount)),
@@ -33,6 +35,12 @@ function CalculationValues({ item, errorMessage, loading, fetchVatReturn }) {
                 id: s.tref
             }))
         );
+        setCanteenTableRows(
+            item?.canteenCredits?.map(s => ({
+                ...s,
+                id: s.tref
+            }))
+        );
     }, [item, selectedRows]);
 
     const handleFieldChange = (propertyName, newValue) => {
@@ -41,15 +49,35 @@ function CalculationValues({ item, errorMessage, loading, fetchVatReturn }) {
 
     const columns = [
         { field: 'amount', headerName: 'Amount', width: 140 },
-        { field: 'creditOrDebit', headerName: 'Debit/Credit', width: 140 },
-        { field: 'datePosted', headerName: 'Date Posted', width: 200 },
-        { field: 'narrative', headerName: 'Narrative', width: 140 },
-        { field: 'description', headerName: 'Description', width: 140 },
+        { field: 'creditOrDebit', headerName: 'D/C', width: 80 },
+        { field: 'datePosted', headerName: 'Date Posted', width: 150 },
+        { field: 'narrative', headerName: 'Narrative', width: 250 },
+        { field: 'description', headerName: 'Description', width: 500 },
         { field: 'comments', headerName: 'Comments', width: 400 }
     ];
 
     const handleSelectionChange = model => {
         setSelectedRows(rows.filter(r => model.selectionModel.includes(r.tref.toString())));
+    };
+
+    const handleCanteenTableSelectionChange = model => {
+        const selected = canteenTableRows.filter(r =>
+            model.selectionModel.includes(r.tref.toString())
+        );
+        const selectedValue = selected.reduce(
+            (accumulator, currentValue) =>
+                new Decimal(accumulator).plus(new Decimal(currentValue.amount)),
+            0
+        );
+
+        const goods = Decimal(selectedValue).div(Decimal(1.2)).toDecimalPlaces(2);
+        const vat = goods.mul(Decimal(0.2)).toDecimalPlaces(2);
+
+        setcalculationValues({
+            ...calculationValues,
+            canteenGoodsTotal: Decimal(item.canteenGoodsTotal).plus(Decimal(goods)),
+            canteenVatTotal: Decimal(item.canteenVatTotal).plus(Decimal(vat))
+        });
     };
 
     return (
@@ -114,6 +142,26 @@ function CalculationValues({ item, errorMessage, loading, fetchVatReturn }) {
                         />
                     </Grid>
                     <Grid item xs={6} />
+                    <Grid item xs={12}>
+                        {rows && (
+                            <DataGrid
+                                rows={canteenTableRows}
+                                columns={columns}
+                                density="standard"
+                                onSelectionModelChange={handleCanteenTableSelectionChange}
+                                rowHeight={34}
+                                checkboxSelection
+                                hideFooter
+                                autoHeight
+                            />
+                        )}
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography variant="subtitle1" gutterBottom>
+                            Selected the Nominal Ledger Entries you want to include in the Canteen
+                            totals above.
+                        </Typography>
+                    </Grid>
                     <Grid item xs={3}>
                         <InputField
                             value={calculationValues?.purchasesGoodsTotal}
@@ -199,7 +247,10 @@ CalculationValues.propTypes = {
     receipt: PropTypes.shape({}),
     item: PropTypes.shape({
         salesGoodsTotal: PropTypes.number,
-        ledgerEntries: PropTypes.arrayOf(PropTypes.shape({}))
+        canteenGoodsTotal: PropTypes.number,
+        canteenVatTotal: PropTypes.number,
+        ledgerEntries: PropTypes.arrayOf(PropTypes.shape({})),
+        canteenCredits: PropTypes.arrayOf(PropTypes.shape({}))
     }),
     errorMessage: PropTypes.string
 };

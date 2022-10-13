@@ -32,10 +32,13 @@
 
         protected IDatabaseService DatabaseService { get; private set; }
 
+        protected IQueryRepository<NominalLedgerEntry> NominalLedgerRepository { get; private set; }
+
         [SetUp]
         public void SetUpContext()
         {
             this.LedgerEntryRepository = Substitute.For<IQueryRepository<SalesLedgerEntry>>();
+            this.NominalLedgerRepository = Substitute.For<IQueryRepository<NominalLedgerEntry>>();
             this.PurchaseLedger = Substitute.For<IQueryRepository<Purchase>>();
             this.PurchaseLedgerTransactionTypeRepository =
                 Substitute.For<IQueryRepository<PurchaseLedgerTransactionType>>();
@@ -53,8 +56,8 @@
                 this.PurchaseLedgerTransactionTypeRepository,
                 this.SupplierRepository,
                 this.LedgerMasterRepository,
-                this.LedgerPeriodRepository,
                 this.ImportBookRepository,
+                this.NominalLedgerRepository,
                 this.DatabaseService);
         }
     }

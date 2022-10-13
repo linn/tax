@@ -108,13 +108,17 @@
         private void QueryNominalLedger(ModelBuilder builder)
         {
            builder.Query<NominalLedgerEntry>().ToView("NOMINAL_LEDGER");
+           builder.Query<NominalLedgerEntry>().Property(e => e.Tref).HasColumnName("TREF");
            builder.Query<NominalLedgerEntry>().Property(e => e.Amount).HasColumnName("AMOUNT");
            builder.Query<NominalLedgerEntry>().Property(e => e.TransactionType).HasColumnName("TRANS_TYPE");
            builder.Query<NominalLedgerEntry>().Property(e => e.Comments).HasColumnName("COMMENTS");
+           builder.Query<NominalLedgerEntry>().Property(e => e.Narrative).HasColumnName("NARRATIVE");
+           builder.Query<NominalLedgerEntry>().Property(e => e.Description).HasColumnName("DESCRIPTION");
            builder.Query<NominalLedgerEntry>().Property(e => e.NominalAccountId).HasColumnName("NOMACC_ID");
            builder.Query<NominalLedgerEntry>().Property(e => e.PeriodNumber).HasColumnName("PERIOD_NUMBER");
            builder.Query<NominalLedgerEntry>().Property(e => e.JournalNumber).HasColumnName("JOURNAL_NUMBER");
            builder.Query<NominalLedgerEntry>().Property(e => e.CreditOrDebit).HasColumnName("CREDIT_OR_DEBIT");
+           builder.Query<NominalLedgerEntry>().Property(e => e.DatePosted).HasColumnName("DATE_POSTED");
         }
 
         private void BuildVatReturnReceipts(ModelBuilder builder)
