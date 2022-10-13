@@ -24,7 +24,7 @@ function CalculationValues({ item, errorMessage, loading, fetchVatReturn }) {
             cashbookAndOtherTotal: Decimal(
                 selectedRows.reduce(
                     (accumulator, currentValue) =>
-                        new Decimal(accumulator).plus(new Decimal(currentValue.amount)),
+                        Decimal(accumulator).plus(Decimal(currentValue.amount)),
                     0
                 )
             )
@@ -65,8 +65,7 @@ function CalculationValues({ item, errorMessage, loading, fetchVatReturn }) {
             model.selectionModel.includes(r.tref.toString())
         );
         const selectedValue = selected.reduce(
-            (accumulator, currentValue) =>
-                new Decimal(accumulator).plus(new Decimal(currentValue.amount)),
+            (accumulator, currentValue) => Decimal(accumulator).plus(Decimal(currentValue.amount)),
             0
         );
 
