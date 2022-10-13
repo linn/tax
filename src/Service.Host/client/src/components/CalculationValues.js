@@ -68,9 +68,14 @@ function CalculationValues({ item, errorMessage, loading, fetchVatReturn }) {
             (accumulator, currentValue) => Decimal(accumulator).plus(Decimal(currentValue.amount)),
             0
         );
+        const total = Decimal(selectedValue);
+        const goods = total.div(Decimal(1.2)).toDecimalPlaces(2);
 
-        const goods = Decimal(selectedValue).div(Decimal(1.2)).toDecimalPlaces(2);
-        const vat = goods.mul(Decimal(0.2)).toDecimalPlaces(2);
+        let vat = goods.mul(Decimal(0.2)).toDecimalPlaces(2);
+        const discrepancy = total.minus(goods.plus(vat));
+        if (discrepancy !== 0) {
+            vat = vat.plus(discrepancy);
+        }
 
         setcalculationValues({
             ...calculationValues,
