@@ -22,11 +22,9 @@
 
         private readonly List<int> periodsInLastQuarter;
 
-        private readonly IQueryRepository<LedgerMaster> ledgerMasterRepository;
-
-        private readonly IQueryRepository<LedgerPeriod> ledgerPeriodRepository;
-
         private readonly IQueryRepository<ImportBook> importBooksRepository;
+
+        private readonly IQueryRepository<NominalLedgerEntry> nominalLedgerRepository;
 
         public VatReturnCalculationService(
             IQueryRepository<SalesLedgerEntry> ledgerEntryRepository,
@@ -34,18 +32,17 @@
             IQueryRepository<PurchaseLedgerTransactionType> purchaseLedgerTransactionTypeRepository,
             IQueryRepository<Supplier> supplierRepository,
             IQueryRepository<LedgerMaster> ledgerMasterRepository,
-            IQueryRepository<LedgerPeriod> ledgerPeriodRepository,
             IQueryRepository<ImportBook> importBooksRepository,
+            IQueryRepository<NominalLedgerEntry> nominalLedgerRepository,
             IDatabaseService databaseService)
         {
             this.ledgerEntryRepository = ledgerEntryRepository;
-            this.ledgerPeriodRepository = ledgerPeriodRepository;
+            this.nominalLedgerRepository = nominalLedgerRepository;
             this.purchaseLedger = purchaseLedger;
             this.purchaseLedgerTransactionTypeRepository 
                 = purchaseLedgerTransactionTypeRepository;
             this.supplierRepository = supplierRepository;
-            this.ledgerMasterRepository = ledgerMasterRepository;
-            var m = this.ledgerMasterRepository.FindAll().ToList().FirstOrDefault();
+            var m = ledgerMasterRepository.FindAll().ToList().FirstOrDefault();
             this.periodsInLastQuarter = new List<int>
                                                {
                                                    m.CurrentPeriod - 1,
@@ -66,6 +63,13 @@
             return
                 salesTotals.ToList().First(t => t.TransactionType == "INV").Total // no other transaction types?
                 - salesTotals.ToList().First(t => t.TransactionType == "CRED").Total;
+        }
+
+        public IEnumerable<NominalLedgerEntry> GetCanteenCredits()
+        {
+            return this.nominalLedgerRepository.FilterBy(
+                e => this.periodsInLastQuarter.Contains(e.PeriodNumber) && e.NominalAccountId == 4039
+                                                                        && e.CreditOrDebit == "C");
         }
 
         public decimal GetSalesVatTotal()
@@ -189,33 +193,8 @@
 
         public IEnumerable<NominalLedgerEntry> GetOtherJournals()
         {
-            var sql = $@"select *
-                         from nominal_ledger
-                         where nomacc_id = 1012 
-                         AND period_number in 
-                         ({this.periodsInLastQuarter[0]}, 
-                         {this.periodsInLastQuarter[1]}, 
-                         {this.periodsInLastQuarter[2]})";
-
-            var result = this.databaseService.ExecuteQuery(sql);
-            
-            return (from DataRow row in result.Tables[0].Rows
-                    select row.ItemArray
-                    into values
-                    select new NominalLedgerEntry 
-                               {
-                                   Tref = Convert.ToInt32(values[0]),
-                                   Amount = values[7].ToString().Equals("D") ? 
-                                                Convert.ToDecimal(values[5]) 
-                                                : 0m - Convert.ToDecimal(values[5]),
-                        Comments = values[11].ToString(),
-                                   CreditOrDebit = values[7].ToString(),
-                                   DatePosted = Convert.ToDateTime(values[3]),
-                                   Description = values[10].ToString(),
-                                   JournalNumber = Convert.ToInt32(values[1]),
-                                   Narrative = values[9].ToString(),
-                                   TransactionType = values[6].ToString()
-                               }).ToList();
+            return this.nominalLedgerRepository.FilterBy(
+                e => this.periodsInLastQuarter.Contains(e.PeriodNumber) && e.NominalAccountId == 1012);
         }
 
         private static decimal GetPaymentValue(

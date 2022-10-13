@@ -60,14 +60,25 @@
                                 Comments = x.Comments,
                                 Description = x.Description,
                                 CreditOrDebit = x.CreditOrDebit,
-                                DatePosted = x.DatePosted.ToString("o")
+                                DatePosted = x.DatePosted.ToString("dd/MM/yyyy")
                             }),
                         PurchasesGoodsTotal = this.calculationService.GetPurchasesTotals()["goods"],
                         PurchasesVatTotal = this.calculationService.GetPurchasesTotals()["vat"],
                         PvaTotal = this.calculationService.GetPvaTotal(),
                         IntrastatArrivalsGoodsTotal = 0m, // 0 post brexit
                         IntrastatArrivalsVatTotal = 0m, // 0 post brexit
-                        InstrastatDispatchesGoodsTotal = 0m
+                        InstrastatDispatchesGoodsTotal = 0m,
+                        CanteenCredits = this.calculationService.GetCanteenCredits()
+                            .Select(x => new NominalLedgerEntryResource
+                                             {
+                                                 Amount = x.Amount,
+                                                 Tref = x.Tref,
+                                                 Narrative = x.Narrative,
+                                                 Comments = x.Comments,
+                                                 Description = x.Description,
+                                                 CreditOrDebit = x.CreditOrDebit,
+                                                 DatePosted = x.DatePosted.ToString("dd/MM/yyyy")
+                            })
                     });
         }
 

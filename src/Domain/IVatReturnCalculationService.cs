@@ -22,6 +22,8 @@
 
         IEnumerable<NominalLedgerEntry> GetOtherJournals();
 
+        IEnumerable<NominalLedgerEntry> GetCanteenCredits();
+
         decimal GetSalesVatTotal();
 
         decimal GetPvaTotal();

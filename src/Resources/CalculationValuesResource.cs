@@ -27,5 +27,7 @@
         public decimal PvaTotal { get; set; }
 
         public IEnumerable<NominalLedgerEntryResource> LedgerEntries { get; set; }
+
+        public IEnumerable<NominalLedgerEntryResource> CanteenCredits { get; set; }
     }
 }
