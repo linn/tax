@@ -180,9 +180,9 @@ Resources:
           Type: spread
       TaskDefinition: !Ref taxTaskDefinition
       Role: ecsServiceRole
-      LoadBalancers:
-      - ContainerName: tax
-        ContainerPort: 5050
-        TargetGroupArn:
-          Fn::ImportValue:
-            !Sub "tax-target-group-arn${environmentSuffix}"
+      # LoadBalancers:
+      # - ContainerName: tax
+      #   ContainerPort: 5050
+      #   TargetGroupArn:
+      #     Fn::ImportValue:
+      #       !Sub "tax-target-group-arn${environmentSuffix}"
