@@ -172,7 +172,7 @@ Resources:
         - isTesting
         - !Sub ${TestClusterName}
         - !Sub ${ProductionClusterName}
-      DesiredCount: !If [ isTesting, 1, 1]
+      DesiredCount: !If [ isTesting, 0, 0]
       PlacementStrategies:
         - Field: attribute:ecs.availability-zone
           Type: spread
@@ -180,9 +180,9 @@ Resources:
           Type: spread
       TaskDefinition: !Ref taxTaskDefinition
       Role: ecsServiceRole
-      LoadBalancers:
-      - ContainerName: tax
-        ContainerPort: 5050
-        TargetGroupArn:
-          Fn::ImportValue:
-            !Sub "tax-target-group-arn${environmentSuffix}"
+      # LoadBalancers:
+      # - ContainerName: tax
+      #   ContainerPort: 5050
+      #   TargetGroupArn:
+      #     Fn::ImportValue:
+      #       !Sub "tax-target-group-arn${environmentSuffix}"
